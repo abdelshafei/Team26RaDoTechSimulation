@@ -24,7 +24,7 @@ Notes:
 - All Group Members are brainstorming for sequence diagram
 
 #### State Diagram
-[In Progress]
+[Done Pending Group Review]
 
 Notes:
 - William is working on the design and research
