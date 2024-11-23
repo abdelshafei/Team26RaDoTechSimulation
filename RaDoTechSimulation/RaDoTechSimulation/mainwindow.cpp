@@ -1,6 +1,7 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
-
+#include <QPixmap>
+#include <QDebug>
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::MainWindow)
@@ -19,7 +20,12 @@ MainWindow::MainWindow(QWidget *parent)
     connect(ui->HistoricalPageButton, &QPushButton::clicked, this, &MainWindow::showHistoricalPage);
     connect(ui->ProfilePageButton, &QPushButton::clicked, this, &MainWindow::showProfilePage);
     connect(ui->VisulizationPageButton, &QPushButton::clicked, this, &MainWindow::showVisualizationPage);
+    connect(ui->CreateProfileButton, &QPushButton::clicked, this, &MainWindow::showCreateProfilePage);
+    connect(ui->EnterButton, &QPushButton::clicked, this, &MainWindow::showLoginPage);
 
+    //Images
+    QPixmap pix("/home/student/Desktop/FinalProject/3004-Final-Project/images/loginImage.png");
+    ui->loginImage->setPixmap(pix.scaled(81,71,Qt::KeepAspectRatio));
 }
 
 MainWindow::~MainWindow()
@@ -31,7 +37,8 @@ MainWindow::~MainWindow()
 // Switch to App View
 void MainWindow::showAppView()
 {
-    ui->ViewsStackedWidget->setCurrentWidget(ui->AppView);
+    // TODO: When we implement login and create profile, here we do if statement of which view to first go to after device view
+    ui->ViewsStackedWidget->setCurrentWidget(ui->AppStartPage);
 }
 
 // Switch to Device View
@@ -44,6 +51,19 @@ void MainWindow::showDeviceView()
 void MainWindow::showHomePage()
 {
     ui->AppStackedWidget->setCurrentWidget(ui->HomePage);
+}
+
+void MainWindow::showCreateProfilePage()
+{
+    ui->ViewsStackedWidget->setCurrentWidget(ui->AppView);
+    ui->AppStackedWidget->setCurrentWidget(ui->CreateProfilePage);
+
+}
+
+void MainWindow::showLoginPage()
+{
+    ui->ViewsStackedWidget->setCurrentWidget(ui->AppView);
+    ui->AppStackedWidget->setCurrentWidget(ui->LoginPage);
 }
 
 // Show Measure Now Page in App View

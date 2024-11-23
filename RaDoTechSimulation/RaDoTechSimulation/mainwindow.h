@@ -25,6 +25,8 @@ public:
     void showHistoricalPage();
     void showProfilePage();
     void showVisualizationPage();
+    void showCreateProfilePage();
+    void showLoginPage();
 
 
 private:
