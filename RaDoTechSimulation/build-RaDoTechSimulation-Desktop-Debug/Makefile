@@ -139,7 +139,9 @@ DIST          = /usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/spec_pre.prf \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/exceptions.prf \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/yacc.prf \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/lex.prf \
-		../RaDoTechSimulation/RaDoTechSimulation.pro ../RaDoTechSimulation/mainwindow.h ../RaDoTechSimulation/main.cpp \
+		../RaDoTechSimulation/RaDoTechSimulation.pro ../RaDoTechSimulation/Profile.h \
+		../RaDoTechSimulation/User.h \
+		../RaDoTechSimulation/mainwindow.h ../RaDoTechSimulation/main.cpp \
 		../RaDoTechSimulation/mainwindow.cpp
 QMAKE_TARGET  = RaDoTechSimulation
 DESTDIR       = 
@@ -334,7 +336,7 @@ distdir: FORCE
 	$(COPY_FILE) --parents ../RaDoTechSimulation/RaDoTechSimulation_en_CA.ts $(DISTDIR)/
 	$(COPY_FILE) --parents qmake_qmake_qm_files.qrc $(DISTDIR)/
 	$(COPY_FILE) --parents /usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/data/dummy.cpp $(DISTDIR)/
-	$(COPY_FILE) --parents ../RaDoTechSimulation/mainwindow.h $(DISTDIR)/
+	$(COPY_FILE) --parents ../RaDoTechSimulation/Profile.h ../RaDoTechSimulation/User.h ../RaDoTechSimulation/mainwindow.h $(DISTDIR)/
 	$(COPY_FILE) --parents ../RaDoTechSimulation/main.cpp ../RaDoTechSimulation/mainwindow.cpp $(DISTDIR)/
 	$(COPY_FILE) --parents ../RaDoTechSimulation/mainwindow.ui $(DISTDIR)/
 	$(COPY_FILE) --parents ../RaDoTechSimulation/RaDoTechSimulation_en_CA.ts $(DISTDIR)/
@@ -385,6 +387,8 @@ compiler_moc_header_make_all: moc_mainwindow.cpp
 compiler_moc_header_clean:
 	-$(DEL_FILE) moc_mainwindow.cpp
 moc_mainwindow.cpp: ../RaDoTechSimulation/mainwindow.h \
+		../RaDoTechSimulation/User.h \
+		../RaDoTechSimulation/Profile.h \
 		moc_predefs.h \
 		/usr/lib/qt5/bin/moc
 	/usr/lib/qt5/bin/moc $(DEFINES) --include /home/student/Desktop/FinalProject/3004-Final-Project/RaDoTechSimulation/build-RaDoTechSimulation-Desktop-Debug/moc_predefs.h -I/usr/lib/x86_64-linux-gnu/qt5/mkspecs/linux-g++ -I/home/student/Desktop/FinalProject/3004-Final-Project/RaDoTechSimulation/RaDoTechSimulation -I/usr/include/x86_64-linux-gnu/qt5 -I/usr/include/x86_64-linux-gnu/qt5/QtCharts -I/usr/include/x86_64-linux-gnu/qt5/QtWidgets -I/usr/include/x86_64-linux-gnu/qt5/QtGui -I/usr/include/x86_64-linux-gnu/qt5/QtCore -I. -I/usr/include/c++/11 -I/usr/include/x86_64-linux-gnu/c++/11 -I/usr/include/c++/11/backward -I/usr/lib/gcc/x86_64-linux-gnu/11/include -I/usr/local/include -I/usr/include/x86_64-linux-gnu -I/usr/include ../RaDoTechSimulation/mainwindow.h -o moc_mainwindow.cpp
@@ -410,10 +414,14 @@ compiler_clean: compiler_lrelease_clean compiler_rcc_clean compiler_moc_predefs_
 
 ####### Compile
 
-main.o: ../RaDoTechSimulation/main.cpp ../RaDoTechSimulation/mainwindow.h
+main.o: ../RaDoTechSimulation/main.cpp ../RaDoTechSimulation/mainwindow.h \
+		../RaDoTechSimulation/User.h \
+		../RaDoTechSimulation/Profile.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o main.o ../RaDoTechSimulation/main.cpp
 
 mainwindow.o: ../RaDoTechSimulation/mainwindow.cpp ../RaDoTechSimulation/mainwindow.h \
+		../RaDoTechSimulation/User.h \
+		../RaDoTechSimulation/Profile.h \
 		ui_mainwindow.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o mainwindow.o ../RaDoTechSimulation/mainwindow.cpp
 

@@ -252,7 +252,7 @@ p, li { white-space: pre-wrap; }
          </rect>
         </property>
        </widget>
-       <widget class="QPushButton" name="pushButton">
+       <widget class="QPushButton" name="SavePushButton">
         <property name="geometry">
          <rect>
           <x>60</x>
@@ -413,6 +413,19 @@ p, li { white-space: pre-wrap; }
         </property>
         <property name="text">
          <string>Profile Page</string>
+        </property>
+       </widget>
+       <widget class="QLabel" name="ProfileListLabel">
+        <property name="geometry">
+         <rect>
+          <x>20</x>
+          <y>40</y>
+          <width>301</width>
+          <height>291</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>TextLabel</string>
         </property>
        </widget>
       </widget>

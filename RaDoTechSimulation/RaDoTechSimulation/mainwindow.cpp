@@ -41,6 +41,11 @@ MainWindow::MainWindow(QWidget *parent)
     //Images
     QPixmap pix("/home/student/Desktop/FinalProject/3004-Final-Project/images/loginImage.png");
     ui->loginImage->setPixmap(pix.scaled(81,71,Qt::KeepAspectRatio));
+
+    //Save Button
+    connect(ui->SavePushButton, &QPushButton::clicked, this, &MainWindow::saveProfile);
+    currentUser = new User("example@example.com", "password123");
+
 }
 
 MainWindow::~MainWindow()
@@ -103,9 +108,110 @@ void MainWindow::showProfilePage()
 void MainWindow::showVisualizationPage()
 {
     ui->AppStackedWidget->setCurrentWidget(ui->VisulizationPage);
-//    showBarGraph();
-    showRadarChart();
+    showBarGraph();
+//    showRadarChart();
 }
+
+
+#include <QDebug> // Add at the top for debugging
+
+void MainWindow::saveProfile() {
+    // Collect data for User
+
+    QString email = ui->LoginTextEdit->toPlainText();
+    QString password = ui->PasswordTextEditCreate->toPlainText();
+
+    // Validate User data
+
+    if (email.isEmpty() || password.isEmpty()) {
+        QMessageBox::warning(this, "Input Error", "Email and password cannot be empty.");
+        return;
+    }
+
+    // Create or update the User
+
+    if (!currentUser) {
+        currentUser = new User(email, password);
+    } else {
+        // Update existing User's credentials if already exists
+
+        currentUser = new User(email, password);
+    }
+
+    // Collect data for Profile
+
+    QString name = ui->ProfileNameTextEdit->toPlainText();
+    QString gender = ui->GenderComboBox->currentText();
+    gender = "Male";
+    double weight = ui->WeightTextEdit->toPlainText().toDouble();
+    double height = ui->HeightTextEdit->toPlainText().toDouble();
+    QDate dob = ui->DOBEdit->date();
+
+    // Validate Profile data
+
+    if (name.isEmpty() || gender.isEmpty() || weight <= 0 || height <= 0) {
+        QMessageBox::warning(this, "Input Error", "All profile fields must be filled correctly.");
+        return;
+    }
+
+    // Create and associate the Profile with the User
+
+    Profile* newProfile = new Profile(name, gender, weight, height, dob);
+    currentUser->addProfile(newProfile);
+
+    // Show success message
+
+    QMessageBox::information(this, "Profile Created", "Profile and user created successfully!");
+
+    // Navigate to the Home Page
+    qDebug()<<"Name: "<<name<<"Gender: "<<gender<<" Weight: "<<weight<<" Height: "<<height<<" Dob: "<<dob;
+
+    // Populate profiles on the Profiles Page
+    updateProfilesList();
+
+    // Navigate to the Profiles Page
+    ui->AppStackedWidget->setCurrentWidget(ui->ProfilePage);
+}
+
+void MainWindow::updateProfilesList() {
+    if (!currentUser) {
+        ui->ProfileListLabel->setText("No profiles found.");
+        return;
+    }
+
+    // Retrieve profiles
+    QList<Profile*> profiles = currentUser->getProfiles();
+
+    // Build profile list as a string
+    QString profilesText;
+    for (int i = 0; i < profiles.size(); ++i) {
+        Profile* profile = profiles[i];
+        profilesText += QString("Current User: %1\n").arg(currentUser->getEmail());
+
+        profilesText += QString("Profile %1:\n").arg(i + 1);
+        profilesText += QString("Name: %1\n").arg(profile->getName());
+        profilesText += QString("Gender: %1\n").arg(profile->getGender());
+        profilesText += QString("Weight: %1 kg\n").arg(profile->getWeight());
+        profilesText += QString("Height: %1 cm\n").arg(profile->getHeight());
+        profilesText += QString("Date of Birth: %1\n\n").arg(profile->getDateOfBirth().toString("yyyy-MM-dd"));
+    }
+
+    // Update the QLabel
+    ui->ProfileListLabel->setText(profilesText);
+}
+
+
+void MainWindow::showProfiles() {
+    if (!currentUser) return;
+
+    QString profileList = "Profiles:\n";
+    for (Profile* profile : currentUser->getProfiles()) {
+        profileList += profile->getName() + " (" + profile->getGender() + ")\n";
+    }
+
+    QMessageBox::information(this, "User Profiles", profileList);
+}
+
 
 
 // Just to show Bar Graph

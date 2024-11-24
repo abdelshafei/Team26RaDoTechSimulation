@@ -2,6 +2,7 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
+#include "User.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -30,8 +31,13 @@ public:
     void showBarGraph();
     void showRadarChart();
 
+    void saveProfile(); // Save a new profile for the user
+    void showProfiles(); // Display all profiles for the user
+    void updateProfilesList();
+
 
 private:
     Ui::MainWindow *ui;
+    User* currentUser;
 };
 #endif // MAINWINDOW_H

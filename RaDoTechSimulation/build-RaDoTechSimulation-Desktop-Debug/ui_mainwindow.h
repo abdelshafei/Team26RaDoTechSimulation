@@ -50,7 +50,7 @@ public:
     QTextEdit *HeightTextEdit;
     QLabel *DateOfBirthLabel;
     QDateEdit *DOBEdit;
-    QPushButton *pushButton;
+    QPushButton *SavePushButton;
     QTextEdit *LoginTextEdit;
     QTextEdit *PasswordTextEditCreate;
     QWidget *LoginPage;
@@ -65,6 +65,7 @@ public:
     QLabel *HistoricalHeader;
     QWidget *ProfilePage;
     QLabel *ProfileHeader;
+    QLabel *ProfileListLabel;
     QWidget *VisulizationPage;
     QLabel *VisulizationHeader;
     QWidget *chartContainer;
@@ -149,9 +150,9 @@ public:
         DOBEdit = new QDateEdit(CreateProfilePage);
         DOBEdit->setObjectName(QString::fromUtf8("DOBEdit"));
         DOBEdit->setGeometry(QRect(100, 185, 201, 31));
-        pushButton = new QPushButton(CreateProfilePage);
-        pushButton->setObjectName(QString::fromUtf8("pushButton"));
-        pushButton->setGeometry(QRect(60, 290, 231, 25));
+        SavePushButton = new QPushButton(CreateProfilePage);
+        SavePushButton->setObjectName(QString::fromUtf8("SavePushButton"));
+        SavePushButton->setGeometry(QRect(60, 290, 231, 25));
         LoginTextEdit = new QTextEdit(CreateProfilePage);
         LoginTextEdit->setObjectName(QString::fromUtf8("LoginTextEdit"));
         LoginTextEdit->setGeometry(QRect(10, 220, 211, 21));
@@ -197,6 +198,9 @@ public:
         ProfileHeader = new QLabel(ProfilePage);
         ProfileHeader->setObjectName(QString::fromUtf8("ProfileHeader"));
         ProfileHeader->setGeometry(QRect(20, 10, 91, 17));
+        ProfileListLabel = new QLabel(ProfilePage);
+        ProfileListLabel->setObjectName(QString::fromUtf8("ProfileListLabel"));
+        ProfileListLabel->setGeometry(QRect(20, 40, 301, 291));
         AppStackedWidget->addWidget(ProfilePage);
         VisulizationPage = new QWidget();
         VisulizationPage->setObjectName(QString::fromUtf8("VisulizationPage"));
@@ -280,7 +284,7 @@ public:
 "</style></head><body style=\" font-family:'Sans'; font-size:10pt; font-weight:400; font-style:normal;\">\n"
 "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">Your Height</p></body></html>", nullptr));
         DateOfBirthLabel->setText(QCoreApplication::translate("MainWindow", "Date of Birth", nullptr));
-        pushButton->setText(QCoreApplication::translate("MainWindow", "Save", nullptr));
+        SavePushButton->setText(QCoreApplication::translate("MainWindow", "Save", nullptr));
         LoginTextEdit->setHtml(QCoreApplication::translate("MainWindow", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
 "<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
 "p, li { white-space: pre-wrap; }\n"
@@ -308,6 +312,7 @@ public:
         MeasureHeader->setText(QCoreApplication::translate("MainWindow", "Measure Now Page", nullptr));
         HistoricalHeader->setText(QCoreApplication::translate("MainWindow", "Historical Data Page", nullptr));
         ProfileHeader->setText(QCoreApplication::translate("MainWindow", "Profile Page", nullptr));
+        ProfileListLabel->setText(QCoreApplication::translate("MainWindow", "TextLabel", nullptr));
         VisulizationHeader->setText(QCoreApplication::translate("MainWindow", "Visulization Page", nullptr));
         HomePageButton->setText(QCoreApplication::translate("MainWindow", "Home", nullptr));
         MeasureNowButton->setText(QCoreApplication::translate("MainWindow", "Measure Now", nullptr));
