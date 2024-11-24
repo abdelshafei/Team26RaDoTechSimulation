@@ -27,6 +27,8 @@ public:
     void showVisualizationPage();
     void showCreateProfilePage();
     void showLoginPage();
+    void showBarGraph();
+    void showRadarChart();
 
 
 private:

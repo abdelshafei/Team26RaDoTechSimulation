@@ -16,6 +16,7 @@
 #include <QtWidgets/QLabel>
 #include <QtWidgets/QMainWindow>
 #include <QtWidgets/QMenuBar>
+#include <QtWidgets/QProgressBar>
 #include <QtWidgets/QPushButton>
 #include <QtWidgets/QStackedWidget>
 #include <QtWidgets/QStatusBar>
@@ -32,6 +33,8 @@ public:
     QWidget *DeviceView;
     QPushButton *GoToAppViewButton;
     QLabel *DeviceNameLabel;
+    QLabel *BatteryLabel;
+    QProgressBar *BatteryPowerProgressBar;
     QWidget *AppView;
     QPushButton *GoToDeviceViewButton;
     QStackedWidget *AppStackedWidget;
@@ -64,6 +67,7 @@ public:
     QLabel *ProfileHeader;
     QWidget *VisulizationPage;
     QLabel *VisulizationHeader;
+    QWidget *chartContainer;
     QPushButton *HomePageButton;
     QPushButton *MeasureNowButton;
     QPushButton *HistoricalPageButton;
@@ -94,6 +98,13 @@ public:
         DeviceNameLabel = new QLabel(DeviceView);
         DeviceNameLabel->setObjectName(QString::fromUtf8("DeviceNameLabel"));
         DeviceNameLabel->setGeometry(QRect(10, 20, 151, 17));
+        BatteryLabel = new QLabel(DeviceView);
+        BatteryLabel->setObjectName(QString::fromUtf8("BatteryLabel"));
+        BatteryLabel->setGeometry(QRect(10, 60, 91, 17));
+        BatteryPowerProgressBar = new QProgressBar(DeviceView);
+        BatteryPowerProgressBar->setObjectName(QString::fromUtf8("BatteryPowerProgressBar"));
+        BatteryPowerProgressBar->setGeometry(QRect(110, 60, 118, 23));
+        BatteryPowerProgressBar->setValue(8);
         ViewsStackedWidget->addWidget(DeviceView);
         AppView = new QWidget();
         AppView->setObjectName(QString::fromUtf8("AppView"));
@@ -192,6 +203,9 @@ public:
         VisulizationHeader = new QLabel(VisulizationPage);
         VisulizationHeader->setObjectName(QString::fromUtf8("VisulizationHeader"));
         VisulizationHeader->setGeometry(QRect(20, 10, 131, 17));
+        chartContainer = new QWidget(VisulizationPage);
+        chartContainer->setObjectName(QString::fromUtf8("chartContainer"));
+        chartContainer->setGeometry(QRect(30, 50, 471, 471));
         AppStackedWidget->addWidget(VisulizationPage);
         HomePageButton = new QPushButton(AppView);
         HomePageButton->setObjectName(QString::fromUtf8("HomePageButton"));
@@ -241,6 +255,7 @@ public:
         MainWindow->setWindowTitle(QCoreApplication::translate("MainWindow", "MainWindow", nullptr));
         GoToAppViewButton->setText(QCoreApplication::translate("MainWindow", "Go To App View", nullptr));
         DeviceNameLabel->setText(QCoreApplication::translate("MainWindow", "RaDoTech Device View", nullptr));
+        BatteryLabel->setText(QCoreApplication::translate("MainWindow", "Battery Power", nullptr));
         GoToDeviceViewButton->setText(QCoreApplication::translate("MainWindow", "Go to Device View", nullptr));
         CreateHeader->setText(QCoreApplication::translate("MainWindow", "Create Profile", nullptr));
         loginImage->setText(QCoreApplication::translate("MainWindow", "IMAGE", nullptr));
