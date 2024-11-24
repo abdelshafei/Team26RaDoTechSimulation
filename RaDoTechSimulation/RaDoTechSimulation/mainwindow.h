@@ -15,6 +15,22 @@ public:
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
 
+    // Switching View UI Functions
+    void showAppView();
+    void showDeviceView();
+
+    // Switching App Pages UI Functions
+    void showHomePage();
+    void showMeasureNowPage();
+    void showHistoricalPage();
+    void showProfilePage();
+    void showVisualizationPage();
+    void showCreateProfilePage();
+    void showLoginPage();
+    void showBarGraph();
+    void showRadarChart();
+
+
 private:
     Ui::MainWindow *ui;
 };
