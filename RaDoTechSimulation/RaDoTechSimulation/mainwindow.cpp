@@ -42,9 +42,11 @@ MainWindow::MainWindow(QWidget *parent)
     QPixmap pix("/home/student/Desktop/FinalProject/3004-Final-Project/images/loginImage.png");
     ui->loginImage->setPixmap(pix.scaled(81,71,Qt::KeepAspectRatio));
 
-    //Save Button
+    //Save Button on Create Button
     connect(ui->SavePushButton, &QPushButton::clicked, this, &MainWindow::saveProfile);
-    currentUser = new User("example@example.com", "password123");
+//    currentUser = new User("example@example.com", "password123");
+    connect(ui->AddNewProfileButton, &QPushButton::clicked, this, &MainWindow::goToCreateProfilePage);
+
 
 }
 
@@ -112,8 +114,20 @@ void MainWindow::showVisualizationPage()
 //    showRadarChart();
 }
 
+void MainWindow::goToCreateProfilePage() {
+    // Clear all input fields
+    ui->ProfileNameTextEdit->clear();
+    ui->GenderComboBox->setCurrentIndex(0); // Reset dropdown to the first option
+    ui->WeightTextEdit->clear();
+    ui->HeightTextEdit->clear();
+    ui->DOBEdit->setDate(QDate::currentDate()); // Reset to current date
+    ui->LoginTextEdit->setText(currentUser ? currentUser->getEmail() : "");
+    ui->PasswordTextEditCreate->setText(currentUser ? currentUser->getPassword() : "");
 
-#include <QDebug> // Add at the top for debugging
+    // Navigate to the Create Profile Page
+    ui->AppStackedWidget->setCurrentWidget(ui->CreateProfilePage);
+}
+
 
 void MainWindow::saveProfile() {
     // Collect data for User
@@ -132,17 +146,12 @@ void MainWindow::saveProfile() {
 
     if (!currentUser) {
         currentUser = new User(email, password);
-    } else {
-        // Update existing User's credentials if already exists
-
-        currentUser = new User(email, password);
     }
 
     // Collect data for Profile
 
     QString name = ui->ProfileNameTextEdit->toPlainText();
     QString gender = ui->GenderComboBox->currentText();
-    gender = "Male";
     double weight = ui->WeightTextEdit->toPlainText().toDouble();
     double height = ui->HeightTextEdit->toPlainText().toDouble();
     QDate dob = ui->DOBEdit->date();
@@ -181,6 +190,8 @@ void MainWindow::updateProfilesList() {
 
     // Retrieve profiles
     QList<Profile*> profiles = currentUser->getProfiles();
+
+    qDebug()<<profiles.size();
 
     // Build profile list as a string
     QString profilesText;

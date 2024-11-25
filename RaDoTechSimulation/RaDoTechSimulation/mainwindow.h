@@ -34,6 +34,7 @@ public:
     void saveProfile(); // Save a new profile for the user
     void showProfiles(); // Display all profiles for the user
     void updateProfilesList();
+    void goToCreateProfilePage();
 
 
 private:

@@ -154,6 +154,24 @@ p, li { white-space: pre-wrap; }
           <height>25</height>
          </rect>
         </property>
+        <property name="currentText">
+         <string>Male</string>
+        </property>
+        <item>
+         <property name="text">
+          <string>Male</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Female</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Other</string>
+         </property>
+        </item>
        </widget>
        <widget class="QLabel" name="GenderLabel">
         <property name="geometry">
@@ -421,11 +439,24 @@ p, li { white-space: pre-wrap; }
           <x>20</x>
           <y>40</y>
           <width>301</width>
-          <height>291</height>
+          <height>531</height>
          </rect>
         </property>
         <property name="text">
          <string>TextLabel</string>
+        </property>
+       </widget>
+       <widget class="QPushButton" name="AddNewProfileButton">
+        <property name="geometry">
+         <rect>
+          <x>400</x>
+          <y>20</y>
+          <width>111</width>
+          <height>25</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>Add New Profile</string>
         </property>
        </widget>
       </widget>

@@ -66,6 +66,7 @@ public:
     QWidget *ProfilePage;
     QLabel *ProfileHeader;
     QLabel *ProfileListLabel;
+    QPushButton *AddNewProfileButton;
     QWidget *VisulizationPage;
     QLabel *VisulizationHeader;
     QWidget *chartContainer;
@@ -127,6 +128,9 @@ public:
         ProfileNameTextEdit->setObjectName(QString::fromUtf8("ProfileNameTextEdit"));
         ProfileNameTextEdit->setGeometry(QRect(100, 40, 211, 21));
         GenderComboBox = new QComboBox(CreateProfilePage);
+        GenderComboBox->addItem(QString());
+        GenderComboBox->addItem(QString());
+        GenderComboBox->addItem(QString());
         GenderComboBox->setObjectName(QString::fromUtf8("GenderComboBox"));
         GenderComboBox->setGeometry(QRect(100, 90, 86, 25));
         GenderLabel = new QLabel(CreateProfilePage);
@@ -201,6 +205,9 @@ public:
         ProfileListLabel = new QLabel(ProfilePage);
         ProfileListLabel->setObjectName(QString::fromUtf8("ProfileListLabel"));
         ProfileListLabel->setGeometry(QRect(20, 40, 301, 291));
+        AddNewProfileButton = new QPushButton(ProfilePage);
+        AddNewProfileButton->setObjectName(QString::fromUtf8("AddNewProfileButton"));
+        AddNewProfileButton->setGeometry(QRect(400, 20, 111, 25));
         AppStackedWidget->addWidget(ProfilePage);
         VisulizationPage = new QWidget();
         VisulizationPage->setObjectName(QString::fromUtf8("VisulizationPage"));
@@ -269,6 +276,11 @@ public:
 "</style></head><body style=\" font-family:'Sans'; font-size:10pt; font-weight:400; font-style:normal;\">\n"
 "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">Profile Name</p>\n"
 "<p style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><br /></p></body></html>", nullptr));
+        GenderComboBox->setItemText(0, QCoreApplication::translate("MainWindow", "Male", nullptr));
+        GenderComboBox->setItemText(1, QCoreApplication::translate("MainWindow", "Female", nullptr));
+        GenderComboBox->setItemText(2, QCoreApplication::translate("MainWindow", "Other", nullptr));
+
+        GenderComboBox->setCurrentText(QCoreApplication::translate("MainWindow", "Male", nullptr));
         GenderLabel->setText(QCoreApplication::translate("MainWindow", "Gender", nullptr));
         WeightLabel->setText(QCoreApplication::translate("MainWindow", "Weight, kg", nullptr));
         WeightTextEdit->setHtml(QCoreApplication::translate("MainWindow", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
@@ -313,6 +325,7 @@ public:
         HistoricalHeader->setText(QCoreApplication::translate("MainWindow", "Historical Data Page", nullptr));
         ProfileHeader->setText(QCoreApplication::translate("MainWindow", "Profile Page", nullptr));
         ProfileListLabel->setText(QCoreApplication::translate("MainWindow", "TextLabel", nullptr));
+        AddNewProfileButton->setText(QCoreApplication::translate("MainWindow", "Add New Profile", nullptr));
         VisulizationHeader->setText(QCoreApplication::translate("MainWindow", "Visulization Page", nullptr));
         HomePageButton->setText(QCoreApplication::translate("MainWindow", "Home", nullptr));
         MeasureNowButton->setText(QCoreApplication::translate("MainWindow", "Measure Now", nullptr));
