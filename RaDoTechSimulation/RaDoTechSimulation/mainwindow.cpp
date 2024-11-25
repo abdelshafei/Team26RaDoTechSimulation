@@ -47,6 +47,12 @@ MainWindow::MainWindow(QWidget *parent)
 //    currentUser = new User("example@example.com", "password123");
     connect(ui->AddNewProfileButton, &QPushButton::clicked, this, &MainWindow::goToCreateProfilePage);
 
+    // Initialize preset users
+    createPresetUsers();
+
+    // Connect login button
+    connect(ui->EnterLoginButton, &QPushButton::clicked, this, &MainWindow::handleLogin);
+
 
 }
 
@@ -104,6 +110,7 @@ void MainWindow::showHistoricalPage()
 void MainWindow::showProfilePage()
 {
     ui->AppStackedWidget->setCurrentWidget(ui->ProfilePage);
+    updateProfilesList();
 }
 
 // Show Visualization Page in App View
@@ -223,7 +230,40 @@ void MainWindow::showProfiles() {
     QMessageBox::information(this, "User Profiles", profileList);
 }
 
+void MainWindow::createPresetUsers() {
+    // Create users with a test profile
+    User* user1 = new User("test1@example.com", "password1");
+    User* user2 = new User("test2@example.com", "password2");
 
+    Profile* profile1 = new Profile("Profile1ForTest", "Male", 70.0, 175.0, QDate(1990, 1, 1));
+    user1->addProfile(profile1);
+    user2->addProfile(profile1); // Both users share the same test profile
+
+    presetUsers.append(user1);
+    presetUsers.append(user2);
+}
+
+void MainWindow::handleLogin() {
+    // Get input from login fields
+    QString email = ui->LoginEmailTextEdit->toPlainText();
+    QString password = ui->PasswordTextEdit->toPlainText();
+
+    // Validate credentials
+    User* user = User::validateCredentials(email, password, presetUsers);
+
+    if (user) {
+        // Successful login
+        currentUser = user;
+        QMessageBox::information(this, "Login Successful", "Welcome to the app!");
+
+        // Navigate to Home Page
+        showProfiles();
+        ui->AppStackedWidget->setCurrentWidget(ui->HomePage);
+    } else {
+        // Failed login
+        QMessageBox::critical(this, "Login Failed", "Incorrect email or password. Please try again.");
+    }
+}
 
 // Just to show Bar Graph
 void MainWindow::showBarGraph()

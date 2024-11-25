@@ -20,6 +20,10 @@ public:
 
     void addProfile(Profile* profile) { profiles.append(profile); }
     QList<Profile*> getProfiles() const { return profiles; }
+
+    static User* validateCredentials(const QString& email, const QString& password, const QList<User*>& users);
+
+
 };
 
 #endif // USER_H

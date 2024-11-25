@@ -57,6 +57,7 @@ public:
     QLabel *TitleLabel_2;
     QTextEdit *LoginEmailTextEdit;
     QTextEdit *PasswordTextEdit;
+    QPushButton *EnterLoginButton;
     QWidget *HomePage;
     QLabel *HomeHeader;
     QWidget *MeasureNowPage;
@@ -174,10 +175,13 @@ public:
         TitleLabel_2->setFont(font);
         LoginEmailTextEdit = new QTextEdit(LoginPage);
         LoginEmailTextEdit->setObjectName(QString::fromUtf8("LoginEmailTextEdit"));
-        LoginEmailTextEdit->setGeometry(QRect(200, 130, 151, 21));
+        LoginEmailTextEdit->setGeometry(QRect(170, 130, 201, 21));
         PasswordTextEdit = new QTextEdit(LoginPage);
         PasswordTextEdit->setObjectName(QString::fromUtf8("PasswordTextEdit"));
-        PasswordTextEdit->setGeometry(QRect(200, 160, 151, 21));
+        PasswordTextEdit->setGeometry(QRect(170, 160, 201, 21));
+        EnterLoginButton = new QPushButton(LoginPage);
+        EnterLoginButton->setObjectName(QString::fromUtf8("EnterLoginButton"));
+        EnterLoginButton->setGeometry(QRect(220, 200, 83, 25));
         AppStackedWidget->addWidget(LoginPage);
         HomePage = new QWidget();
         HomePage->setObjectName(QString::fromUtf8("HomePage"));
@@ -204,7 +208,7 @@ public:
         ProfileHeader->setGeometry(QRect(20, 10, 91, 17));
         ProfileListLabel = new QLabel(ProfilePage);
         ProfileListLabel->setObjectName(QString::fromUtf8("ProfileListLabel"));
-        ProfileListLabel->setGeometry(QRect(20, 40, 301, 291));
+        ProfileListLabel->setGeometry(QRect(20, 40, 301, 531));
         AddNewProfileButton = new QPushButton(ProfilePage);
         AddNewProfileButton->setObjectName(QString::fromUtf8("AddNewProfileButton"));
         AddNewProfileButton->setGeometry(QRect(400, 20, 111, 25));
@@ -320,6 +324,7 @@ public:
 "p, li { white-space: pre-wrap; }\n"
 "</style></head><body style=\" font-family:'Sans'; font-size:10pt; font-weight:400; font-style:normal;\">\n"
 "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">Password</p></body></html>", nullptr));
+        EnterLoginButton->setText(QCoreApplication::translate("MainWindow", "Enter", nullptr));
         HomeHeader->setText(QCoreApplication::translate("MainWindow", "Home Page", nullptr));
         MeasureHeader->setText(QCoreApplication::translate("MainWindow", "Measure Now Page", nullptr));
         HistoricalHeader->setText(QCoreApplication::translate("MainWindow", "Historical Data Page", nullptr));

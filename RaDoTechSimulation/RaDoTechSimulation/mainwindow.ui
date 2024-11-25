@@ -341,9 +341,9 @@ p, li { white-space: pre-wrap; }
        <widget class="QTextEdit" name="LoginEmailTextEdit">
         <property name="geometry">
          <rect>
-          <x>200</x>
+          <x>170</x>
           <y>130</y>
-          <width>151</width>
+          <width>201</width>
           <height>21</height>
          </rect>
         </property>
@@ -359,9 +359,9 @@ p, li { white-space: pre-wrap; }
        <widget class="QTextEdit" name="PasswordTextEdit">
         <property name="geometry">
          <rect>
-          <x>200</x>
+          <x>170</x>
           <y>160</y>
-          <width>151</width>
+          <width>201</width>
           <height>21</height>
          </rect>
         </property>
@@ -371,6 +371,19 @@ p, li { white-space: pre-wrap; }
 p, li { white-space: pre-wrap; }
 &lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'Sans'; font-size:10pt; font-weight:400; font-style:normal;&quot;&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Password&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+        </property>
+       </widget>
+       <widget class="QPushButton" name="EnterLoginButton">
+        <property name="geometry">
+         <rect>
+          <x>220</x>
+          <y>200</y>
+          <width>83</width>
+          <height>25</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>Enter</string>
         </property>
        </widget>
       </widget>

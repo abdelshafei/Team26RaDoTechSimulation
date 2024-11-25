@@ -36,9 +36,14 @@ public:
     void updateProfilesList();
     void goToCreateProfilePage();
 
+private slots:
+    void handleLogin(); // Slot for login button
 
 private:
     Ui::MainWindow *ui;
+    QList<User*> presetUsers; // List of preset users
     User* currentUser;
+    void createPresetUsers(); // Initialize preset users
+
 };
 #endif // MAINWINDOW_H

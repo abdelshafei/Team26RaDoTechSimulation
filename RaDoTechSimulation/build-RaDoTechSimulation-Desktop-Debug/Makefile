@@ -52,10 +52,12 @@ OBJECTS_DIR   = ./
 
 ####### Files
 
-SOURCES       = ../RaDoTechSimulation/main.cpp \
+SOURCES       = ../RaDoTechSimulation/User.cpp \
+		../RaDoTechSimulation/main.cpp \
 		../RaDoTechSimulation/mainwindow.cpp qrc_qmake_qmake_qm_files.cpp \
 		moc_mainwindow.cpp
-OBJECTS       = main.o \
+OBJECTS       = User.o \
+		main.o \
 		mainwindow.o \
 		qrc_qmake_qmake_qm_files.o \
 		moc_mainwindow.o
@@ -141,7 +143,8 @@ DIST          = /usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/spec_pre.prf \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/lex.prf \
 		../RaDoTechSimulation/RaDoTechSimulation.pro ../RaDoTechSimulation/Profile.h \
 		../RaDoTechSimulation/User.h \
-		../RaDoTechSimulation/mainwindow.h ../RaDoTechSimulation/main.cpp \
+		../RaDoTechSimulation/mainwindow.h ../RaDoTechSimulation/User.cpp \
+		../RaDoTechSimulation/main.cpp \
 		../RaDoTechSimulation/mainwindow.cpp
 QMAKE_TARGET  = RaDoTechSimulation
 DESTDIR       = 
@@ -337,7 +340,7 @@ distdir: FORCE
 	$(COPY_FILE) --parents qmake_qmake_qm_files.qrc $(DISTDIR)/
 	$(COPY_FILE) --parents /usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/data/dummy.cpp $(DISTDIR)/
 	$(COPY_FILE) --parents ../RaDoTechSimulation/Profile.h ../RaDoTechSimulation/User.h ../RaDoTechSimulation/mainwindow.h $(DISTDIR)/
-	$(COPY_FILE) --parents ../RaDoTechSimulation/main.cpp ../RaDoTechSimulation/mainwindow.cpp $(DISTDIR)/
+	$(COPY_FILE) --parents ../RaDoTechSimulation/User.cpp ../RaDoTechSimulation/main.cpp ../RaDoTechSimulation/mainwindow.cpp $(DISTDIR)/
 	$(COPY_FILE) --parents ../RaDoTechSimulation/mainwindow.ui $(DISTDIR)/
 	$(COPY_FILE) --parents ../RaDoTechSimulation/RaDoTechSimulation_en_CA.ts $(DISTDIR)/
 
@@ -413,6 +416,10 @@ compiler_lex_clean:
 compiler_clean: compiler_lrelease_clean compiler_rcc_clean compiler_moc_predefs_clean compiler_moc_header_clean compiler_uic_clean 
 
 ####### Compile
+
+User.o: ../RaDoTechSimulation/User.cpp ../RaDoTechSimulation/User.h \
+		../RaDoTechSimulation/Profile.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o User.o ../RaDoTechSimulation/User.cpp
 
 main.o: ../RaDoTechSimulation/main.cpp ../RaDoTechSimulation/mainwindow.h \
 		../RaDoTechSimulation/User.h \
