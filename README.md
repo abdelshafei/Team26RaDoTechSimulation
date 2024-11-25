@@ -11,7 +11,7 @@ Notes:
 - Need to add more details and needs to be looked over
 
 #### Class Diagram
-[In Progress]
+[Done Pending Group Review]
 
 Notes:
 - Initial Research started
