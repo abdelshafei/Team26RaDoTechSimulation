@@ -1,6 +1,6 @@
 # Team 26: Developing and testing a simulation of RaDoTech health monitoring device: Param Desai, William Marcus, JC Sevigny, Abdelrahman ElShafay
 
-## Design Documentations are being worked on Google Docs
+## Design Documentation is being worked on Google Docs
 
 ### Status:
 #### Use Cases
@@ -11,7 +11,7 @@ Notes:
 - Need to add more details and needs to be looked over
 
 #### Class Diagram
-[In Progress]
+[Done Pending Group Review]
 
 Notes:
 - Initial Research started
@@ -21,7 +21,7 @@ Notes:
 [In Progress]
 
 Notes:
-- All Group Members are brainstorming for sequence diagram
+- All Group Members are brainstorming for a sequence diagram
 
 #### State Diagram
 [Done Pending Group Review]
@@ -42,7 +42,12 @@ Notes:
 [In Progress]
 
 Notes:
-- Param is working on the UI Design and making the initial design on how the app and device features will look and some widget navigation
+- Widget Navigation done
+- Research about making charts done
 
 ### Backend
 [Not Started]
+
+Notes:
+- Will working on connecting the device view and measure now button with app view and device view
+- Param working on Profile and User creation, updating, and logging in as already made users.
