@@ -431,6 +431,34 @@ p, li { white-space: pre-wrap; }
          <string>Historical Data Page</string>
         </property>
        </widget>
+       <widget class="QListWidget" name="HistoryListWidget">
+        <property name="geometry">
+         <rect>
+          <x>20</x>
+          <y>30</y>
+          <width>501</width>
+          <height>281</height>
+         </rect>
+        </property>
+        <item>
+         <property name="text">
+          <string>New Item</string>
+         </property>
+        </item>
+       </widget>
+       <widget class="QPushButton" name="ViewDetailsButton">
+        <property name="geometry">
+         <rect>
+          <x>20</x>
+          <y>320</y>
+          <width>101</width>
+          <height>25</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>View Details</string>
+        </property>
+       </widget>
       </widget>
       <widget class="QWidget" name="ProfilePage">
        <widget class="QLabel" name="ProfileHeader">
@@ -498,6 +526,280 @@ p, li { white-space: pre-wrap; }
         </property>
        </widget>
       </widget>
+      <widget class="QWidget" name="DetailedResultsPage">
+       <widget class="QLabel" name="TitleLabelMeteringResults">
+        <property name="geometry">
+         <rect>
+          <x>20</x>
+          <y>10</y>
+          <width>111</width>
+          <height>17</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>Metering Results</string>
+        </property>
+       </widget>
+       <widget class="QLabel" name="DetailedResultsLabel">
+        <property name="geometry">
+         <rect>
+          <x>20</x>
+          <y>50</y>
+          <width>491</width>
+          <height>221</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>TextLabel</string>
+        </property>
+       </widget>
+       <widget class="QTabWidget" name="ResultsTabWidget">
+        <property name="geometry">
+         <rect>
+          <x>10</x>
+          <y>30</y>
+          <width>511</width>
+          <height>521</height>
+         </rect>
+        </property>
+        <property name="currentIndex">
+         <number>0</number>
+        </property>
+        <widget class="QWidget" name="Indicators">
+         <attribute name="title">
+          <string>Tab 1</string>
+         </attribute>
+         <widget class="QFrame" name="EnergyFrame">
+          <property name="geometry">
+           <rect>
+            <x>10</x>
+            <y>10</y>
+            <width>481</width>
+            <height>61</height>
+           </rect>
+          </property>
+          <property name="styleSheet">
+           <string notr="true">background-color: rgb(0, 191, 92);</string>
+          </property>
+          <property name="frameShape">
+           <enum>QFrame::StyledPanel</enum>
+          </property>
+          <property name="frameShadow">
+           <enum>QFrame::Raised</enum>
+          </property>
+          <widget class="QLabel" name="EnergyLevelLabel">
+           <property name="geometry">
+            <rect>
+             <x>90</x>
+             <y>10</y>
+             <width>91</width>
+             <height>16</height>
+            </rect>
+           </property>
+           <property name="text">
+            <string>Energy Level</string>
+           </property>
+          </widget>
+          <widget class="QLabel" name="EnergyImage">
+           <property name="geometry">
+            <rect>
+             <x>10</x>
+             <y>10</y>
+             <width>71</width>
+             <height>41</height>
+            </rect>
+           </property>
+           <property name="text">
+            <string>IMAGE</string>
+           </property>
+          </widget>
+          <widget class="QLabel" name="EnergyRangeLabel">
+           <property name="geometry">
+            <rect>
+             <x>90</x>
+             <y>30</y>
+             <width>91</width>
+             <height>21</height>
+            </rect>
+           </property>
+           <property name="text">
+            <string>TextLabel</string>
+           </property>
+          </widget>
+          <widget class="QLabel" name="EnergyNumberLabel">
+           <property name="geometry">
+            <rect>
+             <x>290</x>
+             <y>10</y>
+             <width>141</width>
+             <height>41</height>
+            </rect>
+           </property>
+           <property name="text">
+            <string>TextLabel</string>
+           </property>
+          </widget>
+         </widget>
+         <widget class="QFrame" name="ImmuneSystemFrame">
+          <property name="geometry">
+           <rect>
+            <x>10</x>
+            <y>90</y>
+            <width>481</width>
+            <height>61</height>
+           </rect>
+          </property>
+          <property name="styleSheet">
+           <string notr="true">background-color: rgb(112, 113, 219);</string>
+          </property>
+          <property name="frameShape">
+           <enum>QFrame::StyledPanel</enum>
+          </property>
+          <property name="frameShadow">
+           <enum>QFrame::Raised</enum>
+          </property>
+          <widget class="QLabel" name="ImmuneSystemLabel">
+           <property name="geometry">
+            <rect>
+             <x>90</x>
+             <y>10</y>
+             <width>151</width>
+             <height>16</height>
+            </rect>
+           </property>
+           <property name="text">
+            <string>Immune System</string>
+           </property>
+          </widget>
+          <widget class="QLabel" name="ImmuneSystemImage">
+           <property name="geometry">
+            <rect>
+             <x>10</x>
+             <y>10</y>
+             <width>71</width>
+             <height>41</height>
+            </rect>
+           </property>
+           <property name="text">
+            <string>IMAGE</string>
+           </property>
+          </widget>
+          <widget class="QLabel" name="ImmuneSystemRangeLabel">
+           <property name="geometry">
+            <rect>
+             <x>90</x>
+             <y>30</y>
+             <width>91</width>
+             <height>21</height>
+            </rect>
+           </property>
+           <property name="text">
+            <string>TextLabel</string>
+           </property>
+          </widget>
+          <widget class="QLabel" name="ImmuneSystemNumberLabel">
+           <property name="geometry">
+            <rect>
+             <x>290</x>
+             <y>10</y>
+             <width>141</width>
+             <height>41</height>
+            </rect>
+           </property>
+           <property name="text">
+            <string>TextLabel</string>
+           </property>
+          </widget>
+         </widget>
+         <widget class="QFrame" name="MetabolismFrame">
+          <property name="geometry">
+           <rect>
+            <x>10</x>
+            <y>170</y>
+            <width>481</width>
+            <height>61</height>
+           </rect>
+          </property>
+          <property name="styleSheet">
+           <string notr="true">background-color: rgb(112, 113, 219);</string>
+          </property>
+          <property name="frameShape">
+           <enum>QFrame::StyledPanel</enum>
+          </property>
+          <property name="frameShadow">
+           <enum>QFrame::Raised</enum>
+          </property>
+          <widget class="QLabel" name="MetabolismLabel">
+           <property name="geometry">
+            <rect>
+             <x>90</x>
+             <y>10</y>
+             <width>151</width>
+             <height>16</height>
+            </rect>
+           </property>
+           <property name="text">
+            <string>Metabolism</string>
+           </property>
+          </widget>
+          <widget class="QLabel" name="MetabolismImage">
+           <property name="geometry">
+            <rect>
+             <x>10</x>
+             <y>10</y>
+             <width>71</width>
+             <height>41</height>
+            </rect>
+           </property>
+           <property name="text">
+            <string>IMAGE</string>
+           </property>
+          </widget>
+          <widget class="QLabel" name="MetabolismRangeLabel">
+           <property name="geometry">
+            <rect>
+             <x>90</x>
+             <y>30</y>
+             <width>91</width>
+             <height>21</height>
+            </rect>
+           </property>
+           <property name="text">
+            <string>TextLabel</string>
+           </property>
+          </widget>
+          <widget class="QLabel" name="MetabolismNumberLabel">
+           <property name="geometry">
+            <rect>
+             <x>290</x>
+             <y>10</y>
+             <width>141</width>
+             <height>41</height>
+            </rect>
+           </property>
+           <property name="text">
+            <string>TextLabel</string>
+           </property>
+          </widget>
+         </widget>
+        </widget>
+        <widget class="QWidget" name="Visulization">
+         <attribute name="title">
+          <string>Tab 2</string>
+         </attribute>
+        </widget>
+        <widget class="QWidget" name="Comments">
+         <attribute name="title">
+          <string>Page</string>
+         </attribute>
+        </widget>
+        <widget class="QWidget" name="Recommendation">
+         <attribute name="title">
+          <string>Page</string>
+         </attribute>
+        </widget>
+       </widget>
+      </widget>
      </widget>
      <widget class="QPushButton" name="HomePageButton">
       <property name="geometry">
@@ -525,7 +827,7 @@ p, li { white-space: pre-wrap; }
        <string>Measure Now</string>
       </property>
      </widget>
-     <widget class="QPushButton" name="HistoricalPageButton">
+     <widget class="QPushButton" name="HistoryPageButton">
       <property name="geometry">
        <rect>
         <x>10</x>
@@ -535,7 +837,7 @@ p, li { white-space: pre-wrap; }
        </rect>
       </property>
       <property name="text">
-       <string>Historical</string>
+       <string>History</string>
       </property>
      </widget>
      <widget class="QPushButton" name="ProfilePageButton">
@@ -548,7 +850,7 @@ p, li { white-space: pre-wrap; }
        </rect>
       </property>
       <property name="text">
-       <string>Profile</string>
+       <string>Profiles</string>
       </property>
      </widget>
      <widget class="QPushButton" name="VisulizationPageButton">
@@ -562,6 +864,45 @@ p, li { white-space: pre-wrap; }
       </property>
       <property name="text">
        <string>Visulization</string>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="IndicatorButton">
+      <property name="geometry">
+       <rect>
+        <x>20</x>
+        <y>220</y>
+        <width>83</width>
+        <height>25</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Indicators</string>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="CommentsButton">
+      <property name="geometry">
+       <rect>
+        <x>10</x>
+        <y>250</y>
+        <width>83</width>
+        <height>25</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Comment</string>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="RecommendationsButton">
+      <property name="geometry">
+       <rect>
+        <x>0</x>
+        <y>290</y>
+        <width>131</width>
+        <height>25</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Recommendations</string>
       </property>
      </widget>
     </widget>

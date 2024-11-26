@@ -52,11 +52,13 @@ OBJECTS_DIR   = ./
 
 ####### Files
 
-SOURCES       = ../RaDoTechSimulation/User.cpp \
+SOURCES       = ../RaDoTechSimulation/HealthData.cpp \
+		../RaDoTechSimulation/User.cpp \
 		../RaDoTechSimulation/main.cpp \
 		../RaDoTechSimulation/mainwindow.cpp qrc_qmake_qmake_qm_files.cpp \
 		moc_mainwindow.cpp
-OBJECTS       = User.o \
+OBJECTS       = HealthData.o \
+		User.o \
 		main.o \
 		mainwindow.o \
 		qrc_qmake_qmake_qm_files.o \
@@ -141,9 +143,11 @@ DIST          = /usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/spec_pre.prf \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/exceptions.prf \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/yacc.prf \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/lex.prf \
-		../RaDoTechSimulation/RaDoTechSimulation.pro ../RaDoTechSimulation/Profile.h \
+		../RaDoTechSimulation/RaDoTechSimulation.pro ../RaDoTechSimulation/HealthData.h \
+		../RaDoTechSimulation/Profile.h \
 		../RaDoTechSimulation/User.h \
-		../RaDoTechSimulation/mainwindow.h ../RaDoTechSimulation/User.cpp \
+		../RaDoTechSimulation/mainwindow.h ../RaDoTechSimulation/HealthData.cpp \
+		../RaDoTechSimulation/User.cpp \
 		../RaDoTechSimulation/main.cpp \
 		../RaDoTechSimulation/mainwindow.cpp
 QMAKE_TARGET  = RaDoTechSimulation
@@ -339,8 +343,8 @@ distdir: FORCE
 	$(COPY_FILE) --parents ../RaDoTechSimulation/RaDoTechSimulation_en_CA.ts $(DISTDIR)/
 	$(COPY_FILE) --parents qmake_qmake_qm_files.qrc $(DISTDIR)/
 	$(COPY_FILE) --parents /usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/data/dummy.cpp $(DISTDIR)/
-	$(COPY_FILE) --parents ../RaDoTechSimulation/Profile.h ../RaDoTechSimulation/User.h ../RaDoTechSimulation/mainwindow.h $(DISTDIR)/
-	$(COPY_FILE) --parents ../RaDoTechSimulation/User.cpp ../RaDoTechSimulation/main.cpp ../RaDoTechSimulation/mainwindow.cpp $(DISTDIR)/
+	$(COPY_FILE) --parents ../RaDoTechSimulation/HealthData.h ../RaDoTechSimulation/Profile.h ../RaDoTechSimulation/User.h ../RaDoTechSimulation/mainwindow.h $(DISTDIR)/
+	$(COPY_FILE) --parents ../RaDoTechSimulation/HealthData.cpp ../RaDoTechSimulation/User.cpp ../RaDoTechSimulation/main.cpp ../RaDoTechSimulation/mainwindow.cpp $(DISTDIR)/
 	$(COPY_FILE) --parents ../RaDoTechSimulation/mainwindow.ui $(DISTDIR)/
 	$(COPY_FILE) --parents ../RaDoTechSimulation/RaDoTechSimulation_en_CA.ts $(DISTDIR)/
 
@@ -392,6 +396,7 @@ compiler_moc_header_clean:
 moc_mainwindow.cpp: ../RaDoTechSimulation/mainwindow.h \
 		../RaDoTechSimulation/User.h \
 		../RaDoTechSimulation/Profile.h \
+		../RaDoTechSimulation/HealthData.h \
 		moc_predefs.h \
 		/usr/lib/qt5/bin/moc
 	/usr/lib/qt5/bin/moc $(DEFINES) --include /home/student/Desktop/FinalProject/3004-Final-Project/RaDoTechSimulation/build-RaDoTechSimulation-Desktop-Debug/moc_predefs.h -I/usr/lib/x86_64-linux-gnu/qt5/mkspecs/linux-g++ -I/home/student/Desktop/FinalProject/3004-Final-Project/RaDoTechSimulation/RaDoTechSimulation -I/usr/include/x86_64-linux-gnu/qt5 -I/usr/include/x86_64-linux-gnu/qt5/QtCharts -I/usr/include/x86_64-linux-gnu/qt5/QtWidgets -I/usr/include/x86_64-linux-gnu/qt5/QtGui -I/usr/include/x86_64-linux-gnu/qt5/QtCore -I. -I/usr/include/c++/11 -I/usr/include/x86_64-linux-gnu/c++/11 -I/usr/include/c++/11/backward -I/usr/lib/gcc/x86_64-linux-gnu/11/include -I/usr/local/include -I/usr/include/x86_64-linux-gnu -I/usr/include ../RaDoTechSimulation/mainwindow.h -o moc_mainwindow.cpp
@@ -417,18 +422,24 @@ compiler_clean: compiler_lrelease_clean compiler_rcc_clean compiler_moc_predefs_
 
 ####### Compile
 
+HealthData.o: ../RaDoTechSimulation/HealthData.cpp ../RaDoTechSimulation/HealthData.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o HealthData.o ../RaDoTechSimulation/HealthData.cpp
+
 User.o: ../RaDoTechSimulation/User.cpp ../RaDoTechSimulation/User.h \
-		../RaDoTechSimulation/Profile.h
+		../RaDoTechSimulation/Profile.h \
+		../RaDoTechSimulation/HealthData.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o User.o ../RaDoTechSimulation/User.cpp
 
 main.o: ../RaDoTechSimulation/main.cpp ../RaDoTechSimulation/mainwindow.h \
 		../RaDoTechSimulation/User.h \
-		../RaDoTechSimulation/Profile.h
+		../RaDoTechSimulation/Profile.h \
+		../RaDoTechSimulation/HealthData.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o main.o ../RaDoTechSimulation/main.cpp
 
 mainwindow.o: ../RaDoTechSimulation/mainwindow.cpp ../RaDoTechSimulation/mainwindow.h \
 		../RaDoTechSimulation/User.h \
 		../RaDoTechSimulation/Profile.h \
+		../RaDoTechSimulation/HealthData.h \
 		ui_mainwindow.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o mainwindow.o ../RaDoTechSimulation/mainwindow.cpp
 

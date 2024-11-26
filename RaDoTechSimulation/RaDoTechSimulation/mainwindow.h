@@ -3,6 +3,7 @@
 
 #include <QMainWindow>
 #include "User.h"
+#include "HealthData.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -38,6 +39,8 @@ public:
 
 private slots:
     void handleLogin(); // Slot for login button
+    void populateHistoryList();  // Populate history on Historical Page
+    void viewDetails();
 
 private:
     Ui::MainWindow *ui;

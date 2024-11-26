@@ -32,15 +32,22 @@ MainWindow::MainWindow(QWidget *parent)
     // Connect App View buttons to respective pages
     connect(ui->HomePageButton, &QPushButton::clicked, this, &MainWindow::showHomePage);
     connect(ui->MeasureNowButton, &QPushButton::clicked, this, &MainWindow::showMeasureNowPage);
-    connect(ui->HistoricalPageButton, &QPushButton::clicked, this, &MainWindow::showHistoricalPage);
+    connect(ui->HistoryPageButton, &QPushButton::clicked, this, &MainWindow::showHistoricalPage);
     connect(ui->ProfilePageButton, &QPushButton::clicked, this, &MainWindow::showProfilePage);
     connect(ui->VisulizationPageButton, &QPushButton::clicked, this, &MainWindow::showVisualizationPage);
     connect(ui->CreateProfileButton, &QPushButton::clicked, this, &MainWindow::showCreateProfilePage);
     connect(ui->EnterButton, &QPushButton::clicked, this, &MainWindow::showLoginPage);
 
     //Images
-    QPixmap pix("/home/student/Desktop/FinalProject/3004-Final-Project/images/loginImage.png");
-    ui->loginImage->setPixmap(pix.scaled(81,71,Qt::KeepAspectRatio));
+    QPixmap loginImage("/home/student/Desktop/FinalProject/3004-Final-Project/images/loginImage.png");
+    ui->loginImage->setPixmap(loginImage.scaled(81,71,Qt::KeepAspectRatio));
+    QPixmap Energy("/home/student/Desktop/FinalProject/3004-Final-Project/images/EnergyLevel.png");
+    ui->EnergyImage->setPixmap(Energy.scaled(71,41,Qt::KeepAspectRatio));
+    QPixmap Immune("/home/student/Desktop/FinalProject/3004-Final-Project/images/ImmuneSystem.png");
+    ui->ImmuneSystemImage->setPixmap(Immune.scaled(81,71,Qt::KeepAspectRatio));
+    QPixmap Metabolism("/home/student/Desktop/FinalProject/3004-Final-Project/images/Metabolism.png");
+    ui->MetabolismImage->setPixmap(Metabolism.scaled(71,41,Qt::KeepAspectRatio));
+
 
     //Save Button on Create Button
     connect(ui->SavePushButton, &QPushButton::clicked, this, &MainWindow::saveProfile);
@@ -53,6 +60,12 @@ MainWindow::MainWindow(QWidget *parent)
     // Connect login button
     connect(ui->EnterLoginButton, &QPushButton::clicked, this, &MainWindow::handleLogin);
 
+    connect(ui->ViewDetailsButton, &QPushButton::clicked, this, &MainWindow::viewDetails);
+
+    ui->ResultsTabWidget->setTabText(0, "Visulization");
+    ui->ResultsTabWidget->setTabText(1, "Indicator");
+    ui->ResultsTabWidget->setTabText(2, "Comments");
+    ui->ResultsTabWidget->setTabText(3, "Recommendation");
 
 }
 
@@ -104,6 +117,7 @@ void MainWindow::showMeasureNowPage()
 void MainWindow::showHistoricalPage()
 {
     ui->AppStackedWidget->setCurrentWidget(ui->HistoricalPage);
+    populateHistoryList();
 }
 
 // Show Profile Page in App View
@@ -230,17 +244,62 @@ void MainWindow::showProfiles() {
     QMessageBox::information(this, "User Profiles", profileList);
 }
 
+//TODO: THIS PRESET MAKE BETTER WITH DATA I HAVE, JUST FOR DEMO RIGHT NOW
 void MainWindow::createPresetUsers() {
     // Create users with a test profile
     User* user1 = new User("test1@example.com", "password1");
-    User* user2 = new User("test2@example.com", "password2");
+//    User* user2 = new User("test2@example.com", "password2");
 
     Profile* profile1 = new Profile("Profile1ForTest", "Male", 70.0, 175.0, QDate(1990, 1, 1));
     user1->addProfile(profile1);
-    user2->addProfile(profile1); // Both users share the same test profile
+    Profile* profile2 = new Profile("Profile2ForTest", "Female", 89.0, 180.0, QDate(2004,1,1));
+    user1->addProfile(profile2);
+
+    QList<MeridianResult> results = {
+        {"H1 (Lung)", "Left", 115, "Normal"},
+        {"H1 (Lung)", "Right", 125, "Normal"},
+        {"H2 (Pericardium)", "Left", 80, "Low (Deficient)"},
+        {"H2 (Pericardium)", "Right", 90, "Normal"},
+        {"H3 (Heart)", "Left", 130, "High (Excess)"},
+        {"H3 (Heart)", "Right", 120, "Normal"},
+        {"H4 (Small Intestine)", "Left", 75, "Low (Deficient)"},
+        {"H4 (Small Intestine)", "Right", 78, "Low (Deficient)"},
+        {"H5 (Lymph)", "Left", 95, "Normal"},
+        {"H5 (Lymph)", "Right", 100, "Normal"},
+        {"H6 (Large Intestine)", "Left", 85, "Low (Deficient)"},
+        {"H6 (Large Intestine)", "Right", 115, "Normal"},
+        {"F1 (Spleen)", "Left", 125, "High (Excess)"},
+        {"F1 (Spleen)", "Right", 140, "High (Excess)"},
+        {"F2 (Liver)", "Left", 105, "Normal"},
+        {"F2 (Liver)", "Right", 110, "Normal"},
+        {"F3 (Kidney)", "Left", 95, "Normal"},
+        {"F3 (Kidney)", "Right", 85, "Low (Deficient)"},
+        {"F4 (Bladder)", "Left", 110, "Normal"},
+        {"F4 (Bladder)", "Right", 100, "Normal"},
+        {"F5 (Gallbladder)", "Left", 90, "Normal"},
+        {"F5 (Gallbladder)", "Right", 85, "Low (Deficient)"},
+        {"F6 (Stomach)", "Left", 78, "Low (Deficient)"},
+        {"F6 (Stomach)", "Right", 135, "High (Excess)"}
+    };
+
+
+    QList<MeridianResult> results1 = {
+            {"H1 (Lung)", "Left", 1414, "Normal"},
+            {"H1 (Lung)", "Right", 1414, "Normal"}
+    };
+
+    HealthData* healthData = new HealthData(QDate::currentDate(), results);
+    profile1->addHealthData(healthData);
+
+    QDate currentDate = QDate::currentDate();
+    QDate tomorrow = currentDate.addDays(1);
+
+    HealthData* healthData1 = new HealthData(tomorrow,results1);
+    profile2->addHealthData(healthData1);
+//    user2->addProfile(profile1); // Both users share the same test profile
 
     presetUsers.append(user1);
-    presetUsers.append(user2);
+//    presetUsers.append(user2);
 }
 
 void MainWindow::handleLogin() {
@@ -264,6 +323,99 @@ void MainWindow::handleLogin() {
         QMessageBox::critical(this, "Login Failed", "Incorrect email or password. Please try again.");
     }
 }
+
+void MainWindow::populateHistoryList() {
+    if (!currentUser || currentUser->getProfiles().isEmpty()) {
+        ui->HistoryListWidget->clear();
+        QMessageBox::information(this, "No Data", "No profiles or health data available.");
+        return;
+    }
+
+    // Clear the QListWidget before populating
+    ui->HistoryListWidget->clear();
+
+    // Iterate through all profiles of the current user
+    for (Profile* profile : currentUser->getProfiles()) {
+        if (!profile) continue;
+
+        // Iterate through each HealthData entry in the profile's history
+        for (HealthData* data : profile->getHistory()) {
+            if (!data) continue;
+
+            // Combine profile name and date for display
+            QString itemText = QString("%1 - %2")
+                                   .arg(profile->getName())
+                                   .arg(data->getDate().toString("yyyy-MM-dd"));
+
+            // Add the item to the QListWidget
+            ui->HistoryListWidget->addItem(itemText);
+        }
+    }
+}
+
+void MainWindow::viewDetails() {
+    if (!currentUser || currentUser->getProfiles().isEmpty()) {
+        QMessageBox::critical(this, "Error", "No profiles or health data available.");
+        return;
+    }
+
+    // Get the selected item
+    QListWidgetItem* selectedItem = ui->HistoryListWidget->currentItem();
+    if (!selectedItem) {
+        QMessageBox::warning(this, "No Selection", "Please select a record.");
+        return;
+    }
+
+    // Extract the profile name and date from the selected item's text
+    QStringList parts = selectedItem->text().split(" - ");
+    if (parts.size() != 2) {
+        QMessageBox::critical(this, "Error", "Invalid selection format.");
+        return;
+    }
+
+    QString selectedProfileName = parts[0];
+    QString selectedDate = parts[1];
+
+    // Search for the corresponding HealthData in all profiles
+    HealthData* selectedData = nullptr;
+    for (Profile* profile : currentUser->getProfiles()) {
+        if (!profile || profile->getName() != selectedProfileName) {
+            continue;
+        }
+
+        for (HealthData* data : profile->getHistory()) {
+            if (data->getDate().toString("yyyy-MM-dd") == selectedDate) {
+                selectedData = data;
+                break;
+            }
+        }
+
+        if (selectedData) {
+            break;
+        }
+    }
+
+    if (!selectedData) {
+        QMessageBox::critical(this, "Error", "Data not found.");
+        return;
+    }
+
+    // Build the detailed results text
+    QString detailsText;
+    for (const MeridianResult& result : selectedData->getData()) {
+        detailsText += QString("%1 (%2): %3 µA, %4\n")
+                           .arg(result.meridian)
+                           .arg(result.side)
+                           .arg(result.conductance)
+                           .arg(result.status);
+    }
+
+    // Display the results on the Detailed Results Page
+    ui->DetailedResultsLabel->setText(detailsText);
+    ui->AppStackedWidget->setCurrentWidget(ui->DetailedResultsPage);
+}
+
+
 
 // Just to show Bar Graph
 void MainWindow::showBarGraph()

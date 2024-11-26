@@ -3,6 +3,7 @@
 
 #include <QString>
 #include <QDate>
+#include "HealthData.h"
 
 class Profile {
 private:
@@ -11,6 +12,7 @@ private:
     double weight;
     double height;
     QDate dateOfBirth;
+    QList<HealthData*> history;  // Historical health data
 
 public:
     Profile(const QString& name, const QString& gender, double weight, double height, const QDate& dob)
@@ -21,6 +23,10 @@ public:
     double getWeight() const { return weight; }
     double getHeight() const { return height; }
     QDate getDateOfBirth() const { return dateOfBirth; }
+
+    QList<HealthData*> getHistory() const { return history; }
+
+    void addHealthData(HealthData* data) { history.append(data); }
 };
 
 #endif // PROFILE_H

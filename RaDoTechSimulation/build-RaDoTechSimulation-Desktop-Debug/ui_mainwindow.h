@@ -13,13 +13,16 @@
 #include <QtWidgets/QApplication>
 #include <QtWidgets/QComboBox>
 #include <QtWidgets/QDateEdit>
+#include <QtWidgets/QFrame>
 #include <QtWidgets/QLabel>
+#include <QtWidgets/QListWidget>
 #include <QtWidgets/QMainWindow>
 #include <QtWidgets/QMenuBar>
 #include <QtWidgets/QProgressBar>
 #include <QtWidgets/QPushButton>
 #include <QtWidgets/QStackedWidget>
 #include <QtWidgets/QStatusBar>
+#include <QtWidgets/QTabWidget>
 #include <QtWidgets/QTextEdit>
 #include <QtWidgets/QWidget>
 
@@ -64,6 +67,8 @@ public:
     QLabel *MeasureHeader;
     QWidget *HistoricalPage;
     QLabel *HistoricalHeader;
+    QListWidget *HistoryListWidget;
+    QPushButton *ViewDetailsButton;
     QWidget *ProfilePage;
     QLabel *ProfileHeader;
     QLabel *ProfileListLabel;
@@ -71,11 +76,37 @@ public:
     QWidget *VisulizationPage;
     QLabel *VisulizationHeader;
     QWidget *chartContainer;
+    QWidget *DetailedResultsPage;
+    QLabel *TitleLabelMeteringResults;
+    QLabel *DetailedResultsLabel;
+    QTabWidget *ResultsTabWidget;
+    QWidget *Indicators;
+    QFrame *EnergyFrame;
+    QLabel *EnergyLevelLabel;
+    QLabel *EnergyImage;
+    QLabel *EnergyRangeLabel;
+    QLabel *EnergyNumberLabel;
+    QFrame *ImmuneSystemFrame;
+    QLabel *ImmuneSystemLabel;
+    QLabel *ImmuneSystemImage;
+    QLabel *ImmuneSystemRangeLabel;
+    QLabel *ImmuneSystemNumberLabel;
+    QFrame *MetabolismFrame;
+    QLabel *MetabolismLabel;
+    QLabel *MetabolismImage;
+    QLabel *MetabolismRangeLabel;
+    QLabel *MetabolismNumberLabel;
+    QWidget *Visulization;
+    QWidget *Comments;
+    QWidget *Recommendation;
     QPushButton *HomePageButton;
     QPushButton *MeasureNowButton;
-    QPushButton *HistoricalPageButton;
+    QPushButton *HistoryPageButton;
     QPushButton *ProfilePageButton;
     QPushButton *VisulizationPageButton;
+    QPushButton *IndicatorButton;
+    QPushButton *CommentsButton;
+    QPushButton *RecommendationsButton;
     QWidget *AppStartPage;
     QLabel *TitleLabel;
     QPushButton *CreateProfileButton;
@@ -200,6 +231,13 @@ public:
         HistoricalHeader = new QLabel(HistoricalPage);
         HistoricalHeader->setObjectName(QString::fromUtf8("HistoricalHeader"));
         HistoricalHeader->setGeometry(QRect(20, 10, 141, 17));
+        HistoryListWidget = new QListWidget(HistoricalPage);
+        new QListWidgetItem(HistoryListWidget);
+        HistoryListWidget->setObjectName(QString::fromUtf8("HistoryListWidget"));
+        HistoryListWidget->setGeometry(QRect(20, 30, 501, 281));
+        ViewDetailsButton = new QPushButton(HistoricalPage);
+        ViewDetailsButton->setObjectName(QString::fromUtf8("ViewDetailsButton"));
+        ViewDetailsButton->setGeometry(QRect(20, 320, 101, 25));
         AppStackedWidget->addWidget(HistoricalPage);
         ProfilePage = new QWidget();
         ProfilePage->setObjectName(QString::fromUtf8("ProfilePage"));
@@ -222,21 +260,108 @@ public:
         chartContainer->setObjectName(QString::fromUtf8("chartContainer"));
         chartContainer->setGeometry(QRect(30, 50, 471, 471));
         AppStackedWidget->addWidget(VisulizationPage);
+        DetailedResultsPage = new QWidget();
+        DetailedResultsPage->setObjectName(QString::fromUtf8("DetailedResultsPage"));
+        TitleLabelMeteringResults = new QLabel(DetailedResultsPage);
+        TitleLabelMeteringResults->setObjectName(QString::fromUtf8("TitleLabelMeteringResults"));
+        TitleLabelMeteringResults->setGeometry(QRect(20, 10, 111, 17));
+        DetailedResultsLabel = new QLabel(DetailedResultsPage);
+        DetailedResultsLabel->setObjectName(QString::fromUtf8("DetailedResultsLabel"));
+        DetailedResultsLabel->setGeometry(QRect(20, 50, 491, 221));
+        ResultsTabWidget = new QTabWidget(DetailedResultsPage);
+        ResultsTabWidget->setObjectName(QString::fromUtf8("ResultsTabWidget"));
+        ResultsTabWidget->setGeometry(QRect(10, 30, 511, 521));
+        Indicators = new QWidget();
+        Indicators->setObjectName(QString::fromUtf8("Indicators"));
+        EnergyFrame = new QFrame(Indicators);
+        EnergyFrame->setObjectName(QString::fromUtf8("EnergyFrame"));
+        EnergyFrame->setGeometry(QRect(10, 10, 481, 61));
+        EnergyFrame->setStyleSheet(QString::fromUtf8("background-color: rgb(0, 191, 92);"));
+        EnergyFrame->setFrameShape(QFrame::StyledPanel);
+        EnergyFrame->setFrameShadow(QFrame::Raised);
+        EnergyLevelLabel = new QLabel(EnergyFrame);
+        EnergyLevelLabel->setObjectName(QString::fromUtf8("EnergyLevelLabel"));
+        EnergyLevelLabel->setGeometry(QRect(90, 10, 91, 16));
+        EnergyImage = new QLabel(EnergyFrame);
+        EnergyImage->setObjectName(QString::fromUtf8("EnergyImage"));
+        EnergyImage->setGeometry(QRect(10, 10, 71, 41));
+        EnergyRangeLabel = new QLabel(EnergyFrame);
+        EnergyRangeLabel->setObjectName(QString::fromUtf8("EnergyRangeLabel"));
+        EnergyRangeLabel->setGeometry(QRect(90, 30, 91, 21));
+        EnergyNumberLabel = new QLabel(EnergyFrame);
+        EnergyNumberLabel->setObjectName(QString::fromUtf8("EnergyNumberLabel"));
+        EnergyNumberLabel->setGeometry(QRect(290, 10, 141, 41));
+        ImmuneSystemFrame = new QFrame(Indicators);
+        ImmuneSystemFrame->setObjectName(QString::fromUtf8("ImmuneSystemFrame"));
+        ImmuneSystemFrame->setGeometry(QRect(10, 90, 481, 61));
+        ImmuneSystemFrame->setStyleSheet(QString::fromUtf8("background-color: rgb(112, 113, 219);"));
+        ImmuneSystemFrame->setFrameShape(QFrame::StyledPanel);
+        ImmuneSystemFrame->setFrameShadow(QFrame::Raised);
+        ImmuneSystemLabel = new QLabel(ImmuneSystemFrame);
+        ImmuneSystemLabel->setObjectName(QString::fromUtf8("ImmuneSystemLabel"));
+        ImmuneSystemLabel->setGeometry(QRect(90, 10, 151, 16));
+        ImmuneSystemImage = new QLabel(ImmuneSystemFrame);
+        ImmuneSystemImage->setObjectName(QString::fromUtf8("ImmuneSystemImage"));
+        ImmuneSystemImage->setGeometry(QRect(10, 10, 71, 41));
+        ImmuneSystemRangeLabel = new QLabel(ImmuneSystemFrame);
+        ImmuneSystemRangeLabel->setObjectName(QString::fromUtf8("ImmuneSystemRangeLabel"));
+        ImmuneSystemRangeLabel->setGeometry(QRect(90, 30, 91, 21));
+        ImmuneSystemNumberLabel = new QLabel(ImmuneSystemFrame);
+        ImmuneSystemNumberLabel->setObjectName(QString::fromUtf8("ImmuneSystemNumberLabel"));
+        ImmuneSystemNumberLabel->setGeometry(QRect(290, 10, 141, 41));
+        MetabolismFrame = new QFrame(Indicators);
+        MetabolismFrame->setObjectName(QString::fromUtf8("MetabolismFrame"));
+        MetabolismFrame->setGeometry(QRect(10, 170, 481, 61));
+        MetabolismFrame->setStyleSheet(QString::fromUtf8("background-color: rgb(112, 113, 219);"));
+        MetabolismFrame->setFrameShape(QFrame::StyledPanel);
+        MetabolismFrame->setFrameShadow(QFrame::Raised);
+        MetabolismLabel = new QLabel(MetabolismFrame);
+        MetabolismLabel->setObjectName(QString::fromUtf8("MetabolismLabel"));
+        MetabolismLabel->setGeometry(QRect(90, 10, 151, 16));
+        MetabolismImage = new QLabel(MetabolismFrame);
+        MetabolismImage->setObjectName(QString::fromUtf8("MetabolismImage"));
+        MetabolismImage->setGeometry(QRect(10, 10, 71, 41));
+        MetabolismRangeLabel = new QLabel(MetabolismFrame);
+        MetabolismRangeLabel->setObjectName(QString::fromUtf8("MetabolismRangeLabel"));
+        MetabolismRangeLabel->setGeometry(QRect(90, 30, 91, 21));
+        MetabolismNumberLabel = new QLabel(MetabolismFrame);
+        MetabolismNumberLabel->setObjectName(QString::fromUtf8("MetabolismNumberLabel"));
+        MetabolismNumberLabel->setGeometry(QRect(290, 10, 141, 41));
+        ResultsTabWidget->addTab(Indicators, QString());
+        Visulization = new QWidget();
+        Visulization->setObjectName(QString::fromUtf8("Visulization"));
+        ResultsTabWidget->addTab(Visulization, QString());
+        Comments = new QWidget();
+        Comments->setObjectName(QString::fromUtf8("Comments"));
+        ResultsTabWidget->addTab(Comments, QString());
+        Recommendation = new QWidget();
+        Recommendation->setObjectName(QString::fromUtf8("Recommendation"));
+        ResultsTabWidget->addTab(Recommendation, QString());
+        AppStackedWidget->addWidget(DetailedResultsPage);
         HomePageButton = new QPushButton(AppView);
         HomePageButton->setObjectName(QString::fromUtf8("HomePageButton"));
         HomePageButton->setGeometry(QRect(10, 30, 91, 25));
         MeasureNowButton = new QPushButton(AppView);
         MeasureNowButton->setObjectName(QString::fromUtf8("MeasureNowButton"));
         MeasureNowButton->setGeometry(QRect(10, 70, 91, 25));
-        HistoricalPageButton = new QPushButton(AppView);
-        HistoricalPageButton->setObjectName(QString::fromUtf8("HistoricalPageButton"));
-        HistoricalPageButton->setGeometry(QRect(10, 110, 91, 25));
+        HistoryPageButton = new QPushButton(AppView);
+        HistoryPageButton->setObjectName(QString::fromUtf8("HistoryPageButton"));
+        HistoryPageButton->setGeometry(QRect(10, 110, 91, 25));
         ProfilePageButton = new QPushButton(AppView);
         ProfilePageButton->setObjectName(QString::fromUtf8("ProfilePageButton"));
         ProfilePageButton->setGeometry(QRect(10, 150, 91, 25));
         VisulizationPageButton = new QPushButton(AppView);
         VisulizationPageButton->setObjectName(QString::fromUtf8("VisulizationPageButton"));
         VisulizationPageButton->setGeometry(QRect(10, 190, 91, 25));
+        IndicatorButton = new QPushButton(AppView);
+        IndicatorButton->setObjectName(QString::fromUtf8("IndicatorButton"));
+        IndicatorButton->setGeometry(QRect(20, 220, 83, 25));
+        CommentsButton = new QPushButton(AppView);
+        CommentsButton->setObjectName(QString::fromUtf8("CommentsButton"));
+        CommentsButton->setGeometry(QRect(10, 250, 83, 25));
+        RecommendationsButton = new QPushButton(AppView);
+        RecommendationsButton->setObjectName(QString::fromUtf8("RecommendationsButton"));
+        RecommendationsButton->setGeometry(QRect(0, 290, 131, 25));
         ViewsStackedWidget->addWidget(AppView);
         AppStartPage = new QWidget();
         AppStartPage->setObjectName(QString::fromUtf8("AppStartPage"));
@@ -261,6 +386,9 @@ public:
         MainWindow->setStatusBar(statusbar);
 
         retranslateUi(MainWindow);
+
+        ResultsTabWidget->setCurrentIndex(0);
+
 
         QMetaObject::connectSlotsByName(MainWindow);
     } // setupUi
@@ -328,15 +456,44 @@ public:
         HomeHeader->setText(QCoreApplication::translate("MainWindow", "Home Page", nullptr));
         MeasureHeader->setText(QCoreApplication::translate("MainWindow", "Measure Now Page", nullptr));
         HistoricalHeader->setText(QCoreApplication::translate("MainWindow", "Historical Data Page", nullptr));
+
+        const bool __sortingEnabled = HistoryListWidget->isSortingEnabled();
+        HistoryListWidget->setSortingEnabled(false);
+        QListWidgetItem *___qlistwidgetitem = HistoryListWidget->item(0);
+        ___qlistwidgetitem->setText(QCoreApplication::translate("MainWindow", "New Item", nullptr));
+        HistoryListWidget->setSortingEnabled(__sortingEnabled);
+
+        ViewDetailsButton->setText(QCoreApplication::translate("MainWindow", "View Details", nullptr));
         ProfileHeader->setText(QCoreApplication::translate("MainWindow", "Profile Page", nullptr));
         ProfileListLabel->setText(QCoreApplication::translate("MainWindow", "TextLabel", nullptr));
         AddNewProfileButton->setText(QCoreApplication::translate("MainWindow", "Add New Profile", nullptr));
         VisulizationHeader->setText(QCoreApplication::translate("MainWindow", "Visulization Page", nullptr));
+        TitleLabelMeteringResults->setText(QCoreApplication::translate("MainWindow", "Metering Results", nullptr));
+        DetailedResultsLabel->setText(QCoreApplication::translate("MainWindow", "TextLabel", nullptr));
+        EnergyLevelLabel->setText(QCoreApplication::translate("MainWindow", "Energy Level", nullptr));
+        EnergyImage->setText(QCoreApplication::translate("MainWindow", "IMAGE", nullptr));
+        EnergyRangeLabel->setText(QCoreApplication::translate("MainWindow", "TextLabel", nullptr));
+        EnergyNumberLabel->setText(QCoreApplication::translate("MainWindow", "TextLabel", nullptr));
+        ImmuneSystemLabel->setText(QCoreApplication::translate("MainWindow", "Immune System", nullptr));
+        ImmuneSystemImage->setText(QCoreApplication::translate("MainWindow", "IMAGE", nullptr));
+        ImmuneSystemRangeLabel->setText(QCoreApplication::translate("MainWindow", "TextLabel", nullptr));
+        ImmuneSystemNumberLabel->setText(QCoreApplication::translate("MainWindow", "TextLabel", nullptr));
+        MetabolismLabel->setText(QCoreApplication::translate("MainWindow", "Metabolism", nullptr));
+        MetabolismImage->setText(QCoreApplication::translate("MainWindow", "IMAGE", nullptr));
+        MetabolismRangeLabel->setText(QCoreApplication::translate("MainWindow", "TextLabel", nullptr));
+        MetabolismNumberLabel->setText(QCoreApplication::translate("MainWindow", "TextLabel", nullptr));
+        ResultsTabWidget->setTabText(ResultsTabWidget->indexOf(Indicators), QCoreApplication::translate("MainWindow", "Tab 1", nullptr));
+        ResultsTabWidget->setTabText(ResultsTabWidget->indexOf(Visulization), QCoreApplication::translate("MainWindow", "Tab 2", nullptr));
+        ResultsTabWidget->setTabText(ResultsTabWidget->indexOf(Comments), QCoreApplication::translate("MainWindow", "Page", nullptr));
+        ResultsTabWidget->setTabText(ResultsTabWidget->indexOf(Recommendation), QCoreApplication::translate("MainWindow", "Page", nullptr));
         HomePageButton->setText(QCoreApplication::translate("MainWindow", "Home", nullptr));
         MeasureNowButton->setText(QCoreApplication::translate("MainWindow", "Measure Now", nullptr));
-        HistoricalPageButton->setText(QCoreApplication::translate("MainWindow", "Historical", nullptr));
-        ProfilePageButton->setText(QCoreApplication::translate("MainWindow", "Profile", nullptr));
+        HistoryPageButton->setText(QCoreApplication::translate("MainWindow", "History", nullptr));
+        ProfilePageButton->setText(QCoreApplication::translate("MainWindow", "Profiles", nullptr));
         VisulizationPageButton->setText(QCoreApplication::translate("MainWindow", "Visulization", nullptr));
+        IndicatorButton->setText(QCoreApplication::translate("MainWindow", "Indicators", nullptr));
+        CommentsButton->setText(QCoreApplication::translate("MainWindow", "Comment", nullptr));
+        RecommendationsButton->setText(QCoreApplication::translate("MainWindow", "Recommendations", nullptr));
         TitleLabel->setText(QCoreApplication::translate("MainWindow", "RaDoTech", nullptr));
         CreateProfileButton->setText(QCoreApplication::translate("MainWindow", "Create Profile", nullptr));
         EnterButton->setText(QCoreApplication::translate("MainWindow", "Enter", nullptr));
