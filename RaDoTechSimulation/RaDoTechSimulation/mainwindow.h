@@ -2,6 +2,10 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
+#include "User.h"
+#include "HealthData.h"
+#include "RaDoTechDevice.h"
+#include "DataProcessor.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -21,7 +25,10 @@ public:
 
     // Switching App Pages UI Functions
     void showHomePage();
+
     void showMeasureNowPage();
+    void showMeasureView();
+
     void showHistoricalPage();
     void showProfilePage();
     void showVisualizationPage();
@@ -30,8 +37,37 @@ public:
     void showBarGraph();
     void showRadarChart();
 
+    void saveProfile(); // Save a new profile for the user
+    void showProfiles(); // Display all profiles for the user
+    void updateProfilesList();
+    void goToCreateProfilePage();
+
+private slots:
+    void handleLogin(); // Slot for login button
+    void populateHistoryList();  // Populate history on Historical Page
+    void viewDetails();
+
+    void startScan();
+    void nextScanPoint();
+    void performDeviceScan();
 
 private:
     Ui::MainWindow *ui;
+    QList<User*> presetUsers; // List of preset users
+    User* currentUser;
+    void createPresetUsers(); // Initialize preset users
+
+
+    // Device and Measure
+    int currentScanPoint;
+    int totalScanPoints;
+    bool isDeviceScanned;
+
+    RaDoTechDevice device;
+    DataProcessor processor;
+
+    void updateBatteryLevelLabel();
+    void updateProcessedDataUI(const std::map<std::string, float>& processedData);
+
 };
 #endif // MAINWINDOW_H

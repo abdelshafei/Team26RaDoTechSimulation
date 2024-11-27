@@ -1,0 +1,25 @@
+Meridian,Side,Conductance (µA),Status
+H1 (Lung),Left,115,Normal
+H1 (Lung),Right	125	Normal
+H2 (Pericardium),Left,80,Low (Deficient)
+H2 (Pericardium),Right,90,Normal
+H3 (Heart),Left,130,High (Excess)
+H3 (Heart),Right,120,Normal
+H4 (Small Intestine),Left,75,Low (Deficient)
+H4 (Small Intestine),Right,78,Low (Deficient)
+H5 (Lymph),Left,95,Normal
+H5 (Lymph),Right,100,Normal
+H6 (Large Intestine),Left,85,Low (Deficient)
+H6 (Large Intestine),Right,115,Normal
+F1 (Spleen),Left,125,High (Excess)
+F1 (Spleen),Right,140,High (Excess)
+F2 (Liver),Left,105,Normal
+F2 (Liver),Right,110,Normal
+F3 (Kidney),Left,95,Normal
+F3 (Kidney),Right,85,Low (Deficient)
+F4 (Bladder),Left,110,Normal
+F4 (Bladder),Right,100,Normal
+F5 (Gallbladder),Left,90,Normal
+F5 (Gallbladder),Right,85,Low (Deficient)
+F6 (Stomach),Left,78,Low (Deficient)
+F6 (Stomach),Right,135,High (Excess)
