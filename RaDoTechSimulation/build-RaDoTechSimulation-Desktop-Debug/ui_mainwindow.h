@@ -24,6 +24,7 @@
 #include <QtWidgets/QStatusBar>
 #include <QtWidgets/QTabWidget>
 #include <QtWidgets/QTextEdit>
+#include <QtWidgets/QVBoxLayout>
 #include <QtWidgets/QWidget>
 
 QT_BEGIN_NAMESPACE
@@ -38,6 +39,11 @@ public:
     QLabel *DeviceNameLabel;
     QLabel *BatteryLabel;
     QProgressBar *BatteryPowerProgressBar;
+    QWidget *verticalLayoutWidget_2;
+    QVBoxLayout *verticalLayout_2;
+    QPushButton *DeviceScanButton;
+    QLabel *DeviceStatusLabel;
+    QPushButton *GoToMeasureViewButton;
     QWidget *AppView;
     QPushButton *GoToDeviceViewButton;
     QStackedWidget *AppStackedWidget;
@@ -65,6 +71,12 @@ public:
     QLabel *HomeHeader;
     QWidget *MeasureNowPage;
     QLabel *MeasureHeader;
+    QWidget *verticalLayoutWidget;
+    QVBoxLayout *verticalLayout;
+    QPushButton *StartScanButton;
+    QPushButton *NextButton;
+    QLabel *MeasureNowLabel;
+    QLabel *ProcessedDataLabel;
     QWidget *HistoricalPage;
     QLabel *HistoricalHeader;
     QListWidget *HistoryListWidget;
@@ -139,6 +151,25 @@ public:
         BatteryPowerProgressBar->setObjectName(QString::fromUtf8("BatteryPowerProgressBar"));
         BatteryPowerProgressBar->setGeometry(QRect(110, 60, 118, 23));
         BatteryPowerProgressBar->setValue(8);
+        verticalLayoutWidget_2 = new QWidget(DeviceView);
+        verticalLayoutWidget_2->setObjectName(QString::fromUtf8("verticalLayoutWidget_2"));
+        verticalLayoutWidget_2->setGeometry(QRect(10, 100, 381, 80));
+        verticalLayout_2 = new QVBoxLayout(verticalLayoutWidget_2);
+        verticalLayout_2->setObjectName(QString::fromUtf8("verticalLayout_2"));
+        verticalLayout_2->setContentsMargins(0, 0, 0, 0);
+        DeviceScanButton = new QPushButton(verticalLayoutWidget_2);
+        DeviceScanButton->setObjectName(QString::fromUtf8("DeviceScanButton"));
+
+        verticalLayout_2->addWidget(DeviceScanButton);
+
+        DeviceStatusLabel = new QLabel(verticalLayoutWidget_2);
+        DeviceStatusLabel->setObjectName(QString::fromUtf8("DeviceStatusLabel"));
+
+        verticalLayout_2->addWidget(DeviceStatusLabel);
+
+        GoToMeasureViewButton = new QPushButton(DeviceView);
+        GoToMeasureViewButton->setObjectName(QString::fromUtf8("GoToMeasureViewButton"));
+        GoToMeasureViewButton->setGeometry(QRect(682, 50, 131, 25));
         ViewsStackedWidget->addWidget(DeviceView);
         AppView = new QWidget();
         AppView->setObjectName(QString::fromUtf8("AppView"));
@@ -225,6 +256,32 @@ public:
         MeasureHeader = new QLabel(MeasureNowPage);
         MeasureHeader->setObjectName(QString::fromUtf8("MeasureHeader"));
         MeasureHeader->setGeometry(QRect(20, 10, 131, 17));
+        verticalLayoutWidget = new QWidget(MeasureNowPage);
+        verticalLayoutWidget->setObjectName(QString::fromUtf8("verticalLayoutWidget"));
+        verticalLayoutWidget->setGeometry(QRect(20, 60, 501, 151));
+        verticalLayout = new QVBoxLayout(verticalLayoutWidget);
+        verticalLayout->setObjectName(QString::fromUtf8("verticalLayout"));
+        verticalLayout->setContentsMargins(0, 0, 0, 0);
+        StartScanButton = new QPushButton(verticalLayoutWidget);
+        StartScanButton->setObjectName(QString::fromUtf8("StartScanButton"));
+
+        verticalLayout->addWidget(StartScanButton);
+
+        NextButton = new QPushButton(verticalLayoutWidget);
+        NextButton->setObjectName(QString::fromUtf8("NextButton"));
+
+        verticalLayout->addWidget(NextButton);
+
+        MeasureNowLabel = new QLabel(verticalLayoutWidget);
+        MeasureNowLabel->setObjectName(QString::fromUtf8("MeasureNowLabel"));
+
+        verticalLayout->addWidget(MeasureNowLabel);
+
+        ProcessedDataLabel = new QLabel(verticalLayoutWidget);
+        ProcessedDataLabel->setObjectName(QString::fromUtf8("ProcessedDataLabel"));
+
+        verticalLayout->addWidget(ProcessedDataLabel);
+
         AppStackedWidget->addWidget(MeasureNowPage);
         HistoricalPage = new QWidget();
         HistoricalPage->setObjectName(QString::fromUtf8("HistoricalPage"));
@@ -399,6 +456,9 @@ public:
         GoToAppViewButton->setText(QCoreApplication::translate("MainWindow", "Go To App View", nullptr));
         DeviceNameLabel->setText(QCoreApplication::translate("MainWindow", "RaDoTech Device View", nullptr));
         BatteryLabel->setText(QCoreApplication::translate("MainWindow", "Battery Power", nullptr));
+        DeviceScanButton->setText(QCoreApplication::translate("MainWindow", "Scan", nullptr));
+        DeviceStatusLabel->setText(QCoreApplication::translate("MainWindow", "TextLabel", nullptr));
+        GoToMeasureViewButton->setText(QCoreApplication::translate("MainWindow", "Back to Measure App", nullptr));
         GoToDeviceViewButton->setText(QCoreApplication::translate("MainWindow", "Go to Device View", nullptr));
         CreateHeader->setText(QCoreApplication::translate("MainWindow", "Create Profile", nullptr));
         loginImage->setText(QCoreApplication::translate("MainWindow", "IMAGE", nullptr));
@@ -455,6 +515,10 @@ public:
         EnterLoginButton->setText(QCoreApplication::translate("MainWindow", "Enter", nullptr));
         HomeHeader->setText(QCoreApplication::translate("MainWindow", "Home Page", nullptr));
         MeasureHeader->setText(QCoreApplication::translate("MainWindow", "Measure Now Page", nullptr));
+        StartScanButton->setText(QCoreApplication::translate("MainWindow", "Measure Now", nullptr));
+        NextButton->setText(QCoreApplication::translate("MainWindow", "Next", nullptr));
+        MeasureNowLabel->setText(QCoreApplication::translate("MainWindow", "TextLabel", nullptr));
+        ProcessedDataLabel->setText(QCoreApplication::translate("MainWindow", "TextLabel", nullptr));
         HistoricalHeader->setText(QCoreApplication::translate("MainWindow", "Historical Data Page", nullptr));
 
         const bool __sortingEnabled = HistoryListWidget->isSortingEnabled();

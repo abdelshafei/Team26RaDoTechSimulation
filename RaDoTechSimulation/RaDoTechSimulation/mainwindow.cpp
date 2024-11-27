@@ -19,7 +19,7 @@
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
-    , ui(new Ui::MainWindow)
+    , ui(new Ui::MainWindow), currentScanPoint(0), totalScanPoints(5),isDeviceScanned(false)
 {
     ui->setupUi(this);
 
@@ -66,6 +66,15 @@ MainWindow::MainWindow(QWidget *parent)
     ui->ResultsTabWidget->setTabText(1, "Indicator");
     ui->ResultsTabWidget->setTabText(2, "Comments");
     ui->ResultsTabWidget->setTabText(3, "Recommendation");
+
+    // Device Scan
+    connect(ui->StartScanButton, &QPushButton::clicked, this, &MainWindow::startScan);
+    connect(ui->NextButton, &QPushButton::clicked, this, &MainWindow::nextScanPoint);
+    connect(ui->DeviceScanButton, &QPushButton::clicked, this, &MainWindow::performDeviceScan);
+    connect(ui->GoToMeasureViewButton, &QPushButton::clicked, this, &MainWindow::showMeasureView);
+
+    updateBatteryLevelLabel();
+
 
 }
 
@@ -132,7 +141,7 @@ void MainWindow::showVisualizationPage()
 {
     ui->AppStackedWidget->setCurrentWidget(ui->VisulizationPage);
     showBarGraph();
-//    showRadarChart();
+//    showRadarChart();updateBatteryLevelLabel();
 }
 
 void MainWindow::goToCreateProfilePage() {
@@ -545,3 +554,101 @@ void MainWindow::showRadarChart()
     layout->addWidget(chartView);
     ui->chartContainer->setLayout(layout);
 }
+
+
+
+
+
+// Device Scan
+
+void MainWindow::showMeasureView(){
+    ui->ViewsStackedWidget->setCurrentWidget(ui->AppView);
+    showMeasureNowPage();
+}
+
+void MainWindow::startScan()
+{
+    currentScanPoint = 1;
+    isDeviceScanned = false;
+    ui->MeasureNowLabel->setText("Scan Point 1: Navigate to Device View and press Scan.");
+    ui->DeviceStatusLabel->setText("Ready for Scan 1.");
+}
+
+
+void MainWindow::nextScanPoint()
+{
+    if (!isDeviceScanned) {
+        ui->MeasureNowLabel->setText("Please perform the scan on the device first.");
+        return;
+    }
+
+    // Process data after a valid scan
+    std::map<std::string, float> processedData = processor.processData();
+
+
+    if (currentScanPoint < totalScanPoints) {
+        currentScanPoint++;
+        isDeviceScanned = false;
+        ui->MeasureNowLabel->setText(QString("Scan Point %1: Navigate to Device View and press Scan.").arg(currentScanPoint));
+        ui->DeviceStatusLabel->setText(QString("Ready for Scan %1.").arg(currentScanPoint));
+    } else {
+        ui->MeasureNowLabel->setText("All scan points completed!");
+        updateProcessedDataUI(processedData);
+    }
+}
+
+
+
+void MainWindow::performDeviceScan()
+{
+    if (!device.startScan()) {
+        ui->DeviceStatusLabel->setText("Low battery. Cannot perform scan.");
+        return;
+    }
+
+    // Collect data from the device
+    std::vector<float> rawData = device.collectData();
+    processor.setRawData(rawData);
+
+    if (processor.validateData()) {
+        isDeviceScanned = true;
+        ui->DeviceStatusLabel->setText(QString("Scan %1 complete. Return to App View and press Next.").arg(currentScanPoint));
+    } else {
+        ui->DeviceStatusLabel->setText("Scan failed. Please try again.");
+    }
+
+    updateBatteryLevelLabel();
+}
+
+
+void MainWindow::updateBatteryLevelLabel()
+{
+    int batteryLevel = device.getBatteryLevel();
+
+    // Update the progress bar value
+    ui->BatteryPowerProgressBar->setValue(batteryLevel);
+
+    // Change the progress bar color based on the battery level
+    if (device.isBatteryLow()) {
+        ui->BatteryPowerProgressBar->setStyleSheet(
+            "QProgressBar::chunk { background-color: red; }"
+            "QProgressBar { border: 1px solid gray; border-radius: 3px; text-align: center; }"
+        );
+    } else {
+        ui->BatteryPowerProgressBar->setStyleSheet(
+            "QProgressBar::chunk { background-color: green; }"
+            "QProgressBar { border: 1px solid gray; border-radius: 3px; text-align: center; }"
+        );
+    }
+}
+
+void MainWindow::updateProcessedDataUI(const std::map<std::string, float>& processedData)
+{
+    QString dataText;
+    for (const auto& [organ, value] : processedData) {
+        dataText += QString("%1: %2%\n").arg(QString::fromStdString(organ)).arg(value);
+    }
+    ui->ProcessedDataLabel->setText(dataText);
+}
+
+
