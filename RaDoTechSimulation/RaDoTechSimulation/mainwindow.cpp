@@ -41,13 +41,21 @@ MainWindow::MainWindow(QWidget *parent)
     //Images
     QPixmap loginImage("/home/student/Desktop/FinalProject/3004-Final-Project/images/loginImage.png");
     ui->loginImage->setPixmap(loginImage.scaled(81,71,Qt::KeepAspectRatio));
+
     QPixmap Energy("/home/student/Desktop/FinalProject/3004-Final-Project/images/EnergyLevel.png");
     ui->EnergyImage->setPixmap(Energy.scaled(71,41,Qt::KeepAspectRatio));
+
     QPixmap Immune("/home/student/Desktop/FinalProject/3004-Final-Project/images/ImmuneSystem.png");
     ui->ImmuneSystemImage->setPixmap(Immune.scaled(81,71,Qt::KeepAspectRatio));
+
     QPixmap Metabolism("/home/student/Desktop/FinalProject/3004-Final-Project/images/Metabolism.png");
     ui->MetabolismImage->setPixmap(Metabolism.scaled(71,41,Qt::KeepAspectRatio));
 
+    QPixmap Psycho("/home/student/Desktop/FinalProject/3004-Final-Project/images/Psycho.png");
+    ui->PsychoImage->setPixmap(Psycho.scaled(81,71,Qt::KeepAspectRatio));
+
+    QPixmap Muscle("/home/student/Desktop/FinalProject/3004-Final-Project/images/Muscler.png");
+    ui->MuscleImage->setPixmap(Muscle.scaled(71,41,Qt::KeepAspectRatio));
 
     //Save Button on Create Button
     connect(ui->SavePushButton, &QPushButton::clicked, this, &MainWindow::saveProfile);
@@ -62,8 +70,8 @@ MainWindow::MainWindow(QWidget *parent)
 
     connect(ui->ViewDetailsButton, &QPushButton::clicked, this, &MainWindow::viewDetails);
 
-    ui->ResultsTabWidget->setTabText(0, "Visulization");
-    ui->ResultsTabWidget->setTabText(1, "Indicator");
+    ui->ResultsTabWidget->setTabText(0, "Indicator");
+    ui->ResultsTabWidget->setTabText(1, "Visulization");
     ui->ResultsTabWidget->setTabText(2, "Comments");
     ui->ResultsTabWidget->setTabText(3, "Recommendation");
 
@@ -293,8 +301,30 @@ void MainWindow::createPresetUsers() {
 
 
     QList<MeridianResult> results1 = {
-            {"H1 (Lung)", "Left", 1414, "Normal"},
-            {"H1 (Lung)", "Right", 1414, "Normal"}
+        {"H1 (Lung)", "Left", 75, "Normal"},
+        {"H1 (Lung)", "Right", 43, "Normal"},
+        {"H2 (Pericardium)", "Left", 79, "Low (Deficient)"},
+        {"H2 (Pericardium)", "Right", 73, "Normal"},
+        {"H3 (Heart)", "Left", 98, "High (Excess)"},
+        {"H3 (Heart)", "Right", 85, "Normal"},
+        {"H4 (Small Intestine)", "Left", 110, "Low (Deficient)"},
+        {"H4 (Small Intestine)", "Right", 104, "Low (Deficient)"},
+        {"H5 (Lymph)", "Left", 12, "Normal"},
+        {"H5 (Lymph)", "Right", 18, "Normal"},
+        {"H6 (Large Intestine)", "Left", 85, "Low (Deficient)"},
+        {"H6 (Large Intestine)", "Right", 31, "Normal"},
+        {"F1 (Spleen)", "Left", 124, "High (Excess)"},
+        {"F1 (Spleen)", "Right", 165, "High (Excess)"},
+        {"F2 (Liver)", "Left", 159, "Normal"},
+        {"F2 (Liver)", "Right", 171, "Normal"},
+        {"F3 (Kidney)", "Left", 61, "Normal"},
+        {"F3 (Kidney)", "Right", 67, "Low (Deficient)"},
+        {"F4 (Bladder)", "Left", 201, "Normal"},
+        {"F4 (Bladder)", "Right", 73, "Normal"},
+        {"F5 (Gallbladder)", "Left", 61, "Normal"},
+        {"F5 (Gallbladder)", "Right", 122, "Low (Deficient)"},
+        {"F6 (Stomach)", "Left", 146, "Low (Deficient)"},
+        {"F6 (Stomach)", "Right", 116, "High (Excess)"}
     };
 
     HealthData* healthData = new HealthData(QDate::currentDate(), results);
@@ -410,19 +440,80 @@ void MainWindow::viewDetails() {
     }
 
     // Build the detailed results text
-    QString detailsText;
-    for (const MeridianResult& result : selectedData->getData()) {
-        detailsText += QString("%1 (%2): %3 µA, %4\n")
-                           .arg(result.meridian)
-                           .arg(result.side)
-                           .arg(result.conductance)
-                           .arg(result.status);
-    }
+//    QString detailsText;
+//    for (const MeridianResult& result : selectedData->getData()) {
+//        detailsText += QString("%1 (%2): %3 µA, %4\n")
+//                           .arg(result.meridian)
+//                           .arg(result.side)
+//                           .arg(result.conductance)
+//                           .arg(result.status);
+//    }
+
 
     // Display the results on the Detailed Results Page
-    ui->DetailedResultsLabel->setText(detailsText);
+//    ui->DetailedResultsLabel->setText(detailsText);
+    populateIndicators(selectedData);
     ui->AppStackedWidget->setCurrentWidget(ui->DetailedResultsPage);
 }
+
+
+// Function to populate health indicators in the DetailedResultsPage
+void MainWindow::populateIndicators(HealthData* selectedData) {
+    if (!selectedData) {
+        QMessageBox::warning(this, "No Data", "No health data available.");
+        return;
+    }
+
+    // Functional Health Indicators
+    double energyLevel = selectedData->calculateEnergyLevel();
+    double immuneSystem = selectedData->calculateImmuneSystem();
+    double metabolism = selectedData->calculateMetabolism();
+    double psychoEmotionalState = selectedData->calculatePsychoEmotionalState();
+    double musculoskeletalSystem = selectedData->calculateMusculoskeletalSystem();
+
+    // Update Functional Health Indicators Labels
+    ui->EnergyNumberLabel->setText(QString::number(energyLevel, 'f', 2));
+    ui->ImmuneSystemNumberLabel->setText(QString::number(immuneSystem, 'f', 2));
+    ui->MetabolismNumberLabel->setText(QString::number(metabolism, 'f', 2));
+    ui->PsychoNumberLabel->setText(QString::number(psychoEmotionalState, 'f', 2));
+    ui->MuscleNumberLabel->setText(QString::number(musculoskeletalSystem, 'f', 2));
+
+    // Add classification ranges
+    ui->EnergyRangeLabel->setText(getClassification(energyLevel, 25, 55));
+    ui->ImmuneSystemRangeLabel->setText(getClassification(immuneSystem, 47, 57));
+    ui->MetabolismRangeLabel->setText(getClassification(metabolism, 1.1, 1.2));
+    ui->PsychoRangeLabel->setText(getClassification(psychoEmotionalState, 0.8, 1.0));
+    ui->MuscleRangeLabel->setText(getClassification(musculoskeletalSystem, 60, 80));
+
+    // Professional Practitioner Data
+    double averageValue = selectedData->calculateAverageValue();
+    double leftTotal = selectedData->calculateLeftTotal();
+    double rightTotal = selectedData->calculateRightTotal();
+    double leftRightRatio = selectedData->calculateLeftRightRatio();
+    double upperTotal = selectedData->calculateUpperTotal();
+    double lowerTotal = selectedData->calculateLowerTotal();
+    double upperLowerRatio = selectedData->calculateUpperLowerRatio();
+
+    // Update Practitioner Data Labels
+    ui->AverageValueNumber->setText(QString::number(averageValue, 'f', 2));
+    ui->LeftTotalNumber->setText(QString::number(leftTotal, 'f', 2));
+    ui->RightTotalNumber->setText(QString::number(rightTotal, 'f', 2));
+    ui->LeftRightTotalNumber->setText(QString::number(leftRightRatio, 'f', 2));
+    ui->UpperTotalNumber->setText(QString::number(upperTotal, 'f', 2));
+    ui->LowerTotalNumber->setText(QString::number(lowerTotal, 'f', 2));
+    ui->UpperLowerTotalNumber->setText(QString::number(upperLowerRatio, 'f', 2));
+}
+
+// Helper function to determine the classification range
+QString MainWindow::getClassification(double value, double min, double max) {
+    if (value < min) {
+        return "Below Normal";
+    } else if (value > max) {
+        return "Above Normal";
+    }
+    return "Normal";
+}
+
 
 
 

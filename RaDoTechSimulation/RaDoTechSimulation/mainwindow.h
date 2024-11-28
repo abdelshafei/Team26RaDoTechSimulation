@@ -46,7 +46,7 @@ private slots:
     void handleLogin(); // Slot for login button
     void populateHistoryList();  // Populate history on Historical Page
     void viewDetails();
-
+    void populateIndicators(HealthData* selectedData);
     void startScan();
     void nextScanPoint();
     void performDeviceScan();
@@ -65,6 +65,7 @@ private:
 
     RaDoTechDevice device;
     DataProcessor processor;
+    QString getClassification(double value, double min, double max);
 
     void updateBatteryLevelLabel();
     void updateProcessedDataUI(const std::map<std::string, float>& processedData);
