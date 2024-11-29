@@ -13,13 +13,17 @@
 #include <QtWidgets/QApplication>
 #include <QtWidgets/QComboBox>
 #include <QtWidgets/QDateEdit>
+#include <QtWidgets/QDoubleSpinBox>
+#include <QtWidgets/QFormLayout>
 #include <QtWidgets/QFrame>
 #include <QtWidgets/QLabel>
+#include <QtWidgets/QLineEdit>
 #include <QtWidgets/QListWidget>
 #include <QtWidgets/QMainWindow>
 #include <QtWidgets/QMenuBar>
 #include <QtWidgets/QProgressBar>
 #include <QtWidgets/QPushButton>
+#include <QtWidgets/QSpinBox>
 #include <QtWidgets/QStackedWidget>
 #include <QtWidgets/QStatusBar>
 #include <QtWidgets/QTabWidget>
@@ -134,7 +138,28 @@ public:
     QLabel *UpperLowerTotalNumber;
     QWidget *Visulization;
     QWidget *Comments;
+    QLabel *CommentsLabel;
     QWidget *Recommendation;
+    QWidget *PersonalMetricsPage;
+    QWidget *formLayoutWidget;
+    QFormLayout *formLayout;
+    QTextEdit *NotesBox;
+    QDoubleSpinBox *BodyWeightBox;
+    QSpinBox *SleepTimeBox;
+    QSpinBox *HeartRateBox;
+    QDoubleSpinBox *BodyTempBox;
+    QLineEdit *BloodPressureBox;
+    QLabel *BloodPressure;
+    QLabel *BodyTemp;
+    QLabel *HeartRate;
+    QLabel *SleepTime;
+    QLabel *BodyWeight;
+    QLabel *Notes;
+    QLabel *EmotionalState;
+    QLineEdit *EmoStateBox;
+    QLineEdit *OverallFeelingBox;
+    QLabel *OverallFeeling;
+    QPushButton *SaveButtonNotes;
     QPushButton *HomePageButton;
     QPushButton *MeasureNowButton;
     QPushButton *HistoryPageButton;
@@ -501,11 +526,106 @@ public:
         ResultsTabWidget->addTab(Visulization, QString());
         Comments = new QWidget();
         Comments->setObjectName(QString::fromUtf8("Comments"));
+        CommentsLabel = new QLabel(Comments);
+        CommentsLabel->setObjectName(QString::fromUtf8("CommentsLabel"));
+        CommentsLabel->setGeometry(QRect(50, 50, 381, 351));
         ResultsTabWidget->addTab(Comments, QString());
         Recommendation = new QWidget();
         Recommendation->setObjectName(QString::fromUtf8("Recommendation"));
         ResultsTabWidget->addTab(Recommendation, QString());
         AppStackedWidget->addWidget(DetailedResultsPage);
+        PersonalMetricsPage = new QWidget();
+        PersonalMetricsPage->setObjectName(QString::fromUtf8("PersonalMetricsPage"));
+        formLayoutWidget = new QWidget(PersonalMetricsPage);
+        formLayoutWidget->setObjectName(QString::fromUtf8("formLayoutWidget"));
+        formLayoutWidget->setGeometry(QRect(80, 80, 391, 299));
+        formLayout = new QFormLayout(formLayoutWidget);
+        formLayout->setObjectName(QString::fromUtf8("formLayout"));
+        formLayout->setContentsMargins(0, 0, 0, 0);
+        NotesBox = new QTextEdit(formLayoutWidget);
+        NotesBox->setObjectName(QString::fromUtf8("NotesBox"));
+
+        formLayout->setWidget(8, QFormLayout::FieldRole, NotesBox);
+
+        BodyWeightBox = new QDoubleSpinBox(formLayoutWidget);
+        BodyWeightBox->setObjectName(QString::fromUtf8("BodyWeightBox"));
+
+        formLayout->setWidget(5, QFormLayout::FieldRole, BodyWeightBox);
+
+        SleepTimeBox = new QSpinBox(formLayoutWidget);
+        SleepTimeBox->setObjectName(QString::fromUtf8("SleepTimeBox"));
+
+        formLayout->setWidget(4, QFormLayout::FieldRole, SleepTimeBox);
+
+        HeartRateBox = new QSpinBox(formLayoutWidget);
+        HeartRateBox->setObjectName(QString::fromUtf8("HeartRateBox"));
+
+        formLayout->setWidget(3, QFormLayout::FieldRole, HeartRateBox);
+
+        BodyTempBox = new QDoubleSpinBox(formLayoutWidget);
+        BodyTempBox->setObjectName(QString::fromUtf8("BodyTempBox"));
+
+        formLayout->setWidget(2, QFormLayout::FieldRole, BodyTempBox);
+
+        BloodPressureBox = new QLineEdit(formLayoutWidget);
+        BloodPressureBox->setObjectName(QString::fromUtf8("BloodPressureBox"));
+
+        formLayout->setWidget(1, QFormLayout::FieldRole, BloodPressureBox);
+
+        BloodPressure = new QLabel(formLayoutWidget);
+        BloodPressure->setObjectName(QString::fromUtf8("BloodPressure"));
+
+        formLayout->setWidget(1, QFormLayout::LabelRole, BloodPressure);
+
+        BodyTemp = new QLabel(formLayoutWidget);
+        BodyTemp->setObjectName(QString::fromUtf8("BodyTemp"));
+
+        formLayout->setWidget(2, QFormLayout::LabelRole, BodyTemp);
+
+        HeartRate = new QLabel(formLayoutWidget);
+        HeartRate->setObjectName(QString::fromUtf8("HeartRate"));
+
+        formLayout->setWidget(3, QFormLayout::LabelRole, HeartRate);
+
+        SleepTime = new QLabel(formLayoutWidget);
+        SleepTime->setObjectName(QString::fromUtf8("SleepTime"));
+
+        formLayout->setWidget(4, QFormLayout::LabelRole, SleepTime);
+
+        BodyWeight = new QLabel(formLayoutWidget);
+        BodyWeight->setObjectName(QString::fromUtf8("BodyWeight"));
+
+        formLayout->setWidget(5, QFormLayout::LabelRole, BodyWeight);
+
+        Notes = new QLabel(formLayoutWidget);
+        Notes->setObjectName(QString::fromUtf8("Notes"));
+
+        formLayout->setWidget(8, QFormLayout::LabelRole, Notes);
+
+        EmotionalState = new QLabel(formLayoutWidget);
+        EmotionalState->setObjectName(QString::fromUtf8("EmotionalState"));
+
+        formLayout->setWidget(6, QFormLayout::LabelRole, EmotionalState);
+
+        EmoStateBox = new QLineEdit(formLayoutWidget);
+        EmoStateBox->setObjectName(QString::fromUtf8("EmoStateBox"));
+
+        formLayout->setWidget(6, QFormLayout::FieldRole, EmoStateBox);
+
+        OverallFeelingBox = new QLineEdit(formLayoutWidget);
+        OverallFeelingBox->setObjectName(QString::fromUtf8("OverallFeelingBox"));
+
+        formLayout->setWidget(7, QFormLayout::FieldRole, OverallFeelingBox);
+
+        OverallFeeling = new QLabel(formLayoutWidget);
+        OverallFeeling->setObjectName(QString::fromUtf8("OverallFeeling"));
+
+        formLayout->setWidget(7, QFormLayout::LabelRole, OverallFeeling);
+
+        SaveButtonNotes = new QPushButton(PersonalMetricsPage);
+        SaveButtonNotes->setObjectName(QString::fromUtf8("SaveButtonNotes"));
+        SaveButtonNotes->setGeometry(QRect(220, 390, 83, 25));
+        AppStackedWidget->addWidget(PersonalMetricsPage);
         HomePageButton = new QPushButton(AppView);
         HomePageButton->setObjectName(QString::fromUtf8("HomePageButton"));
         HomePageButton->setGeometry(QRect(10, 30, 91, 25));
@@ -555,7 +675,7 @@ public:
 
         retranslateUi(MainWindow);
 
-        ResultsTabWidget->setCurrentIndex(0);
+        ResultsTabWidget->setCurrentIndex(2);
 
 
         QMetaObject::connectSlotsByName(MainWindow);
@@ -680,8 +800,18 @@ public:
         UpperLowerTotalNumber->setText(QCoreApplication::translate("MainWindow", "TextLabel", nullptr));
         ResultsTabWidget->setTabText(ResultsTabWidget->indexOf(Indicators), QCoreApplication::translate("MainWindow", "Tab 1", nullptr));
         ResultsTabWidget->setTabText(ResultsTabWidget->indexOf(Visulization), QCoreApplication::translate("MainWindow", "Tab 2", nullptr));
+        CommentsLabel->setText(QCoreApplication::translate("MainWindow", "TextLabel", nullptr));
         ResultsTabWidget->setTabText(ResultsTabWidget->indexOf(Comments), QCoreApplication::translate("MainWindow", "Page", nullptr));
         ResultsTabWidget->setTabText(ResultsTabWidget->indexOf(Recommendation), QCoreApplication::translate("MainWindow", "Page", nullptr));
+        BloodPressure->setText(QCoreApplication::translate("MainWindow", "Blood Pressure", nullptr));
+        BodyTemp->setText(QCoreApplication::translate("MainWindow", "Body Tempreture", nullptr));
+        HeartRate->setText(QCoreApplication::translate("MainWindow", "Heart Rate", nullptr));
+        SleepTime->setText(QCoreApplication::translate("MainWindow", "Sleep Time (h)", nullptr));
+        BodyWeight->setText(QCoreApplication::translate("MainWindow", "Body Weight", nullptr));
+        Notes->setText(QCoreApplication::translate("MainWindow", "Notes", nullptr));
+        EmotionalState->setText(QCoreApplication::translate("MainWindow", "Emotional State (1 to 5)", nullptr));
+        OverallFeeling->setText(QCoreApplication::translate("MainWindow", "Overall Feeling (1 to 5)", nullptr));
+        SaveButtonNotes->setText(QCoreApplication::translate("MainWindow", "Save", nullptr));
         HomePageButton->setText(QCoreApplication::translate("MainWindow", "Home", nullptr));
         MeasureNowButton->setText(QCoreApplication::translate("MainWindow", "Measure Now", nullptr));
         HistoryPageButton->setText(QCoreApplication::translate("MainWindow", "History", nullptr));

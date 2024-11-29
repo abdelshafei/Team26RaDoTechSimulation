@@ -629,7 +629,7 @@ p, li { white-space: pre-wrap; }
          </rect>
         </property>
         <property name="currentIndex">
-         <number>0</number>
+         <number>2</number>
         </property>
         <widget class="QWidget" name="Indicators">
          <attribute name="title">
@@ -1223,12 +1223,132 @@ p, li { white-space: pre-wrap; }
          <attribute name="title">
           <string>Page</string>
          </attribute>
+         <widget class="QLabel" name="CommentsLabel">
+          <property name="geometry">
+           <rect>
+            <x>50</x>
+            <y>50</y>
+            <width>381</width>
+            <height>351</height>
+           </rect>
+          </property>
+          <property name="text">
+           <string>TextLabel</string>
+          </property>
+         </widget>
         </widget>
         <widget class="QWidget" name="Recommendation">
          <attribute name="title">
           <string>Page</string>
          </attribute>
         </widget>
+       </widget>
+      </widget>
+      <widget class="QWidget" name="PersonalMetricsPage">
+       <widget class="QWidget" name="formLayoutWidget">
+        <property name="geometry">
+         <rect>
+          <x>80</x>
+          <y>80</y>
+          <width>391</width>
+          <height>299</height>
+         </rect>
+        </property>
+        <layout class="QFormLayout" name="formLayout">
+         <item row="8" column="1">
+          <widget class="QTextEdit" name="NotesBox"/>
+         </item>
+         <item row="5" column="1">
+          <widget class="QDoubleSpinBox" name="BodyWeightBox"/>
+         </item>
+         <item row="4" column="1">
+          <widget class="QSpinBox" name="SleepTimeBox"/>
+         </item>
+         <item row="3" column="1">
+          <widget class="QSpinBox" name="HeartRateBox"/>
+         </item>
+         <item row="2" column="1">
+          <widget class="QDoubleSpinBox" name="BodyTempBox"/>
+         </item>
+         <item row="1" column="1">
+          <widget class="QLineEdit" name="BloodPressureBox"/>
+         </item>
+         <item row="1" column="0">
+          <widget class="QLabel" name="BloodPressure">
+           <property name="text">
+            <string>Blood Pressure</string>
+           </property>
+          </widget>
+         </item>
+         <item row="2" column="0">
+          <widget class="QLabel" name="BodyTemp">
+           <property name="text">
+            <string>Body Tempreture</string>
+           </property>
+          </widget>
+         </item>
+         <item row="3" column="0">
+          <widget class="QLabel" name="HeartRate">
+           <property name="text">
+            <string>Heart Rate</string>
+           </property>
+          </widget>
+         </item>
+         <item row="4" column="0">
+          <widget class="QLabel" name="SleepTime">
+           <property name="text">
+            <string>Sleep Time (h)</string>
+           </property>
+          </widget>
+         </item>
+         <item row="5" column="0">
+          <widget class="QLabel" name="BodyWeight">
+           <property name="text">
+            <string>Body Weight</string>
+           </property>
+          </widget>
+         </item>
+         <item row="8" column="0">
+          <widget class="QLabel" name="Notes">
+           <property name="text">
+            <string>Notes</string>
+           </property>
+          </widget>
+         </item>
+         <item row="6" column="0">
+          <widget class="QLabel" name="EmotionalState">
+           <property name="text">
+            <string>Emotional State (1 to 5)</string>
+           </property>
+          </widget>
+         </item>
+         <item row="6" column="1">
+          <widget class="QLineEdit" name="EmoStateBox"/>
+         </item>
+         <item row="7" column="1">
+          <widget class="QLineEdit" name="OverallFeelingBox"/>
+         </item>
+         <item row="7" column="0">
+          <widget class="QLabel" name="OverallFeeling">
+           <property name="text">
+            <string>Overall Feeling (1 to 5)</string>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </widget>
+       <widget class="QPushButton" name="SaveButtonNotes">
+        <property name="geometry">
+         <rect>
+          <x>220</x>
+          <y>390</y>
+          <width>83</width>
+          <height>25</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>Save</string>
+        </property>
        </widget>
       </widget>
      </widget>

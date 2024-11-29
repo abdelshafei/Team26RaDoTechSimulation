@@ -2,6 +2,7 @@
 #include "ui_mainwindow.h"
 #include <QPixmap>
 #include <QDebug>
+#include <QInputDialog>
 
 #include <QtCharts>
 #include <QChartView>
@@ -19,7 +20,7 @@
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
-    , ui(new Ui::MainWindow), currentScanPoint(0), totalScanPoints(5),isDeviceScanned(false)
+    , ui(new Ui::MainWindow), currentScanPoint(0), totalScanPoints(24),isDeviceScanned(false)
 {
     ui->setupUi(this);
 
@@ -81,8 +82,11 @@ MainWindow::MainWindow(QWidget *parent)
     connect(ui->DeviceScanButton, &QPushButton::clicked, this, &MainWindow::performDeviceScan);
     connect(ui->GoToMeasureViewButton, &QPushButton::clicked, this, &MainWindow::showMeasureView);
 
-    updateBatteryLevelLabel();
+    connect(ui->SaveButtonNotes, &QPushButton::clicked, this, &MainWindow::saveResults);
 
+
+//    updateBatteryLevelLabel();
+    showMeasureNowPage();
 
 }
 
@@ -327,13 +331,18 @@ void MainWindow::createPresetUsers() {
         {"F6 (Stomach)", "Right", 116, "High (Excess)"}
     };
 
-    HealthData* healthData = new HealthData(QDate::currentDate(), results);
+    QList<Comments> comments = {
+            {90.1, "9.1", 75, 8,90.1,"2","5","blahblah"}
+    };
+    HealthData* healthData = new HealthData(QDate(1990, 2, 2), results, comments);
     profile1->addHealthData(healthData);
 
     QDate currentDate = QDate::currentDate();
     QDate tomorrow = currentDate.addDays(1);
-
-    HealthData* healthData1 = new HealthData(tomorrow,results1);
+    QList<Comments> comments1 = {
+            {90.1, "9.1", 75, 8,90.1,"2","5","blahblah"}
+    };
+    HealthData* healthData1 = new HealthData(QDate(1990, 4, 4),results1,comments1);
     profile2->addHealthData(healthData1);
 //    user2->addProfile(profile1); // Both users share the same test profile
 
@@ -454,8 +463,23 @@ void MainWindow::viewDetails() {
 //    ui->DetailedResultsLabel->setText(detailsText);
     populateIndicators(selectedData);
     ui->AppStackedWidget->setCurrentWidget(ui->DetailedResultsPage);
-}
 
+
+    // COMMENTS
+    QString detailsComments;
+    for (const Comments& comment: selectedData->getComments()){
+        detailsComments += QString("Blood Pressure: %1, \n Body Temperture: %2, \n Heart Rate: %3, \n Sleeping Time: %4, \n Current Weight %5, \n Emotional State %6, \n Over Feeling %7, \n Notes: %8")
+                .arg(comment.bloodPressure)
+                .arg(comment.bodyTemperature)
+                .arg(comment.heartRate)
+                .arg(comment.sleepingTime)
+                .arg(comment.currentWeight)
+                .arg(comment.emotionalState)
+                .arg(comment.overallFeeling)
+                .arg(comment.notes);
+    }
+    ui->CommentsLabel->setText(detailsComments);
+}
 
 // Function to populate health indicators in the DetailedResultsPage
 void MainWindow::populateIndicators(HealthData* selectedData) {
@@ -482,8 +506,8 @@ void MainWindow::populateIndicators(HealthData* selectedData) {
     ui->EnergyRangeLabel->setText(getClassification(energyLevel, 25, 55));
     ui->ImmuneSystemRangeLabel->setText(getClassification(immuneSystem, 47, 57));
     ui->MetabolismRangeLabel->setText(getClassification(metabolism, 1.1, 1.2));
-    ui->PsychoRangeLabel->setText(getClassification(psychoEmotionalState, 0.8, 1.0));
-    ui->MuscleRangeLabel->setText(getClassification(musculoskeletalSystem, 60, 80));
+    ui->PsychoRangeLabel->setText(getClassification(psychoEmotionalState, 0.8, 1.2));
+    ui->MuscleRangeLabel->setText(getClassification(musculoskeletalSystem, 0.9, 1.2));
 
     // Professional Practitioner Data
     double averageValue = selectedData->calculateAverageValue();
@@ -659,12 +683,58 @@ void MainWindow::showMeasureView(){
 
 void MainWindow::startScan()
 {
+    // Ensure the current user is set
+    if (!currentUser) {
+        ui->MeasureNowLabel->setText("No user is logged in.");
+        return;
+    }
+    // Get the list of profiles
+    QList<Profile*> profiles = currentUser->getProfiles();
+    if (profiles.isEmpty()) {
+        ui->MeasureNowLabel->setText("No profiles found for the current user.");
+        return;
+    }
+    // Create a list of profile names for display
+    QStringList profileNames;
+    for (Profile* profile : profiles) {
+        // Assuming Profile has a method getName() to get the profile name
+        profileNames.append(profile->getName());
+    }
+    // Show a dialog to select a profile
+    bool ok;
+    QString selectedProfileName = QInputDialog::getItem(
+        this,
+        "Select Profile",
+        "Choose a profile for the scan:",
+        profileNames,
+        0,  // Default index
+        false, // Editable: false (user can't edit the list)
+        &ok
+    );
+    if (!ok) {
+        ui->MeasureNowLabel->setText("Scan canceled.");
+        return;
+    }
+    // Find the selected profile
+    Profile* selectedProfile = nullptr;
+    for (Profile* profile : profiles) {
+        if (profile->getName() == selectedProfileName) {
+            selectedProfile = profile;
+            currProfile = profile;
+            break;
+        }
+    }
+    if (!selectedProfile) {
+        ui->MeasureNowLabel->setText("Selected profile not found.");
+        return;
+    }
+    // Proceed with scan for the selected profile
     currentScanPoint = 1;
     isDeviceScanned = false;
     ui->MeasureNowLabel->setText("Scan Point 1: Navigate to Device View and press Scan.");
+    ui->MeasureNowLabel->setText(QString("Starting scan for profile: %1").arg(selectedProfileName));
     ui->DeviceStatusLabel->setText("Ready for Scan 1.");
 }
-
 
 void MainWindow::nextScanPoint()
 {
@@ -674,7 +744,7 @@ void MainWindow::nextScanPoint()
     }
 
     // Process data after a valid scan
-    std::map<std::string, float> processedData = processor.processData();
+    processedData = processor.processData();
 
 
     if (currentScanPoint < totalScanPoints) {
@@ -684,10 +754,85 @@ void MainWindow::nextScanPoint()
         ui->DeviceStatusLabel->setText(QString("Ready for Scan %1.").arg(currentScanPoint));
     } else {
         ui->MeasureNowLabel->setText("All scan points completed!");
-        updateProcessedDataUI(processedData);
+//        updateProcessedDataUI(processedData);
+
+
+        showPersonalInfoPage();
     }
 }
 
+void MainWindow::showPersonalInfoPage(){
+ui->AppStackedWidget->setCurrentWidget(ui->PersonalMetricsPage);
+}
+
+QList<MeridianResult> MainWindow::convertProcessedDataToMeridianResults(const std::map<std::string, float>& processedData) {
+    QList<MeridianResult> meridianResults;
+
+    // For demonstration purposes, assume we have a logic for assigning sides and statuses.
+    // You'll want to adapt this based on your logic for determining the "side" (Left/Right) and the "status".
+    QString side;
+    QString status;
+    int conductance;
+
+    for (const auto& entry : processedData) {
+        MeridianResult result;
+
+        // Set meridian name
+        result.meridian = QString::fromStdString(entry.first);  // Convert from std::string to QString
+        conductance = static_cast<int>(entry.second);  // Convert the float to an integer (µA)
+
+        // For now, we alternate between Left and Right. You can modify this as needed.
+        if (result.meridian.contains("Left")) {
+            side = "Left";
+        } else if (result.meridian.contains("Right")) {
+            side = "Right";
+        } else {
+            side = "Unknown";  // If no specific side, assign as "Unknown"
+        }
+
+        result.side = side;
+
+        // Set the status based on the conductance (use ranges or other criteria to define status)
+        if (conductance < 80) {
+            status = "Low (Deficient)";
+        } else if (conductance <= 120) {
+            status = "Normal";
+        } else {
+            status = "High (Excess)";
+        }
+
+        result.status = status;
+        result.conductance = conductance;  // Set the conductance value in µA
+
+        // Add to the results list
+        meridianResults.append(result);
+    }
+
+    return meridianResults;
+}
+
+
+
+
+void MainWindow::saveResults(){
+    double bodyTemprature = ui->BodyTempBox->value();
+    QString bloodPressure = ui->BloodPressureBox->text();
+    int heartRate = ui->HeartRateBox->value();
+    int sleepingTime = ui->SleepTimeBox->value();
+    double currentWeight = ui->BodyWeightBox->value();
+    QString emotionalState = ui->EmoStateBox->text();
+    QString overallFeeling = ui->OverallFeelingBox->text();
+    QString notes = ui->NotesBox->toPlainText();
+
+    QList<Comments> commentsList = {
+        {bodyTemprature, bloodPressure, heartRate, sleepingTime, currentWeight, emotionalState, overallFeeling, notes}
+    };
+    QList<MeridianResult> data = convertProcessedDataToMeridianResults(processedData);
+
+    HealthData* healthData = new HealthData(QDate::currentDate(), data, commentsList);
+    currProfile->addHealthData(healthData);
+    ui->AppStackedWidget->setCurrentWidget(ui->HomePage);
+}
 
 
 void MainWindow::performDeviceScan()
@@ -708,7 +853,7 @@ void MainWindow::performDeviceScan()
         ui->DeviceStatusLabel->setText("Scan failed. Please try again.");
     }
 
-    updateBatteryLevelLabel();
+//    updateBatteryLevelLabel();
 }
 
 
@@ -739,7 +884,8 @@ void MainWindow::updateProcessedDataUI(const std::map<std::string, float>& proce
     for (const auto& [organ, value] : processedData) {
         dataText += QString("%1: %2%\n").arg(QString::fromStdString(organ)).arg(value);
     }
-    ui->ProcessedDataLabel->setText(dataText);
+    qDebug()<<"Data: "<<dataText;
+//    ui->ProcessedDataLabel->setText(dataText);
 }
 
 
