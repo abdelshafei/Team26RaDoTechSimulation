@@ -2,6 +2,7 @@
 #include "ui_mainwindow.h"
 #include <QPixmap>
 #include <QDebug>
+#include <QInputDialog>
 
 #include <QtCharts>
 #include <QChartView>
@@ -19,7 +20,7 @@
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
-    , ui(new Ui::MainWindow), currentScanPoint(0), totalScanPoints(5),isDeviceScanned(false)
+    , ui(new Ui::MainWindow), currentScanPoint(0), totalScanPoints(24),isDeviceScanned(false)
 {
     ui->setupUi(this);
 
@@ -41,13 +42,21 @@ MainWindow::MainWindow(QWidget *parent)
     //Images
     QPixmap loginImage("/home/student/Desktop/FinalProject/3004-Final-Project/images/loginImage.png");
     ui->loginImage->setPixmap(loginImage.scaled(81,71,Qt::KeepAspectRatio));
+
     QPixmap Energy("/home/student/Desktop/FinalProject/3004-Final-Project/images/EnergyLevel.png");
     ui->EnergyImage->setPixmap(Energy.scaled(71,41,Qt::KeepAspectRatio));
+
     QPixmap Immune("/home/student/Desktop/FinalProject/3004-Final-Project/images/ImmuneSystem.png");
     ui->ImmuneSystemImage->setPixmap(Immune.scaled(81,71,Qt::KeepAspectRatio));
+
     QPixmap Metabolism("/home/student/Desktop/FinalProject/3004-Final-Project/images/Metabolism.png");
     ui->MetabolismImage->setPixmap(Metabolism.scaled(71,41,Qt::KeepAspectRatio));
 
+    QPixmap Psycho("/home/student/Desktop/FinalProject/3004-Final-Project/images/Psycho.png");
+    ui->PsychoImage->setPixmap(Psycho.scaled(81,71,Qt::KeepAspectRatio));
+
+    QPixmap Muscle("/home/student/Desktop/FinalProject/3004-Final-Project/images/Muscler.png");
+    ui->MuscleImage->setPixmap(Muscle.scaled(71,41,Qt::KeepAspectRatio));
 
     //Save Button on Create Button
     connect(ui->SavePushButton, &QPushButton::clicked, this, &MainWindow::saveProfile);
@@ -62,8 +71,8 @@ MainWindow::MainWindow(QWidget *parent)
 
     connect(ui->ViewDetailsButton, &QPushButton::clicked, this, &MainWindow::viewDetails);
 
-    ui->ResultsTabWidget->setTabText(0, "Visulization");
-    ui->ResultsTabWidget->setTabText(1, "Indicator");
+    ui->ResultsTabWidget->setTabText(0, "Indicator");
+    ui->ResultsTabWidget->setTabText(1, "Visulization");
     ui->ResultsTabWidget->setTabText(2, "Comments");
     ui->ResultsTabWidget->setTabText(3, "Recommendation");
 
@@ -73,8 +82,11 @@ MainWindow::MainWindow(QWidget *parent)
     connect(ui->DeviceScanButton, &QPushButton::clicked, this, &MainWindow::performDeviceScan);
     connect(ui->GoToMeasureViewButton, &QPushButton::clicked, this, &MainWindow::showMeasureView);
 
-    updateBatteryLevelLabel();
+    connect(ui->SaveButtonNotes, &QPushButton::clicked, this, &MainWindow::saveResults);
 
+
+//    updateBatteryLevelLabel();
+    showMeasureNowPage();
 
 }
 
@@ -293,17 +305,44 @@ void MainWindow::createPresetUsers() {
 
 
     QList<MeridianResult> results1 = {
-            {"H1 (Lung)", "Left", 1414, "Normal"},
-            {"H1 (Lung)", "Right", 1414, "Normal"}
+        {"H1 (Lung)", "Left", 75, "Normal"},
+        {"H1 (Lung)", "Right", 43, "Normal"},
+        {"H2 (Pericardium)", "Left", 79, "Low (Deficient)"},
+        {"H2 (Pericardium)", "Right", 73, "Normal"},
+        {"H3 (Heart)", "Left", 98, "High (Excess)"},
+        {"H3 (Heart)", "Right", 85, "Normal"},
+        {"H4 (Small Intestine)", "Left", 110, "Low (Deficient)"},
+        {"H4 (Small Intestine)", "Right", 104, "Low (Deficient)"},
+        {"H5 (Lymph)", "Left", 12, "Normal"},
+        {"H5 (Lymph)", "Right", 18, "Normal"},
+        {"H6 (Large Intestine)", "Left", 85, "Low (Deficient)"},
+        {"H6 (Large Intestine)", "Right", 31, "Normal"},
+        {"F1 (Spleen)", "Left", 124, "High (Excess)"},
+        {"F1 (Spleen)", "Right", 165, "High (Excess)"},
+        {"F2 (Liver)", "Left", 159, "Normal"},
+        {"F2 (Liver)", "Right", 171, "Normal"},
+        {"F3 (Kidney)", "Left", 61, "Normal"},
+        {"F3 (Kidney)", "Right", 67, "Low (Deficient)"},
+        {"F4 (Bladder)", "Left", 201, "Normal"},
+        {"F4 (Bladder)", "Right", 73, "Normal"},
+        {"F5 (Gallbladder)", "Left", 61, "Normal"},
+        {"F5 (Gallbladder)", "Right", 122, "Low (Deficient)"},
+        {"F6 (Stomach)", "Left", 146, "Low (Deficient)"},
+        {"F6 (Stomach)", "Right", 116, "High (Excess)"}
     };
 
-    HealthData* healthData = new HealthData(QDate::currentDate(), results);
+    QList<Comments> comments = {
+            {90.1, "9.1", 75, 8,90.1,"2","5","blahblah"}
+    };
+    HealthData* healthData = new HealthData(QDate(1990, 2, 2), results, comments);
     profile1->addHealthData(healthData);
 
     QDate currentDate = QDate::currentDate();
     QDate tomorrow = currentDate.addDays(1);
-
-    HealthData* healthData1 = new HealthData(tomorrow,results1);
+    QList<Comments> comments1 = {
+            {90.1, "9.1", 75, 8,90.1,"2","5","blahblah"}
+    };
+    HealthData* healthData1 = new HealthData(QDate(1990, 4, 4),results1,comments1);
     profile2->addHealthData(healthData1);
 //    user2->addProfile(profile1); // Both users share the same test profile
 
@@ -410,19 +449,95 @@ void MainWindow::viewDetails() {
     }
 
     // Build the detailed results text
-    QString detailsText;
-    for (const MeridianResult& result : selectedData->getData()) {
-        detailsText += QString("%1 (%2): %3 µA, %4\n")
-                           .arg(result.meridian)
-                           .arg(result.side)
-                           .arg(result.conductance)
-                           .arg(result.status);
-    }
+//    QString detailsText;
+//    for (const MeridianResult& result : selectedData->getData()) {
+//        detailsText += QString("%1 (%2): %3 µA, %4\n")
+//                           .arg(result.meridian)
+//                           .arg(result.side)
+//                           .arg(result.conductance)
+//                           .arg(result.status);
+//    }
+
 
     // Display the results on the Detailed Results Page
-    ui->DetailedResultsLabel->setText(detailsText);
+//    ui->DetailedResultsLabel->setText(detailsText);
+    populateIndicators(selectedData);
     ui->AppStackedWidget->setCurrentWidget(ui->DetailedResultsPage);
+
+
+    // COMMENTS
+    QString detailsComments;
+    for (const Comments& comment: selectedData->getComments()){
+        detailsComments += QString("Blood Pressure: %1, \n Body Temperture: %2, \n Heart Rate: %3, \n Sleeping Time: %4, \n Current Weight %5, \n Emotional State %6, \n Over Feeling %7, \n Notes: %8")
+                .arg(comment.bloodPressure)
+                .arg(comment.bodyTemperature)
+                .arg(comment.heartRate)
+                .arg(comment.sleepingTime)
+                .arg(comment.currentWeight)
+                .arg(comment.emotionalState)
+                .arg(comment.overallFeeling)
+                .arg(comment.notes);
+    }
+    ui->CommentsLabel->setText(detailsComments);
 }
+
+// Function to populate health indicators in the DetailedResultsPage
+void MainWindow::populateIndicators(HealthData* selectedData) {
+    if (!selectedData) {
+        QMessageBox::warning(this, "No Data", "No health data available.");
+        return;
+    }
+
+    // Functional Health Indicators
+    double energyLevel = selectedData->calculateEnergyLevel();
+    double immuneSystem = selectedData->calculateImmuneSystem();
+    double metabolism = selectedData->calculateMetabolism();
+    double psychoEmotionalState = selectedData->calculatePsychoEmotionalState();
+    double musculoskeletalSystem = selectedData->calculateMusculoskeletalSystem();
+
+    // Update Functional Health Indicators Labels
+    ui->EnergyNumberLabel->setText(QString::number(energyLevel, 'f', 2));
+    ui->ImmuneSystemNumberLabel->setText(QString::number(immuneSystem, 'f', 2));
+    ui->MetabolismNumberLabel->setText(QString::number(metabolism, 'f', 2));
+    ui->PsychoNumberLabel->setText(QString::number(psychoEmotionalState, 'f', 2));
+    ui->MuscleNumberLabel->setText(QString::number(musculoskeletalSystem, 'f', 2));
+
+    // Add classification ranges
+    ui->EnergyRangeLabel->setText(getClassification(energyLevel, 25, 55));
+    ui->ImmuneSystemRangeLabel->setText(getClassification(immuneSystem, 47, 57));
+    ui->MetabolismRangeLabel->setText(getClassification(metabolism, 1.1, 1.2));
+    ui->PsychoRangeLabel->setText(getClassification(psychoEmotionalState, 0.8, 1.2));
+    ui->MuscleRangeLabel->setText(getClassification(musculoskeletalSystem, 0.9, 1.2));
+
+    // Professional Practitioner Data
+    double averageValue = selectedData->calculateAverageValue();
+    double leftTotal = selectedData->calculateLeftTotal();
+    double rightTotal = selectedData->calculateRightTotal();
+    double leftRightRatio = selectedData->calculateLeftRightRatio();
+    double upperTotal = selectedData->calculateUpperTotal();
+    double lowerTotal = selectedData->calculateLowerTotal();
+    double upperLowerRatio = selectedData->calculateUpperLowerRatio();
+
+    // Update Practitioner Data Labels
+    ui->AverageValueNumber->setText(QString::number(averageValue, 'f', 2));
+    ui->LeftTotalNumber->setText(QString::number(leftTotal, 'f', 2));
+    ui->RightTotalNumber->setText(QString::number(rightTotal, 'f', 2));
+    ui->LeftRightTotalNumber->setText(QString::number(leftRightRatio, 'f', 2));
+    ui->UpperTotalNumber->setText(QString::number(upperTotal, 'f', 2));
+    ui->LowerTotalNumber->setText(QString::number(lowerTotal, 'f', 2));
+    ui->UpperLowerTotalNumber->setText(QString::number(upperLowerRatio, 'f', 2));
+}
+
+// Helper function to determine the classification range
+QString MainWindow::getClassification(double value, double min, double max) {
+    if (value < min) {
+        return "Below Normal";
+    } else if (value > max) {
+        return "Above Normal";
+    }
+    return "Normal";
+}
+
 
 
 
@@ -568,12 +683,58 @@ void MainWindow::showMeasureView(){
 
 void MainWindow::startScan()
 {
+    // Ensure the current user is set
+    if (!currentUser) {
+        ui->MeasureNowLabel->setText("No user is logged in.");
+        return;
+    }
+    // Get the list of profiles
+    QList<Profile*> profiles = currentUser->getProfiles();
+    if (profiles.isEmpty()) {
+        ui->MeasureNowLabel->setText("No profiles found for the current user.");
+        return;
+    }
+    // Create a list of profile names for display
+    QStringList profileNames;
+    for (Profile* profile : profiles) {
+        // Assuming Profile has a method getName() to get the profile name
+        profileNames.append(profile->getName());
+    }
+    // Show a dialog to select a profile
+    bool ok;
+    QString selectedProfileName = QInputDialog::getItem(
+        this,
+        "Select Profile",
+        "Choose a profile for the scan:",
+        profileNames,
+        0,  // Default index
+        false, // Editable: false (user can't edit the list)
+        &ok
+    );
+    if (!ok) {
+        ui->MeasureNowLabel->setText("Scan canceled.");
+        return;
+    }
+    // Find the selected profile
+    Profile* selectedProfile = nullptr;
+    for (Profile* profile : profiles) {
+        if (profile->getName() == selectedProfileName) {
+            selectedProfile = profile;
+            currProfile = profile;
+            break;
+        }
+    }
+    if (!selectedProfile) {
+        ui->MeasureNowLabel->setText("Selected profile not found.");
+        return;
+    }
+    // Proceed with scan for the selected profile
     currentScanPoint = 1;
     isDeviceScanned = false;
     ui->MeasureNowLabel->setText("Scan Point 1: Navigate to Device View and press Scan.");
+    ui->MeasureNowLabel->setText(QString("Starting scan for profile: %1").arg(selectedProfileName));
     ui->DeviceStatusLabel->setText("Ready for Scan 1.");
 }
-
 
 void MainWindow::nextScanPoint()
 {
@@ -583,7 +744,7 @@ void MainWindow::nextScanPoint()
     }
 
     // Process data after a valid scan
-    std::map<std::string, float> processedData = processor.processData();
+    processedData = processor.processData();
 
 
     if (currentScanPoint < totalScanPoints) {
@@ -593,10 +754,85 @@ void MainWindow::nextScanPoint()
         ui->DeviceStatusLabel->setText(QString("Ready for Scan %1.").arg(currentScanPoint));
     } else {
         ui->MeasureNowLabel->setText("All scan points completed!");
-        updateProcessedDataUI(processedData);
+//        updateProcessedDataUI(processedData);
+
+
+        showPersonalInfoPage();
     }
 }
 
+void MainWindow::showPersonalInfoPage(){
+ui->AppStackedWidget->setCurrentWidget(ui->PersonalMetricsPage);
+}
+
+QList<MeridianResult> MainWindow::convertProcessedDataToMeridianResults(const std::map<std::string, float>& processedData) {
+    QList<MeridianResult> meridianResults;
+
+    // For demonstration purposes, assume we have a logic for assigning sides and statuses.
+    // You'll want to adapt this based on your logic for determining the "side" (Left/Right) and the "status".
+    QString side;
+    QString status;
+    int conductance;
+
+    for (const auto& entry : processedData) {
+        MeridianResult result;
+
+        // Set meridian name
+        result.meridian = QString::fromStdString(entry.first);  // Convert from std::string to QString
+        conductance = static_cast<int>(entry.second);  // Convert the float to an integer (µA)
+
+        // For now, we alternate between Left and Right. You can modify this as needed.
+        if (result.meridian.contains("Left")) {
+            side = "Left";
+        } else if (result.meridian.contains("Right")) {
+            side = "Right";
+        } else {
+            side = "Unknown";  // If no specific side, assign as "Unknown"
+        }
+
+        result.side = side;
+
+        // Set the status based on the conductance (use ranges or other criteria to define status)
+        if (conductance < 80) {
+            status = "Low (Deficient)";
+        } else if (conductance <= 120) {
+            status = "Normal";
+        } else {
+            status = "High (Excess)";
+        }
+
+        result.status = status;
+        result.conductance = conductance;  // Set the conductance value in µA
+
+        // Add to the results list
+        meridianResults.append(result);
+    }
+
+    return meridianResults;
+}
+
+
+
+
+void MainWindow::saveResults(){
+    double bodyTemprature = ui->BodyTempBox->value();
+    QString bloodPressure = ui->BloodPressureBox->text();
+    int heartRate = ui->HeartRateBox->value();
+    int sleepingTime = ui->SleepTimeBox->value();
+    double currentWeight = ui->BodyWeightBox->value();
+    QString emotionalState = ui->EmoStateBox->text();
+    QString overallFeeling = ui->OverallFeelingBox->text();
+    QString notes = ui->NotesBox->toPlainText();
+
+    QList<Comments> commentsList = {
+        {bodyTemprature, bloodPressure, heartRate, sleepingTime, currentWeight, emotionalState, overallFeeling, notes}
+    };
+    QList<MeridianResult> data = convertProcessedDataToMeridianResults(processedData);
+
+    HealthData* healthData = new HealthData(QDate::currentDate(), data, commentsList);
+    currProfile->addHealthData(healthData);
+    ui->AppStackedWidget->setCurrentWidget(ui->HomePage);
+}
 
 
 void MainWindow::performDeviceScan()
@@ -617,7 +853,7 @@ void MainWindow::performDeviceScan()
         ui->DeviceStatusLabel->setText("Scan failed. Please try again.");
     }
 
-    updateBatteryLevelLabel();
+//    updateBatteryLevelLabel();
 }
 
 
@@ -648,7 +884,8 @@ void MainWindow::updateProcessedDataUI(const std::map<std::string, float>& proce
     for (const auto& [organ, value] : processedData) {
         dataText += QString("%1: %2%\n").arg(QString::fromStdString(organ)).arg(value);
     }
-    ui->ProcessedDataLabel->setText(dataText);
+    qDebug()<<"Data: "<<dataText;
+//    ui->ProcessedDataLabel->setText(dataText);
 }
 
 
