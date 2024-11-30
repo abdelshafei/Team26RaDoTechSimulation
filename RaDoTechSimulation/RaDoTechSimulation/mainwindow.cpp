@@ -40,22 +40,22 @@ MainWindow::MainWindow(QWidget *parent)
     connect(ui->EnterButton, &QPushButton::clicked, this, &MainWindow::showLoginPage);
 
     //Images
-    QPixmap loginImage("/home/student/Desktop/FinalProject/3004-Final-Project/images/loginImage.png");
+    QPixmap loginImage("/home/student/Desktop/Final/3004-Final-Project/images/loginImage.png");
     ui->loginImage->setPixmap(loginImage.scaled(81,71,Qt::KeepAspectRatio));
 
-    QPixmap Energy("/home/student/Desktop/FinalProject/3004-Final-Project/images/EnergyLevel.png");
+    QPixmap Energy("/home/student/Desktop/Final/3004-Final-Project/images/EnergyLevel.png");
     ui->EnergyImage->setPixmap(Energy.scaled(71,41,Qt::KeepAspectRatio));
 
-    QPixmap Immune("/home/student/Desktop/FinalProject/3004-Final-Project/images/ImmuneSystem.png");
+    QPixmap Immune("/home/student/Desktop/Final/3004-Final-Project/images/ImmuneSystem.png");
     ui->ImmuneSystemImage->setPixmap(Immune.scaled(81,71,Qt::KeepAspectRatio));
 
-    QPixmap Metabolism("/home/student/Desktop/FinalProject/3004-Final-Project/images/Metabolism.png");
+    QPixmap Metabolism("/home/student/Desktop/Final/3004-Final-Project/images/Metabolism.png");
     ui->MetabolismImage->setPixmap(Metabolism.scaled(71,41,Qt::KeepAspectRatio));
 
-    QPixmap Psycho("/home/student/Desktop/FinalProject/3004-Final-Project/images/Psycho.png");
+    QPixmap Psycho("/home/student/Desktop/Final/3004-Final-Project/images/Psycho.png");
     ui->PsychoImage->setPixmap(Psycho.scaled(81,71,Qt::KeepAspectRatio));
 
-    QPixmap Muscle("/home/student/Desktop/FinalProject/3004-Final-Project/images/Muscler.png");
+    QPixmap Muscle("/home/student/Desktop/Final/3004-Final-Project/images/Muscler.png");
     ui->MuscleImage->setPixmap(Muscle.scaled(71,41,Qt::KeepAspectRatio));
 
     //Save Button on Create Button
@@ -83,10 +83,27 @@ MainWindow::MainWindow(QWidget *parent)
     connect(ui->GoToMeasureViewButton, &QPushButton::clicked, this, &MainWindow::showMeasureView);
 
     connect(ui->SaveButtonNotes, &QPushButton::clicked, this, &MainWindow::saveResults);
-
-
-//    updateBatteryLevelLabel();
     showMeasureNowPage();
+
+
+    // Power buttons
+    connect(ui->OnButton, &QPushButton::clicked, this, &MainWindow::powerDevice);
+    connect(ui->OffButton, &QPushButton::clicked, this, &MainWindow::shutDownDevice);
+
+    batteryTimer = new QTimer(this);
+    batteryTimer->setInterval(15000);
+    connect(batteryTimer, &QTimer::timeout, this, &MainWindow::updateBatteryLevelLabel);
+
+    chargedBatteryTimer = new QTimer(this);
+    chargedBatteryTimer->setInterval(15000);
+    connect(chargedBatteryTimer, &QTimer::timeout, this, &MainWindow::UpdateChargedBatteryLevelLabel);
+
+    connect(ui->ChargeButton, &QPushButton::clicked, this, &MainWindow::ChargeBattery);
+
+    ui->ChargeButton->setText("Charging OFF");
+    powerDevice();
+
+    connect(ui->PairButton, &QPushButton::clicked, this, &MainWindow::PairUp);
 
 }
 
@@ -100,7 +117,13 @@ MainWindow::~MainWindow()
 void MainWindow::showAppView()
 {
     // TODO: When we implement login and create profile, here we do if statement of which view to first go to after device view
-    ui->ViewsStackedWidget->setCurrentWidget(ui->AppStartPage);
+    if (!currentUser)
+    {
+        ui->ViewsStackedWidget->setCurrentWidget(ui->AppStartPage);
+    } else {
+        ui->ViewsStackedWidget->setCurrentWidget(ui->AppView);
+        ui->AppStackedWidget->setCurrentWidget(ui->HomePage);
+    }
 }
 
 // Switch to Device View
@@ -305,30 +328,30 @@ void MainWindow::createPresetUsers() {
 
 
     QList<MeridianResult> results1 = {
-        {"H1 (Lung)", "Left", 75, "Normal"},
-        {"H1 (Lung)", "Right", 43, "Normal"},
-        {"H2 (Pericardium)", "Left", 79, "Low (Deficient)"},
-        {"H2 (Pericardium)", "Right", 73, "Normal"},
-        {"H3 (Heart)", "Left", 98, "High (Excess)"},
-        {"H3 (Heart)", "Right", 85, "Normal"},
-        {"H4 (Small Intestine)", "Left", 110, "Low (Deficient)"},
-        {"H4 (Small Intestine)", "Right", 104, "Low (Deficient)"},
-        {"H5 (Lymph)", "Left", 12, "Normal"},
-        {"H5 (Lymph)", "Right", 18, "Normal"},
-        {"H6 (Large Intestine)", "Left", 85, "Low (Deficient)"},
-        {"H6 (Large Intestine)", "Right", 31, "Normal"},
-        {"F1 (Spleen)", "Left", 124, "High (Excess)"},
-        {"F1 (Spleen)", "Right", 165, "High (Excess)"},
-        {"F2 (Liver)", "Left", 159, "Normal"},
-        {"F2 (Liver)", "Right", 171, "Normal"},
-        {"F3 (Kidney)", "Left", 61, "Normal"},
-        {"F3 (Kidney)", "Right", 67, "Low (Deficient)"},
-        {"F4 (Bladder)", "Left", 201, "Normal"},
-        {"F4 (Bladder)", "Right", 73, "Normal"},
-        {"F5 (Gallbladder)", "Left", 61, "Normal"},
-        {"F5 (Gallbladder)", "Right", 122, "Low (Deficient)"},
-        {"F6 (Stomach)", "Left", 146, "Low (Deficient)"},
-        {"F6 (Stomach)", "Right", 116, "High (Excess)"}
+        {"H1 (Lung)", "Left", 44, "Normal"},
+        {"H1 (Lung)", "Right", 40, "Normal"},
+        {"H2 (Pericardium)", "Left", 40, "Low (Deficient)"},
+        {"H2 (Pericardium)", "Right", 39, "Normal"},
+        {"H3 (Heart)", "Left", 43, "High (Excess)"},
+        {"H3 (Heart)", "Right", 45, "Normal"},
+        {"H4 (Small Intestine)", "Left", 55, "Low (Deficient)"},
+        {"H4 (Small Intestine)", "Right", 55, "Low (Deficient)"},
+        {"H5 (Lymph)", "Left", 9, "Normal"},
+        {"H5 (Lymph)", "Right", 12, "Normal"},
+        {"H6 (Large Intestine)", "Left", 50, "Low (Deficient)"},
+        {"H6 (Large Intestine)", "Right", 22, "Normal"},
+        {"F1 (Spleen)", "Left", 58, "High (Excess)"},
+        {"F1 (Spleen)", "Right", 71, "High (Excess)"},
+        {"F2 (Liver)", "Left", 54, "Normal"},
+        {"F2 (Liver)", "Right", 58, "Normal"},
+        {"F3 (Kidney)", "Left", 31, "Normal"},
+        {"F3 (Kidney)", "Right", 34, "Low (Deficient)"},
+        {"F4 (Bladder)", "Left", 75, "Normal"},
+        {"F4 (Bladder)", "Right", 32, "Normal"},
+        {"F5 (Gallbladder)", "Left", 26, "Normal"},
+        {"F5 (Gallbladder)", "Right", 45, "Low (Deficient)"},
+        {"F6 (Stomach)", "Left", 55, "Low (Deficient)"},
+        {"F6 (Stomach)", "Right", 48, "High (Excess)"}
     };
 
     QList<Comments> comments = {
@@ -733,6 +756,9 @@ void MainWindow::startScan()
     isDeviceScanned = false;
     ui->MeasureNowLabel->setText("Scan Point 1: Navigate to Device View and press Scan.");
     ui->MeasureNowLabel->setText(QString("Starting scan for profile: %1").arg(selectedProfileName));
+    QString imagePath = QString("/home/student/Desktop/Final/3004-Final-Project/images/ScanImages/Point1.png");
+    QPixmap pointImage(imagePath);
+    ui->MeasureNowImage->setPixmap(pointImage.scaled(501, 311, Qt::KeepAspectRatio));
     ui->DeviceStatusLabel->setText("Ready for Scan 1.");
 }
 
@@ -746,20 +772,65 @@ void MainWindow::nextScanPoint()
     // Process data after a valid scan
     processedData = processor.processData();
 
+    const std::vector<std::string> organs = {
+        "H1 (Lung), Left",
+        "H2 (Pericardium), Left",
+        "H3 (Heart), Left",
+        "H4 (Small Intestine), Left",
+        "H5 (Lymph), Left",
+        "H6 (Large Intestine), Left",
+        "F1 (Spleen), Left",
+        "F2 (Liver), Left",
+        "F3 (Kidney), Left",
+        "F4 (Bladder), Left",
+        "F5 (Gallbladder), Left",
+        "F6 (Stomach), Left",
+        "H1 (Lung), Right",
+        "H2 (Pericardium), Right",
+        "H3 (Heart), Right",
+        "H4 (Small Intestine), Right",
+        "H5 (Lymph), Right",
+        "H6 (Large Intestine), Right",
+        "F1 (Spleen), Right",
+        "F2 (Liver), Right",
+        "F3 (Kidney), Right",
+        "F4 (Bladder), Right",
+        "F5 (Gallbladder), Right",
+        "F6 (Stomach), Right"
+    };
 
     if (currentScanPoint < totalScanPoints) {
         currentScanPoint++;
         isDeviceScanned = false;
-        ui->MeasureNowLabel->setText(QString("Scan Point %1: Navigate to Device View and press Scan.").arg(currentScanPoint));
-        ui->DeviceStatusLabel->setText(QString("Ready for Scan %1.").arg(currentScanPoint));
+
+        // Get the organ being measured for the current scan point
+        QString organ = QString::fromStdString(organs[currentScanPoint - 1]); // -1 to match zero-based indexing
+
+        ui->MeasureNowLabel->setText(
+            QString("Scan Point %1: %2\nNavigate to Device View and press Scan.")
+                .arg(currentScanPoint)
+                .arg(organ)
+        );
+        ui->DeviceStatusLabel->setText(QString("Ready for Scan %1: %2").arg(currentScanPoint).arg(organ));
+
+        // Load and set the corresponding image
+        QString imagePath = QString("/home/student/Desktop/Final/3004-Final-Project/images/ScanImages/Point%1.png").arg(currentScanPoint);
+        QPixmap pointImage(imagePath);
+
+        if (!pointImage.isNull()) {
+            ui->MeasureNowImage->setPixmap(pointImage.scaled(501, 311, Qt::KeepAspectRatio));
+        } else {
+            ui->MeasureNowImage->clear(); // Clear the image if loading fails
+            ui->MeasureNowLabel->setText(QString("Scan Point %1: %2\nImage not found.").arg(currentScanPoint).arg(organ));
+        }
+
     } else {
         ui->MeasureNowLabel->setText("All scan points completed!");
-//        updateProcessedDataUI(processedData);
-
-
         showPersonalInfoPage();
     }
 }
+
+
 
 void MainWindow::showPersonalInfoPage(){
 ui->AppStackedWidget->setCurrentWidget(ui->PersonalMetricsPage);
@@ -828,7 +899,7 @@ void MainWindow::saveResults(){
         {bodyTemprature, bloodPressure, heartRate, sleepingTime, currentWeight, emotionalState, overallFeeling, notes}
     };
     QList<MeridianResult> data = convertProcessedDataToMeridianResults(processedData);
-
+    updateProcessedDataUI(processedData);
     HealthData* healthData = new HealthData(QDate::currentDate(), data, commentsList);
     currProfile->addHealthData(healthData);
     ui->AppStackedWidget->setCurrentWidget(ui->HomePage);
@@ -837,6 +908,14 @@ void MainWindow::saveResults(){
 
 void MainWindow::performDeviceScan()
 {
+    if(!device.getIsPaired()) {
+        QMessageBox NoPairMsg;
+        NoPairMsg.setText("Warning: The device is not paired up with the app");
+        NoPairMsg.setBaseSize(200, 200);
+        NoPairMsg.setIcon(QMessageBox::Warning);
+        NoPairMsg.exec();
+        return;
+    }
     if (!device.startScan()) {
         ui->DeviceStatusLabel->setText("Low battery. Cannot perform scan.");
         return;
@@ -857,15 +936,78 @@ void MainWindow::performDeviceScan()
 }
 
 
+void MainWindow::updateProcessedDataUI(const std::map<std::string, float>& processedData)
+{
+    QString dataText;
+    for (const auto& [organ, value] : processedData) {
+        dataText += QString("%1: %2 ").arg(QString::fromStdString(organ)).arg(value);
+    }
+    qDebug()<<"Data: "<<dataText;
+
+//    ui->ProcessedDataLabel->setText(dataText);
+}
+
+void MainWindow::PairUp() {
+    device.PairUp();
+
+    ui->PairButton->setDisabled(true);
+}
+
+void MainWindow::ChargeBattery() {
+    if(chargedBatteryTimer->isActive()) { //if was Charging
+        chargedBatteryTimer->stop();
+        batteryTimer->start();
+        ui->ChargeButton->setText("Charging OFF");
+    } else { //if was not Charging
+        chargedBatteryTimer->start();
+        batteryTimer->stop();
+        ui->ChargeButton->setText("Charging ON");
+    }
+}
+
+void MainWindow::UpdateChargedBatteryLevelLabel() {
+
+    if(device.getBatteryLevel() == 0){
+        ui->OnButton->setDisabled(false);
+        ui->DeviceScanButton->setDisabled(false);
+    }
+    this->device.chargeBattery();
+    ui->BatteryPowerProgressBar->setValue(device.getBatteryLevel());
+
+    if(device.isBatteryLow()) {
+        ui->BatteryPowerProgressBar->setStyleSheet(
+            "QProgressBar::chunk { background-color: yellow; }"
+            "QProgressBar { border: 1px solid gray; border-radius: 3px; text-align: center; }"
+        );
+    } else {
+        ui->BatteryPowerProgressBar->setStyleSheet(
+            "QProgressBar::chunk { background-color: green; }"
+            "QProgressBar { border: 1px solid gray; border-radius: 3px; text-align: center; }"
+        );
+    }
+
+
+}
+
+// depeletes battery label on ui
 void MainWindow::updateBatteryLevelLabel()
 {
-    int batteryLevel = device.getBatteryLevel();
+    this->device.depleteBattery();
+    ui->BatteryPowerProgressBar->setValue(device.getBatteryLevel());
 
-    // Update the progress bar value
-    ui->BatteryPowerProgressBar->setValue(batteryLevel);
+    qDebug() << "curr battery level: " << device.getBatteryLevel() << "\n";
+    if (device.isBatteryLow() && device.getBatteryLevel() == 20) {
+        ui->BatteryPowerProgressBar->setStyleSheet(
+            "QProgressBar::chunk { background-color: red; }"
+            "QProgressBar { border: 1px solid gray; border-radius: 3px; text-align: center; }"
+        );
+        QMessageBox LowBatteryMsg;
+        LowBatteryMsg.setText("Warning: Low Battery");
+        LowBatteryMsg.setIcon(QMessageBox::Warning);
+        LowBatteryMsg.setBaseSize(200, 200);
+        LowBatteryMsg.exec();
 
-    // Change the progress bar color based on the battery level
-    if (device.isBatteryLow()) {
+    } else if(device.isBatteryLow()) {
         ui->BatteryPowerProgressBar->setStyleSheet(
             "QProgressBar::chunk { background-color: red; }"
             "QProgressBar { border: 1px solid gray; border-radius: 3px; text-align: center; }"
@@ -876,16 +1018,26 @@ void MainWindow::updateBatteryLevelLabel()
             "QProgressBar { border: 1px solid gray; border-radius: 3px; text-align: center; }"
         );
     }
-}
 
-void MainWindow::updateProcessedDataUI(const std::map<std::string, float>& processedData)
-{
-    QString dataText;
-    for (const auto& [organ, value] : processedData) {
-        dataText += QString("%1: %2%\n").arg(QString::fromStdString(organ)).arg(value);
+    if(device.getBatteryLevel() == 0) {
+        ui->OnButton->setDisabled(true);
+        ui->DeviceScanButton->setDisabled(true);
+        ui->OffButton->setDisabled(true);
     }
-    qDebug()<<"Data: "<<dataText;
-//    ui->ProcessedDataLabel->setText(dataText);
 }
 
+void MainWindow::powerDevice()
+{
+    this->batteryTimer->start();
+    ui->DeviceScanButton->setDisabled(false);
+    ui->OnButton->setDisabled(true);
+    ui->OffButton->setDisabled(false);
+}
 
+void MainWindow::shutDownDevice()
+{
+    this->batteryTimer->stop();
+    //ui->DeviceScanButton->setDisabled(true);
+    ui->OffButton->setDisabled(true);
+    ui->OnButton->setDisabled(false);
+}
