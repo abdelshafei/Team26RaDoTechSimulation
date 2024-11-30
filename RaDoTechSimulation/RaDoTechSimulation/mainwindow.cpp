@@ -100,7 +100,13 @@ MainWindow::~MainWindow()
 void MainWindow::showAppView()
 {
     // TODO: When we implement login and create profile, here we do if statement of which view to first go to after device view
-    ui->ViewsStackedWidget->setCurrentWidget(ui->AppStartPage);
+    if (!currentUser)
+    {
+        ui->ViewsStackedWidget->setCurrentWidget(ui->AppStartPage);
+    } else {
+        ui->ViewsStackedWidget->setCurrentWidget(ui->AppView);
+        ui->AppStackedWidget->setCurrentWidget(ui->HomePage);
+    }
 }
 
 // Switch to Device View
@@ -305,30 +311,30 @@ void MainWindow::createPresetUsers() {
 
 
     QList<MeridianResult> results1 = {
-        {"H1 (Lung)", "Left", 75, "Normal"},
-        {"H1 (Lung)", "Right", 43, "Normal"},
-        {"H2 (Pericardium)", "Left", 79, "Low (Deficient)"},
-        {"H2 (Pericardium)", "Right", 73, "Normal"},
-        {"H3 (Heart)", "Left", 98, "High (Excess)"},
-        {"H3 (Heart)", "Right", 85, "Normal"},
-        {"H4 (Small Intestine)", "Left", 110, "Low (Deficient)"},
-        {"H4 (Small Intestine)", "Right", 104, "Low (Deficient)"},
-        {"H5 (Lymph)", "Left", 12, "Normal"},
-        {"H5 (Lymph)", "Right", 18, "Normal"},
-        {"H6 (Large Intestine)", "Left", 85, "Low (Deficient)"},
-        {"H6 (Large Intestine)", "Right", 31, "Normal"},
-        {"F1 (Spleen)", "Left", 124, "High (Excess)"},
-        {"F1 (Spleen)", "Right", 165, "High (Excess)"},
-        {"F2 (Liver)", "Left", 159, "Normal"},
-        {"F2 (Liver)", "Right", 171, "Normal"},
-        {"F3 (Kidney)", "Left", 61, "Normal"},
-        {"F3 (Kidney)", "Right", 67, "Low (Deficient)"},
-        {"F4 (Bladder)", "Left", 201, "Normal"},
-        {"F4 (Bladder)", "Right", 73, "Normal"},
-        {"F5 (Gallbladder)", "Left", 61, "Normal"},
-        {"F5 (Gallbladder)", "Right", 122, "Low (Deficient)"},
-        {"F6 (Stomach)", "Left", 146, "Low (Deficient)"},
-        {"F6 (Stomach)", "Right", 116, "High (Excess)"}
+        {"H1 (Lung)", "Left", 44, "Normal"},
+        {"H1 (Lung)", "Right", 40, "Normal"},
+        {"H2 (Pericardium)", "Left", 40, "Low (Deficient)"},
+        {"H2 (Pericardium)", "Right", 39, "Normal"},
+        {"H3 (Heart)", "Left", 43, "High (Excess)"},
+        {"H3 (Heart)", "Right", 45, "Normal"},
+        {"H4 (Small Intestine)", "Left", 55, "Low (Deficient)"},
+        {"H4 (Small Intestine)", "Right", 55, "Low (Deficient)"},
+        {"H5 (Lymph)", "Left", 9, "Normal"},
+        {"H5 (Lymph)", "Right", 12, "Normal"},
+        {"H6 (Large Intestine)", "Left", 50, "Low (Deficient)"},
+        {"H6 (Large Intestine)", "Right", 22, "Normal"},
+        {"F1 (Spleen)", "Left", 58, "High (Excess)"},
+        {"F1 (Spleen)", "Right", 71, "High (Excess)"},
+        {"F2 (Liver)", "Left", 54, "Normal"},
+        {"F2 (Liver)", "Right", 58, "Normal"},
+        {"F3 (Kidney)", "Left", 31, "Normal"},
+        {"F3 (Kidney)", "Right", 34, "Low (Deficient)"},
+        {"F4 (Bladder)", "Left", 75, "Normal"},
+        {"F4 (Bladder)", "Right", 32, "Normal"},
+        {"F5 (Gallbladder)", "Left", 26, "Normal"},
+        {"F5 (Gallbladder)", "Right", 45, "Low (Deficient)"},
+        {"F6 (Stomach)", "Left", 55, "Low (Deficient)"},
+        {"F6 (Stomach)", "Right", 48, "High (Excess)"}
     };
 
     QList<Comments> comments = {
@@ -733,6 +739,9 @@ void MainWindow::startScan()
     isDeviceScanned = false;
     ui->MeasureNowLabel->setText("Scan Point 1: Navigate to Device View and press Scan.");
     ui->MeasureNowLabel->setText(QString("Starting scan for profile: %1").arg(selectedProfileName));
+    QString imagePath = QString("/home/student/Desktop/FinalProject/3004-Final-Project/images/ScanImages/Point1.png");
+    QPixmap pointImage(imagePath);
+    ui->MeasureNowImage->setPixmap(pointImage.scaled(501, 311, Qt::KeepAspectRatio));
     ui->DeviceStatusLabel->setText("Ready for Scan 1.");
 }
 
@@ -746,20 +755,65 @@ void MainWindow::nextScanPoint()
     // Process data after a valid scan
     processedData = processor.processData();
 
+    const std::vector<std::string> organs = {
+        "H1 (Lung), Left",
+        "H2 (Pericardium), Left",
+        "H3 (Heart), Left",
+        "H4 (Small Intestine), Left",
+        "H5 (Lymph), Left",
+        "H6 (Large Intestine), Left",
+        "F1 (Spleen), Left",
+        "F2 (Liver), Left",
+        "F3 (Kidney), Left",
+        "F4 (Bladder), Left",
+        "F5 (Gallbladder), Left",
+        "F6 (Stomach), Left",
+        "H1 (Lung), Right",
+        "H2 (Pericardium), Right",
+        "H3 (Heart), Right",
+        "H4 (Small Intestine), Right",
+        "H5 (Lymph), Right",
+        "H6 (Large Intestine), Right",
+        "F1 (Spleen), Right",
+        "F2 (Liver), Right",
+        "F3 (Kidney), Right",
+        "F4 (Bladder), Right",
+        "F5 (Gallbladder), Right",
+        "F6 (Stomach), Right"
+    };
 
     if (currentScanPoint < totalScanPoints) {
         currentScanPoint++;
         isDeviceScanned = false;
-        ui->MeasureNowLabel->setText(QString("Scan Point %1: Navigate to Device View and press Scan.").arg(currentScanPoint));
-        ui->DeviceStatusLabel->setText(QString("Ready for Scan %1.").arg(currentScanPoint));
+
+        // Get the organ being measured for the current scan point
+        QString organ = QString::fromStdString(organs[currentScanPoint - 1]); // -1 to match zero-based indexing
+
+        ui->MeasureNowLabel->setText(
+            QString("Scan Point %1: %2\nNavigate to Device View and press Scan.")
+                .arg(currentScanPoint)
+                .arg(organ)
+        );
+        ui->DeviceStatusLabel->setText(QString("Ready for Scan %1: %2").arg(currentScanPoint).arg(organ));
+
+        // Load and set the corresponding image
+        QString imagePath = QString("/home/student/Desktop/FinalProject/3004-Final-Project/images/ScanImages/Point%1.png").arg(currentScanPoint);
+        QPixmap pointImage(imagePath);
+
+        if (!pointImage.isNull()) {
+            ui->MeasureNowImage->setPixmap(pointImage.scaled(501, 311, Qt::KeepAspectRatio));
+        } else {
+            ui->MeasureNowImage->clear(); // Clear the image if loading fails
+            ui->MeasureNowLabel->setText(QString("Scan Point %1: %2\nImage not found.").arg(currentScanPoint).arg(organ));
+        }
+
     } else {
         ui->MeasureNowLabel->setText("All scan points completed!");
-//        updateProcessedDataUI(processedData);
-
-
         showPersonalInfoPage();
     }
 }
+
+
 
 void MainWindow::showPersonalInfoPage(){
 ui->AppStackedWidget->setCurrentWidget(ui->PersonalMetricsPage);
@@ -828,7 +882,7 @@ void MainWindow::saveResults(){
         {bodyTemprature, bloodPressure, heartRate, sleepingTime, currentWeight, emotionalState, overallFeeling, notes}
     };
     QList<MeridianResult> data = convertProcessedDataToMeridianResults(processedData);
-
+    updateProcessedDataUI(processedData);
     HealthData* healthData = new HealthData(QDate::currentDate(), data, commentsList);
     currProfile->addHealthData(healthData);
     ui->AppStackedWidget->setCurrentWidget(ui->HomePage);
@@ -882,9 +936,10 @@ void MainWindow::updateProcessedDataUI(const std::map<std::string, float>& proce
 {
     QString dataText;
     for (const auto& [organ, value] : processedData) {
-        dataText += QString("%1: %2%\n").arg(QString::fromStdString(organ)).arg(value);
+        dataText += QString("%1: %2 ").arg(QString::fromStdString(organ)).arg(value);
     }
     qDebug()<<"Data: "<<dataText;
+
 //    ui->ProcessedDataLabel->setText(dataText);
 }
 

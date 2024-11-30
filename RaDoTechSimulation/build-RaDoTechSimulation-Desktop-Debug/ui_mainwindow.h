@@ -81,6 +81,7 @@ public:
     QPushButton *NextButton;
     QLabel *MeasureNowLabel;
     QLabel *ProcessedDataLabel;
+    QLabel *MeasureNowImage;
     QWidget *HistoricalPage;
     QLabel *HistoricalHeader;
     QListWidget *HistoryListWidget;
@@ -331,6 +332,9 @@ public:
 
         verticalLayout->addWidget(ProcessedDataLabel);
 
+        MeasureNowImage = new QLabel(MeasureNowPage);
+        MeasureNowImage->setObjectName(QString::fromUtf8("MeasureNowImage"));
+        MeasureNowImage->setGeometry(QRect(20, 210, 501, 311));
         AppStackedWidget->addWidget(MeasureNowPage);
         HistoricalPage = new QWidget();
         HistoricalPage->setObjectName(QString::fromUtf8("HistoricalPage"));
@@ -675,7 +679,7 @@ public:
 
         retranslateUi(MainWindow);
 
-        ResultsTabWidget->setCurrentIndex(2);
+        ResultsTabWidget->setCurrentIndex(0);
 
 
         QMetaObject::connectSlotsByName(MainWindow);
@@ -750,6 +754,7 @@ public:
         NextButton->setText(QCoreApplication::translate("MainWindow", "Next", nullptr));
         MeasureNowLabel->setText(QCoreApplication::translate("MainWindow", "TextLabel", nullptr));
         ProcessedDataLabel->setText(QCoreApplication::translate("MainWindow", "TextLabel", nullptr));
+        MeasureNowImage->setText(QCoreApplication::translate("MainWindow", "TextLabel", nullptr));
         HistoricalHeader->setText(QCoreApplication::translate("MainWindow", "Historical Data Page", nullptr));
 
         const bool __sortingEnabled = HistoryListWidget->isSortingEnabled();
