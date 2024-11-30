@@ -40,22 +40,22 @@ MainWindow::MainWindow(QWidget *parent)
     connect(ui->EnterButton, &QPushButton::clicked, this, &MainWindow::showLoginPage);
 
     //Images
-    QPixmap loginImage("/home/student/Desktop/FinalProject/3004-Final-Project/images/loginImage.png");
+    QPixmap loginImage("/home/student/Desktop/Final/3004-Final-Project/images/loginImage.png");
     ui->loginImage->setPixmap(loginImage.scaled(81,71,Qt::KeepAspectRatio));
 
-    QPixmap Energy("/home/student/Desktop/FinalProject/3004-Final-Project/images/EnergyLevel.png");
+    QPixmap Energy("/home/student/Desktop/Final/3004-Final-Project/images/EnergyLevel.png");
     ui->EnergyImage->setPixmap(Energy.scaled(71,41,Qt::KeepAspectRatio));
 
-    QPixmap Immune("/home/student/Desktop/FinalProject/3004-Final-Project/images/ImmuneSystem.png");
+    QPixmap Immune("/home/student/Desktop/Final/3004-Final-Project/images/ImmuneSystem.png");
     ui->ImmuneSystemImage->setPixmap(Immune.scaled(81,71,Qt::KeepAspectRatio));
 
-    QPixmap Metabolism("/home/student/Desktop/FinalProject/3004-Final-Project/images/Metabolism.png");
+    QPixmap Metabolism("/home/student/Desktop/Final/3004-Final-Project/images/Metabolism.png");
     ui->MetabolismImage->setPixmap(Metabolism.scaled(71,41,Qt::KeepAspectRatio));
 
-    QPixmap Psycho("/home/student/Desktop/FinalProject/3004-Final-Project/images/Psycho.png");
+    QPixmap Psycho("/home/student/Desktop/Final/3004-Final-Project/images/Psycho.png");
     ui->PsychoImage->setPixmap(Psycho.scaled(81,71,Qt::KeepAspectRatio));
 
-    QPixmap Muscle("/home/student/Desktop/FinalProject/3004-Final-Project/images/Muscler.png");
+    QPixmap Muscle("/home/student/Desktop/Final/3004-Final-Project/images/Muscler.png");
     ui->MuscleImage->setPixmap(Muscle.scaled(71,41,Qt::KeepAspectRatio));
 
     //Save Button on Create Button
@@ -83,10 +83,27 @@ MainWindow::MainWindow(QWidget *parent)
     connect(ui->GoToMeasureViewButton, &QPushButton::clicked, this, &MainWindow::showMeasureView);
 
     connect(ui->SaveButtonNotes, &QPushButton::clicked, this, &MainWindow::saveResults);
-
-
-//    updateBatteryLevelLabel();
     showMeasureNowPage();
+
+
+    // Power buttons
+    connect(ui->OnButton, &QPushButton::clicked, this, &MainWindow::powerDevice);
+    connect(ui->OffButton, &QPushButton::clicked, this, &MainWindow::shutDownDevice);
+
+    batteryTimer = new QTimer(this);
+    batteryTimer->setInterval(15000);
+    connect(batteryTimer, &QTimer::timeout, this, &MainWindow::updateBatteryLevelLabel);
+
+    chargedBatteryTimer = new QTimer(this);
+    chargedBatteryTimer->setInterval(15000);
+    connect(chargedBatteryTimer, &QTimer::timeout, this, &MainWindow::UpdateChargedBatteryLevelLabel);
+
+    connect(ui->ChargeButton, &QPushButton::clicked, this, &MainWindow::ChargeBattery);
+
+    ui->ChargeButton->setText("Charging OFF");
+    powerDevice();
+
+    connect(ui->PairButton, &QPushButton::clicked, this, &MainWindow::PairUp);
 
 }
 
@@ -739,7 +756,7 @@ void MainWindow::startScan()
     isDeviceScanned = false;
     ui->MeasureNowLabel->setText("Scan Point 1: Navigate to Device View and press Scan.");
     ui->MeasureNowLabel->setText(QString("Starting scan for profile: %1").arg(selectedProfileName));
-    QString imagePath = QString("/home/student/Desktop/FinalProject/3004-Final-Project/images/ScanImages/Point1.png");
+    QString imagePath = QString("/home/student/Desktop/Final/3004-Final-Project/images/ScanImages/Point1.png");
     QPixmap pointImage(imagePath);
     ui->MeasureNowImage->setPixmap(pointImage.scaled(501, 311, Qt::KeepAspectRatio));
     ui->DeviceStatusLabel->setText("Ready for Scan 1.");
@@ -797,7 +814,7 @@ void MainWindow::nextScanPoint()
         ui->DeviceStatusLabel->setText(QString("Ready for Scan %1: %2").arg(currentScanPoint).arg(organ));
 
         // Load and set the corresponding image
-        QString imagePath = QString("/home/student/Desktop/FinalProject/3004-Final-Project/images/ScanImages/Point%1.png").arg(currentScanPoint);
+        QString imagePath = QString("/home/student/Desktop/Final/3004-Final-Project/images/ScanImages/Point%1.png").arg(currentScanPoint);
         QPixmap pointImage(imagePath);
 
         if (!pointImage.isNull()) {
@@ -891,6 +908,14 @@ void MainWindow::saveResults(){
 
 void MainWindow::performDeviceScan()
 {
+    if(!device.getIsPaired()) {
+        QMessageBox NoPairMsg;
+        NoPairMsg.setText("Warning: The device is not paired up with the app");
+        NoPairMsg.setBaseSize(200, 200);
+        NoPairMsg.setIcon(QMessageBox::Warning);
+        NoPairMsg.exec();
+        return;
+    }
     if (!device.startScan()) {
         ui->DeviceStatusLabel->setText("Low battery. Cannot perform scan.");
         return;
@@ -911,27 +936,6 @@ void MainWindow::performDeviceScan()
 }
 
 
-void MainWindow::updateBatteryLevelLabel()
-{
-    int batteryLevel = device.getBatteryLevel();
-
-    // Update the progress bar value
-    ui->BatteryPowerProgressBar->setValue(batteryLevel);
-
-    // Change the progress bar color based on the battery level
-    if (device.isBatteryLow()) {
-        ui->BatteryPowerProgressBar->setStyleSheet(
-            "QProgressBar::chunk { background-color: red; }"
-            "QProgressBar { border: 1px solid gray; border-radius: 3px; text-align: center; }"
-        );
-    } else {
-        ui->BatteryPowerProgressBar->setStyleSheet(
-            "QProgressBar::chunk { background-color: green; }"
-            "QProgressBar { border: 1px solid gray; border-radius: 3px; text-align: center; }"
-        );
-    }
-}
-
 void MainWindow::updateProcessedDataUI(const std::map<std::string, float>& processedData)
 {
     QString dataText;
@@ -943,4 +947,97 @@ void MainWindow::updateProcessedDataUI(const std::map<std::string, float>& proce
 //    ui->ProcessedDataLabel->setText(dataText);
 }
 
+void MainWindow::PairUp() {
+    device.PairUp();
 
+    ui->PairButton->setDisabled(true);
+}
+
+void MainWindow::ChargeBattery() {
+    if(chargedBatteryTimer->isActive()) { //if was Charging
+        chargedBatteryTimer->stop();
+        batteryTimer->start();
+        ui->ChargeButton->setText("Charging OFF");
+    } else { //if was not Charging
+        chargedBatteryTimer->start();
+        batteryTimer->stop();
+        ui->ChargeButton->setText("Charging ON");
+    }
+}
+
+void MainWindow::UpdateChargedBatteryLevelLabel() {
+
+    if(device.getBatteryLevel() == 0){
+        ui->OnButton->setDisabled(false);
+        ui->DeviceScanButton->setDisabled(false);
+    }
+    this->device.chargeBattery();
+    ui->BatteryPowerProgressBar->setValue(device.getBatteryLevel());
+
+    if(device.isBatteryLow()) {
+        ui->BatteryPowerProgressBar->setStyleSheet(
+            "QProgressBar::chunk { background-color: yellow; }"
+            "QProgressBar { border: 1px solid gray; border-radius: 3px; text-align: center; }"
+        );
+    } else {
+        ui->BatteryPowerProgressBar->setStyleSheet(
+            "QProgressBar::chunk { background-color: green; }"
+            "QProgressBar { border: 1px solid gray; border-radius: 3px; text-align: center; }"
+        );
+    }
+
+
+}
+
+// depeletes battery label on ui
+void MainWindow::updateBatteryLevelLabel()
+{
+    this->device.depleteBattery();
+    ui->BatteryPowerProgressBar->setValue(device.getBatteryLevel());
+
+    qDebug() << "curr battery level: " << device.getBatteryLevel() << "\n";
+    if (device.isBatteryLow() && device.getBatteryLevel() == 20) {
+        ui->BatteryPowerProgressBar->setStyleSheet(
+            "QProgressBar::chunk { background-color: red; }"
+            "QProgressBar { border: 1px solid gray; border-radius: 3px; text-align: center; }"
+        );
+        QMessageBox LowBatteryMsg;
+        LowBatteryMsg.setText("Warning: Low Battery");
+        LowBatteryMsg.setIcon(QMessageBox::Warning);
+        LowBatteryMsg.setBaseSize(200, 200);
+        LowBatteryMsg.exec();
+
+    } else if(device.isBatteryLow()) {
+        ui->BatteryPowerProgressBar->setStyleSheet(
+            "QProgressBar::chunk { background-color: red; }"
+            "QProgressBar { border: 1px solid gray; border-radius: 3px; text-align: center; }"
+        );
+    } else {
+        ui->BatteryPowerProgressBar->setStyleSheet(
+            "QProgressBar::chunk { background-color: green; }"
+            "QProgressBar { border: 1px solid gray; border-radius: 3px; text-align: center; }"
+        );
+    }
+
+    if(device.getBatteryLevel() == 0) {
+        ui->OnButton->setDisabled(true);
+        ui->DeviceScanButton->setDisabled(true);
+        ui->OffButton->setDisabled(true);
+    }
+}
+
+void MainWindow::powerDevice()
+{
+    this->batteryTimer->start();
+    ui->DeviceScanButton->setDisabled(false);
+    ui->OnButton->setDisabled(true);
+    ui->OffButton->setDisabled(false);
+}
+
+void MainWindow::shutDownDevice()
+{
+    this->batteryTimer->stop();
+    //ui->DeviceScanButton->setDisabled(true);
+    ui->OffButton->setDisabled(true);
+    ui->OnButton->setDisabled(false);
+}

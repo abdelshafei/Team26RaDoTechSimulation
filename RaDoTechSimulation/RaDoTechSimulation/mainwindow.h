@@ -75,9 +75,19 @@ private:
     std::map<std::string, float> processedData;
     QString getClassification(double value, double min, double max);
 
-    void updateBatteryLevelLabel();
     void updateProcessedDataUI(const std::map<std::string, float>& processedData);
     QList<MeridianResult> convertProcessedDataToMeridianResults(const std::map<std::string, float>& processedData);
+
+    QTimer* batteryTimer;
+    QTimer* chargedBatteryTimer;
+
+    void updateBatteryLevelLabel();
+    void powerDevice();
+    void shutDownDevice();
+    void UpdateChargedBatteryLevelLabel();
+    void ChargeBattery();
+    void PairUp();
+
 
 };
 #endif // MAINWINDOW_H
