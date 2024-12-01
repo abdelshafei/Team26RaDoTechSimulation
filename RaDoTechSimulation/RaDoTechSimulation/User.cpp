@@ -11,3 +11,7 @@ User* User::validateCredentials(const QString& email, const QString& password, c
     }
     return nullptr; // No matching user
 }
+
+void User::setProfiles(const QList<Profile*>& updatedProfiles) {
+    profiles = updatedProfiles;
+}

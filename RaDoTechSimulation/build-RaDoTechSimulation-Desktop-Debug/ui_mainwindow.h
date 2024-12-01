@@ -98,6 +98,22 @@ public:
     QLabel *ProfileHeader;
     QLabel *ProfileListLabel;
     QPushButton *AddNewProfileButton;
+    QListWidget *ProfileListWidget;
+    QPushButton *ViewProfileDetailsButton;
+    QPushButton *DeleteProfileButton;
+    QWidget *ProfileDetailsPage;
+    QLabel *GenderLabelUpdate;
+    QLabel *loginImageUpdate;
+    QPushButton *SavePushButtonUpdate;
+    QLabel *WeightLabelUpdate;
+    QTextEdit *ProfileNameTextEditUpdate;
+    QLabel *HeightLabelUpdate;
+    QDateEdit *DOBEditUpdate;
+    QTextEdit *WeightTextEditUpdate;
+    QLabel *DateOfBirthLabelUpdate;
+    QTextEdit *HeightTextEditUpdate;
+    QComboBox *GenderComboBoxUpdate;
+    QLabel *label;
     QWidget *VisulizationPage;
     QLabel *VisulizationHeader;
     QWidget *chartContainer;
@@ -395,11 +411,62 @@ public:
         ProfileHeader->setGeometry(QRect(20, 10, 91, 17));
         ProfileListLabel = new QLabel(ProfilePage);
         ProfileListLabel->setObjectName(QString::fromUtf8("ProfileListLabel"));
-        ProfileListLabel->setGeometry(QRect(20, 40, 301, 531));
+        ProfileListLabel->setGeometry(QRect(20, 230, 301, 191));
         AddNewProfileButton = new QPushButton(ProfilePage);
         AddNewProfileButton->setObjectName(QString::fromUtf8("AddNewProfileButton"));
-        AddNewProfileButton->setGeometry(QRect(400, 20, 111, 25));
+        AddNewProfileButton->setGeometry(QRect(400, 30, 111, 25));
+        ProfileListWidget = new QListWidget(ProfilePage);
+        ProfileListWidget->setObjectName(QString::fromUtf8("ProfileListWidget"));
+        ProfileListWidget->setGeometry(QRect(10, 30, 381, 231));
+        ViewProfileDetailsButton = new QPushButton(ProfilePage);
+        ViewProfileDetailsButton->setObjectName(QString::fromUtf8("ViewProfileDetailsButton"));
+        ViewProfileDetailsButton->setGeometry(QRect(400, 60, 111, 25));
+        DeleteProfileButton = new QPushButton(ProfilePage);
+        DeleteProfileButton->setObjectName(QString::fromUtf8("DeleteProfileButton"));
+        DeleteProfileButton->setGeometry(QRect(400, 90, 111, 25));
         AppStackedWidget->addWidget(ProfilePage);
+        ProfileDetailsPage = new QWidget();
+        ProfileDetailsPage->setObjectName(QString::fromUtf8("ProfileDetailsPage"));
+        GenderLabelUpdate = new QLabel(ProfileDetailsPage);
+        GenderLabelUpdate->setObjectName(QString::fromUtf8("GenderLabelUpdate"));
+        GenderLabelUpdate->setGeometry(QRect(110, 70, 62, 17));
+        loginImageUpdate = new QLabel(ProfileDetailsPage);
+        loginImageUpdate->setObjectName(QString::fromUtf8("loginImageUpdate"));
+        loginImageUpdate->setGeometry(QRect(30, 30, 81, 71));
+        SavePushButtonUpdate = new QPushButton(ProfileDetailsPage);
+        SavePushButtonUpdate->setObjectName(QString::fromUtf8("SavePushButtonUpdate"));
+        SavePushButtonUpdate->setGeometry(QRect(70, 230, 231, 25));
+        WeightLabelUpdate = new QLabel(ProfileDetailsPage);
+        WeightLabelUpdate->setObjectName(QString::fromUtf8("WeightLabelUpdate"));
+        WeightLabelUpdate->setGeometry(QRect(20, 120, 81, 17));
+        ProfileNameTextEditUpdate = new QTextEdit(ProfileDetailsPage);
+        ProfileNameTextEditUpdate->setObjectName(QString::fromUtf8("ProfileNameTextEditUpdate"));
+        ProfileNameTextEditUpdate->setGeometry(QRect(110, 40, 211, 21));
+        HeightLabelUpdate = new QLabel(ProfileDetailsPage);
+        HeightLabelUpdate->setObjectName(QString::fromUtf8("HeightLabelUpdate"));
+        HeightLabelUpdate->setGeometry(QRect(20, 150, 81, 17));
+        DOBEditUpdate = new QDateEdit(ProfileDetailsPage);
+        DOBEditUpdate->setObjectName(QString::fromUtf8("DOBEditUpdate"));
+        DOBEditUpdate->setGeometry(QRect(110, 185, 201, 31));
+        WeightTextEditUpdate = new QTextEdit(ProfileDetailsPage);
+        WeightTextEditUpdate->setObjectName(QString::fromUtf8("WeightTextEditUpdate"));
+        WeightTextEditUpdate->setGeometry(QRect(100, 120, 211, 21));
+        DateOfBirthLabelUpdate = new QLabel(ProfileDetailsPage);
+        DateOfBirthLabelUpdate->setObjectName(QString::fromUtf8("DateOfBirthLabelUpdate"));
+        DateOfBirthLabelUpdate->setGeometry(QRect(20, 190, 91, 17));
+        HeightTextEditUpdate = new QTextEdit(ProfileDetailsPage);
+        HeightTextEditUpdate->setObjectName(QString::fromUtf8("HeightTextEditUpdate"));
+        HeightTextEditUpdate->setGeometry(QRect(100, 150, 211, 21));
+        GenderComboBoxUpdate = new QComboBox(ProfileDetailsPage);
+        GenderComboBoxUpdate->addItem(QString());
+        GenderComboBoxUpdate->addItem(QString());
+        GenderComboBoxUpdate->addItem(QString());
+        GenderComboBoxUpdate->setObjectName(QString::fromUtf8("GenderComboBoxUpdate"));
+        GenderComboBoxUpdate->setGeometry(QRect(110, 90, 86, 25));
+        label = new QLabel(ProfileDetailsPage);
+        label->setObjectName(QString::fromUtf8("label"));
+        label->setGeometry(QRect(30, 10, 111, 17));
+        AppStackedWidget->addWidget(ProfileDetailsPage);
         VisulizationPage = new QWidget();
         VisulizationPage->setObjectName(QString::fromUtf8("VisulizationPage"));
         VisulizationHeader = new QLabel(VisulizationPage);
@@ -810,6 +877,37 @@ public:
         ProfileHeader->setText(QCoreApplication::translate("MainWindow", "Profile Page", nullptr));
         ProfileListLabel->setText(QCoreApplication::translate("MainWindow", "TextLabel", nullptr));
         AddNewProfileButton->setText(QCoreApplication::translate("MainWindow", "Add New Profile", nullptr));
+        ViewProfileDetailsButton->setText(QCoreApplication::translate("MainWindow", "View Details", nullptr));
+        DeleteProfileButton->setText(QCoreApplication::translate("MainWindow", "Delete Profile", nullptr));
+        GenderLabelUpdate->setText(QCoreApplication::translate("MainWindow", "Gender", nullptr));
+        loginImageUpdate->setText(QCoreApplication::translate("MainWindow", "IMAGE", nullptr));
+        SavePushButtonUpdate->setText(QCoreApplication::translate("MainWindow", "Save", nullptr));
+        WeightLabelUpdate->setText(QCoreApplication::translate("MainWindow", "Weight, kg", nullptr));
+        ProfileNameTextEditUpdate->setHtml(QCoreApplication::translate("MainWindow", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
+"<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
+"p, li { white-space: pre-wrap; }\n"
+"</style></head><body style=\" font-family:'Sans'; font-size:10pt; font-weight:400; font-style:normal;\">\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">Profile Name</p>\n"
+"<p style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><br /></p></body></html>", nullptr));
+        HeightLabelUpdate->setText(QCoreApplication::translate("MainWindow", "Height, cm", nullptr));
+        WeightTextEditUpdate->setHtml(QCoreApplication::translate("MainWindow", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
+"<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
+"p, li { white-space: pre-wrap; }\n"
+"</style></head><body style=\" font-family:'Sans'; font-size:10pt; font-weight:400; font-style:normal;\">\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">Your Weight</p>\n"
+"<p style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><br /></p></body></html>", nullptr));
+        DateOfBirthLabelUpdate->setText(QCoreApplication::translate("MainWindow", "Date of Birth", nullptr));
+        HeightTextEditUpdate->setHtml(QCoreApplication::translate("MainWindow", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
+"<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
+"p, li { white-space: pre-wrap; }\n"
+"</style></head><body style=\" font-family:'Sans'; font-size:10pt; font-weight:400; font-style:normal;\">\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">Your Height</p></body></html>", nullptr));
+        GenderComboBoxUpdate->setItemText(0, QCoreApplication::translate("MainWindow", "Male", nullptr));
+        GenderComboBoxUpdate->setItemText(1, QCoreApplication::translate("MainWindow", "Female", nullptr));
+        GenderComboBoxUpdate->setItemText(2, QCoreApplication::translate("MainWindow", "Other", nullptr));
+
+        GenderComboBoxUpdate->setCurrentText(QCoreApplication::translate("MainWindow", "Male", nullptr));
+        label->setText(QCoreApplication::translate("MainWindow", "Profile Details", nullptr));
         VisulizationHeader->setText(QCoreApplication::translate("MainWindow", "Visulization Page", nullptr));
         TitleLabelMeteringResults->setText(QCoreApplication::translate("MainWindow", "Metering Results", nullptr));
         EnergyLevelLabel->setText(QCoreApplication::translate("MainWindow", "Energy Level", nullptr));

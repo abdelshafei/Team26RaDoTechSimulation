@@ -29,7 +29,14 @@ public:
 
     void addHealthData(HealthData* data) { history.append(data); }
     void setSelectedProfile(Profile* profile) {selectedProfile = profile; }
+
     Profile* getSelectedProfile() {return selectedProfile;}
+
+    void setName(const QString& name) { this->name = name; }
+    void setGender(const QString& gender) { this->gender = gender; }
+    void setWeight(double weight) { this->weight = weight; }
+    void setHeight(double height) { this->height = height; }
+    void setDateOfBirth(const QDate& dob) { this->dateOfBirth = dob; }
 
 };
 

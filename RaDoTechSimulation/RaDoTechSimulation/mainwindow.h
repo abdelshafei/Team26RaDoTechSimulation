@@ -40,6 +40,9 @@ public:
     void saveProfile(); // Save a new profile for the user
     void showProfiles(); // Display all profiles for the user
     void updateProfilesList();
+    void viewProfile();
+    void editProfile();
+    void deleteProfile();
     void goToCreateProfilePage();
 
 

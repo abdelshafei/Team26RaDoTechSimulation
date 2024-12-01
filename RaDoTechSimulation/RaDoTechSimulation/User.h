@@ -22,7 +22,7 @@ public:
     QList<Profile*> getProfiles() const { return profiles; }
 
     static User* validateCredentials(const QString& email, const QString& password, const QList<User*>& users);
-
+    void setProfiles(const QList<Profile*>& updatedProfiles);
 
 };
 
