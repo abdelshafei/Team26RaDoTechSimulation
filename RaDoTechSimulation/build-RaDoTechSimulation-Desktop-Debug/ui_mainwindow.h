@@ -16,6 +16,7 @@
 #include <QtWidgets/QDoubleSpinBox>
 #include <QtWidgets/QFormLayout>
 #include <QtWidgets/QFrame>
+#include <QtWidgets/QGridLayout>
 #include <QtWidgets/QHBoxLayout>
 #include <QtWidgets/QLabel>
 #include <QtWidgets/QLineEdit>
@@ -162,6 +163,70 @@ public:
     QLabel *UpperLowerTotalLabel;
     QLabel *UpperLowerTotalNumber;
     QWidget *Visulization;
+    QTabWidget *ChartsTabWidget;
+    QWidget *BarChart;
+    QWidget *ChartWidget;
+    QWidget *CircleChart;
+    QWidget *CircleChartWidget;
+    QWidget *BodyChart;
+    QWidget *BodyChartWidget;
+    QLabel *BodyLabel;
+    QWidget *gridLayoutWidget;
+    QGridLayout *Lungs;
+    QLabel *rightLungStatus;
+    QLabel *leftLungStatus;
+    QLabel *leftLungLabel;
+    QLabel *rightLungLabel;
+    QWidget *verticalLayoutWidget_4;
+    QVBoxLayout *Heart;
+    QLabel *heartLabel;
+    QHBoxLayout *horizontalLayout_2;
+    QLabel *rightHeartStatus;
+    QLabel *leftHeartStatus;
+    QWidget *verticalLayoutWidget_5;
+    QVBoxLayout *veins;
+    QLabel *veinsLabel;
+    QHBoxLayout *horizontalLayout_3;
+    QLabel *rightVeinsStatus;
+    QLabel *leftVeinsStatus;
+    QWidget *verticalLayoutWidget_6;
+    QVBoxLayout *verticalLayout_4;
+    QLabel *liverLabel;
+    QHBoxLayout *horizontalLayout_4;
+    QLabel *rightLiverStatus;
+    QLabel *leftLiverStatus;
+    QWidget *verticalLayoutWidget_7;
+    QVBoxLayout *verticalLayout_5;
+    QLabel *stomachLabel;
+    QHBoxLayout *horizontalLayout_5;
+    QLabel *rightStomachStatus;
+    QLabel *leftStomachStatus;
+    QWidget *verticalLayoutWidget_8;
+    QVBoxLayout *verticalLayout_6;
+    QLabel *gallbladderLabel;
+    QHBoxLayout *horizontalLayout_6;
+    QLabel *rightGallbladderStatus;
+    QLabel *leftGallbladderStatus;
+    QWidget *verticalLayoutWidget_9;
+    QVBoxLayout *verticalLayout_7;
+    QLabel *kidneyLabel;
+    QHBoxLayout *horizontalLayout_7;
+    QLabel *leftKidneyStatus;
+    QLabel *rightKidneyStatus;
+    QWidget *verticalLayoutWidget_10;
+    QVBoxLayout *verticalLayout_8;
+    QLabel *bladderLabel;
+    QHBoxLayout *horizontalLayout_8;
+    QLabel *rightBladderStatus;
+    QLabel *leftBladderStatus;
+    QWidget *verticalLayoutWidget_11;
+    QVBoxLayout *verticalLayout_9;
+    QLabel *intestineLabel;
+    QHBoxLayout *horizontalLayout_9;
+    QLabel *rightSmallIntestineStatus;
+    QLabel *leftSmallIntestineStatus;
+    QLabel *rightLargeIntestineStatus;
+    QLabel *leftLargeIntestineStatus;
     QWidget *Comments;
     QLabel *CommentsLabel;
     QWidget *Recommendation;
@@ -633,6 +698,339 @@ public:
         ResultsTabWidget->addTab(Indicators, QString());
         Visulization = new QWidget();
         Visulization->setObjectName(QString::fromUtf8("Visulization"));
+        ChartsTabWidget = new QTabWidget(Visulization);
+        ChartsTabWidget->setObjectName(QString::fromUtf8("ChartsTabWidget"));
+        ChartsTabWidget->setGeometry(QRect(0, 10, 521, 481));
+        BarChart = new QWidget();
+        BarChart->setObjectName(QString::fromUtf8("BarChart"));
+        ChartWidget = new QWidget(BarChart);
+        ChartWidget->setObjectName(QString::fromUtf8("ChartWidget"));
+        ChartWidget->setGeometry(QRect(0, 0, 531, 491));
+        ChartsTabWidget->addTab(BarChart, QString());
+        CircleChart = new QWidget();
+        CircleChart->setObjectName(QString::fromUtf8("CircleChart"));
+        CircleChartWidget = new QWidget(CircleChart);
+        CircleChartWidget->setObjectName(QString::fromUtf8("CircleChartWidget"));
+        CircleChartWidget->setGeometry(QRect(0, 0, 521, 451));
+        ChartsTabWidget->addTab(CircleChart, QString());
+        BodyChart = new QWidget();
+        BodyChart->setObjectName(QString::fromUtf8("BodyChart"));
+        BodyChartWidget = new QWidget(BodyChart);
+        BodyChartWidget->setObjectName(QString::fromUtf8("BodyChartWidget"));
+        BodyChartWidget->setGeometry(QRect(-1, -1, 521, 451));
+        BodyLabel = new QLabel(BodyChartWidget);
+        BodyLabel->setObjectName(QString::fromUtf8("BodyLabel"));
+        BodyLabel->setGeometry(QRect(0, 10, 521, 441));
+        gridLayoutWidget = new QWidget(BodyChartWidget);
+        gridLayoutWidget->setObjectName(QString::fromUtf8("gridLayoutWidget"));
+        gridLayoutWidget->setGeometry(QRect(180, 40, 151, 111));
+        Lungs = new QGridLayout(gridLayoutWidget);
+        Lungs->setObjectName(QString::fromUtf8("Lungs"));
+        Lungs->setHorizontalSpacing(6);
+        Lungs->setVerticalSpacing(1);
+        Lungs->setContentsMargins(0, 0, 0, 0);
+        rightLungStatus = new QLabel(gridLayoutWidget);
+        rightLungStatus->setObjectName(QString::fromUtf8("rightLungStatus"));
+        QFont font2;
+        font2.setPointSize(7);
+        rightLungStatus->setFont(font2);
+        rightLungStatus->setAlignment(Qt::AlignCenter);
+        rightLungStatus->setWordWrap(true);
+
+        Lungs->addWidget(rightLungStatus, 1, 1, 1, 1);
+
+        leftLungStatus = new QLabel(gridLayoutWidget);
+        leftLungStatus->setObjectName(QString::fromUtf8("leftLungStatus"));
+        leftLungStatus->setFont(font2);
+        leftLungStatus->setAlignment(Qt::AlignCenter);
+        leftLungStatus->setWordWrap(true);
+
+        Lungs->addWidget(leftLungStatus, 1, 0, 1, 1);
+
+        leftLungLabel = new QLabel(gridLayoutWidget);
+        leftLungLabel->setObjectName(QString::fromUtf8("leftLungLabel"));
+
+        Lungs->addWidget(leftLungLabel, 0, 0, 1, 1);
+
+        rightLungLabel = new QLabel(gridLayoutWidget);
+        rightLungLabel->setObjectName(QString::fromUtf8("rightLungLabel"));
+
+        Lungs->addWidget(rightLungLabel, 0, 1, 1, 1);
+
+        verticalLayoutWidget_4 = new QWidget(BodyChartWidget);
+        verticalLayoutWidget_4->setObjectName(QString::fromUtf8("verticalLayoutWidget_4"));
+        verticalLayoutWidget_4->setGeometry(QRect(10, 50, 160, 80));
+        Heart = new QVBoxLayout(verticalLayoutWidget_4);
+        Heart->setObjectName(QString::fromUtf8("Heart"));
+        Heart->setContentsMargins(0, 0, 0, 0);
+        heartLabel = new QLabel(verticalLayoutWidget_4);
+        heartLabel->setObjectName(QString::fromUtf8("heartLabel"));
+
+        Heart->addWidget(heartLabel);
+
+        horizontalLayout_2 = new QHBoxLayout();
+        horizontalLayout_2->setObjectName(QString::fromUtf8("horizontalLayout_2"));
+        rightHeartStatus = new QLabel(verticalLayoutWidget_4);
+        rightHeartStatus->setObjectName(QString::fromUtf8("rightHeartStatus"));
+        rightHeartStatus->setFont(font2);
+        rightHeartStatus->setAlignment(Qt::AlignCenter);
+        rightHeartStatus->setWordWrap(true);
+
+        horizontalLayout_2->addWidget(rightHeartStatus);
+
+        leftHeartStatus = new QLabel(verticalLayoutWidget_4);
+        leftHeartStatus->setObjectName(QString::fromUtf8("leftHeartStatus"));
+        leftHeartStatus->setFont(font2);
+        leftHeartStatus->setAlignment(Qt::AlignCenter);
+        leftHeartStatus->setWordWrap(true);
+
+        horizontalLayout_2->addWidget(leftHeartStatus);
+
+
+        Heart->addLayout(horizontalLayout_2);
+
+        verticalLayoutWidget_5 = new QWidget(BodyChartWidget);
+        verticalLayoutWidget_5->setObjectName(QString::fromUtf8("verticalLayoutWidget_5"));
+        verticalLayoutWidget_5->setGeometry(QRect(350, 60, 160, 80));
+        veins = new QVBoxLayout(verticalLayoutWidget_5);
+        veins->setObjectName(QString::fromUtf8("veins"));
+        veins->setContentsMargins(0, 0, 0, 0);
+        veinsLabel = new QLabel(verticalLayoutWidget_5);
+        veinsLabel->setObjectName(QString::fromUtf8("veinsLabel"));
+
+        veins->addWidget(veinsLabel);
+
+        horizontalLayout_3 = new QHBoxLayout();
+        horizontalLayout_3->setObjectName(QString::fromUtf8("horizontalLayout_3"));
+        rightVeinsStatus = new QLabel(verticalLayoutWidget_5);
+        rightVeinsStatus->setObjectName(QString::fromUtf8("rightVeinsStatus"));
+        rightVeinsStatus->setFont(font2);
+        rightVeinsStatus->setAlignment(Qt::AlignCenter);
+        rightVeinsStatus->setWordWrap(true);
+
+        horizontalLayout_3->addWidget(rightVeinsStatus);
+
+        leftVeinsStatus = new QLabel(verticalLayoutWidget_5);
+        leftVeinsStatus->setObjectName(QString::fromUtf8("leftVeinsStatus"));
+        leftVeinsStatus->setFont(font2);
+        leftVeinsStatus->setLayoutDirection(Qt::LeftToRight);
+        leftVeinsStatus->setAlignment(Qt::AlignCenter);
+        leftVeinsStatus->setWordWrap(true);
+
+        horizontalLayout_3->addWidget(leftVeinsStatus);
+
+
+        veins->addLayout(horizontalLayout_3);
+
+        verticalLayoutWidget_6 = new QWidget(BodyChartWidget);
+        verticalLayoutWidget_6->setObjectName(QString::fromUtf8("verticalLayoutWidget_6"));
+        verticalLayoutWidget_6->setGeometry(QRect(10, 150, 160, 80));
+        verticalLayout_4 = new QVBoxLayout(verticalLayoutWidget_6);
+        verticalLayout_4->setObjectName(QString::fromUtf8("verticalLayout_4"));
+        verticalLayout_4->setContentsMargins(0, 0, 0, 0);
+        liverLabel = new QLabel(verticalLayoutWidget_6);
+        liverLabel->setObjectName(QString::fromUtf8("liverLabel"));
+
+        verticalLayout_4->addWidget(liverLabel);
+
+        horizontalLayout_4 = new QHBoxLayout();
+        horizontalLayout_4->setObjectName(QString::fromUtf8("horizontalLayout_4"));
+        rightLiverStatus = new QLabel(verticalLayoutWidget_6);
+        rightLiverStatus->setObjectName(QString::fromUtf8("rightLiverStatus"));
+        rightLiverStatus->setFont(font2);
+        rightLiverStatus->setAlignment(Qt::AlignCenter);
+        rightLiverStatus->setWordWrap(true);
+
+        horizontalLayout_4->addWidget(rightLiverStatus);
+
+        leftLiverStatus = new QLabel(verticalLayoutWidget_6);
+        leftLiverStatus->setObjectName(QString::fromUtf8("leftLiverStatus"));
+        leftLiverStatus->setFont(font2);
+        leftLiverStatus->setAlignment(Qt::AlignCenter);
+        leftLiverStatus->setWordWrap(true);
+
+        horizontalLayout_4->addWidget(leftLiverStatus);
+
+
+        verticalLayout_4->addLayout(horizontalLayout_4);
+
+        verticalLayoutWidget_7 = new QWidget(BodyChartWidget);
+        verticalLayoutWidget_7->setObjectName(QString::fromUtf8("verticalLayoutWidget_7"));
+        verticalLayoutWidget_7->setGeometry(QRect(180, 160, 160, 80));
+        verticalLayout_5 = new QVBoxLayout(verticalLayoutWidget_7);
+        verticalLayout_5->setObjectName(QString::fromUtf8("verticalLayout_5"));
+        verticalLayout_5->setContentsMargins(0, 0, 0, 0);
+        stomachLabel = new QLabel(verticalLayoutWidget_7);
+        stomachLabel->setObjectName(QString::fromUtf8("stomachLabel"));
+
+        verticalLayout_5->addWidget(stomachLabel);
+
+        horizontalLayout_5 = new QHBoxLayout();
+        horizontalLayout_5->setObjectName(QString::fromUtf8("horizontalLayout_5"));
+        rightStomachStatus = new QLabel(verticalLayoutWidget_7);
+        rightStomachStatus->setObjectName(QString::fromUtf8("rightStomachStatus"));
+        rightStomachStatus->setFont(font2);
+        rightStomachStatus->setAlignment(Qt::AlignCenter);
+        rightStomachStatus->setWordWrap(true);
+
+        horizontalLayout_5->addWidget(rightStomachStatus);
+
+        leftStomachStatus = new QLabel(verticalLayoutWidget_7);
+        leftStomachStatus->setObjectName(QString::fromUtf8("leftStomachStatus"));
+        leftStomachStatus->setFont(font2);
+        leftStomachStatus->setAlignment(Qt::AlignCenter);
+        leftStomachStatus->setWordWrap(true);
+
+        horizontalLayout_5->addWidget(leftStomachStatus);
+
+
+        verticalLayout_5->addLayout(horizontalLayout_5);
+
+        verticalLayoutWidget_8 = new QWidget(BodyChartWidget);
+        verticalLayoutWidget_8->setObjectName(QString::fromUtf8("verticalLayoutWidget_8"));
+        verticalLayoutWidget_8->setGeometry(QRect(350, 160, 160, 80));
+        verticalLayout_6 = new QVBoxLayout(verticalLayoutWidget_8);
+        verticalLayout_6->setObjectName(QString::fromUtf8("verticalLayout_6"));
+        verticalLayout_6->setContentsMargins(0, 0, 0, 0);
+        gallbladderLabel = new QLabel(verticalLayoutWidget_8);
+        gallbladderLabel->setObjectName(QString::fromUtf8("gallbladderLabel"));
+
+        verticalLayout_6->addWidget(gallbladderLabel);
+
+        horizontalLayout_6 = new QHBoxLayout();
+        horizontalLayout_6->setObjectName(QString::fromUtf8("horizontalLayout_6"));
+        rightGallbladderStatus = new QLabel(verticalLayoutWidget_8);
+        rightGallbladderStatus->setObjectName(QString::fromUtf8("rightGallbladderStatus"));
+        rightGallbladderStatus->setFont(font2);
+        rightGallbladderStatus->setAlignment(Qt::AlignCenter);
+        rightGallbladderStatus->setWordWrap(true);
+
+        horizontalLayout_6->addWidget(rightGallbladderStatus);
+
+        leftGallbladderStatus = new QLabel(verticalLayoutWidget_8);
+        leftGallbladderStatus->setObjectName(QString::fromUtf8("leftGallbladderStatus"));
+        leftGallbladderStatus->setFont(font2);
+        leftGallbladderStatus->setAlignment(Qt::AlignCenter);
+        leftGallbladderStatus->setWordWrap(true);
+
+        horizontalLayout_6->addWidget(leftGallbladderStatus);
+
+
+        verticalLayout_6->addLayout(horizontalLayout_6);
+
+        verticalLayoutWidget_9 = new QWidget(BodyChartWidget);
+        verticalLayoutWidget_9->setObjectName(QString::fromUtf8("verticalLayoutWidget_9"));
+        verticalLayoutWidget_9->setGeometry(QRect(10, 250, 160, 80));
+        verticalLayout_7 = new QVBoxLayout(verticalLayoutWidget_9);
+        verticalLayout_7->setObjectName(QString::fromUtf8("verticalLayout_7"));
+        verticalLayout_7->setContentsMargins(0, 0, 0, 0);
+        kidneyLabel = new QLabel(verticalLayoutWidget_9);
+        kidneyLabel->setObjectName(QString::fromUtf8("kidneyLabel"));
+
+        verticalLayout_7->addWidget(kidneyLabel);
+
+        horizontalLayout_7 = new QHBoxLayout();
+        horizontalLayout_7->setObjectName(QString::fromUtf8("horizontalLayout_7"));
+        leftKidneyStatus = new QLabel(verticalLayoutWidget_9);
+        leftKidneyStatus->setObjectName(QString::fromUtf8("leftKidneyStatus"));
+        leftKidneyStatus->setFont(font2);
+        leftKidneyStatus->setAlignment(Qt::AlignCenter);
+        leftKidneyStatus->setWordWrap(true);
+
+        horizontalLayout_7->addWidget(leftKidneyStatus);
+
+        rightKidneyStatus = new QLabel(verticalLayoutWidget_9);
+        rightKidneyStatus->setObjectName(QString::fromUtf8("rightKidneyStatus"));
+        rightKidneyStatus->setFont(font2);
+        rightKidneyStatus->setAlignment(Qt::AlignCenter);
+        rightKidneyStatus->setWordWrap(true);
+
+        horizontalLayout_7->addWidget(rightKidneyStatus);
+
+
+        verticalLayout_7->addLayout(horizontalLayout_7);
+
+        verticalLayoutWidget_10 = new QWidget(BodyChartWidget);
+        verticalLayoutWidget_10->setObjectName(QString::fromUtf8("verticalLayoutWidget_10"));
+        verticalLayoutWidget_10->setGeometry(QRect(180, 250, 160, 80));
+        verticalLayout_8 = new QVBoxLayout(verticalLayoutWidget_10);
+        verticalLayout_8->setObjectName(QString::fromUtf8("verticalLayout_8"));
+        verticalLayout_8->setContentsMargins(0, 0, 0, 0);
+        bladderLabel = new QLabel(verticalLayoutWidget_10);
+        bladderLabel->setObjectName(QString::fromUtf8("bladderLabel"));
+
+        verticalLayout_8->addWidget(bladderLabel);
+
+        horizontalLayout_8 = new QHBoxLayout();
+        horizontalLayout_8->setObjectName(QString::fromUtf8("horizontalLayout_8"));
+        rightBladderStatus = new QLabel(verticalLayoutWidget_10);
+        rightBladderStatus->setObjectName(QString::fromUtf8("rightBladderStatus"));
+        rightBladderStatus->setFont(font2);
+        rightBladderStatus->setAlignment(Qt::AlignCenter);
+        rightBladderStatus->setWordWrap(true);
+
+        horizontalLayout_8->addWidget(rightBladderStatus);
+
+        leftBladderStatus = new QLabel(verticalLayoutWidget_10);
+        leftBladderStatus->setObjectName(QString::fromUtf8("leftBladderStatus"));
+        leftBladderStatus->setFont(font2);
+        leftBladderStatus->setAlignment(Qt::AlignCenter);
+        leftBladderStatus->setWordWrap(true);
+
+        horizontalLayout_8->addWidget(leftBladderStatus);
+
+
+        verticalLayout_8->addLayout(horizontalLayout_8);
+
+        verticalLayoutWidget_11 = new QWidget(BodyChartWidget);
+        verticalLayoutWidget_11->setObjectName(QString::fromUtf8("verticalLayoutWidget_11"));
+        verticalLayoutWidget_11->setGeometry(QRect(140, 350, 194, 80));
+        verticalLayout_9 = new QVBoxLayout(verticalLayoutWidget_11);
+        verticalLayout_9->setObjectName(QString::fromUtf8("verticalLayout_9"));
+        verticalLayout_9->setContentsMargins(0, 0, 0, 0);
+        intestineLabel = new QLabel(verticalLayoutWidget_11);
+        intestineLabel->setObjectName(QString::fromUtf8("intestineLabel"));
+
+        verticalLayout_9->addWidget(intestineLabel);
+
+        horizontalLayout_9 = new QHBoxLayout();
+        horizontalLayout_9->setObjectName(QString::fromUtf8("horizontalLayout_9"));
+        rightSmallIntestineStatus = new QLabel(verticalLayoutWidget_11);
+        rightSmallIntestineStatus->setObjectName(QString::fromUtf8("rightSmallIntestineStatus"));
+        rightSmallIntestineStatus->setFont(font2);
+        rightSmallIntestineStatus->setAlignment(Qt::AlignCenter);
+        rightSmallIntestineStatus->setWordWrap(true);
+
+        horizontalLayout_9->addWidget(rightSmallIntestineStatus);
+
+        leftSmallIntestineStatus = new QLabel(verticalLayoutWidget_11);
+        leftSmallIntestineStatus->setObjectName(QString::fromUtf8("leftSmallIntestineStatus"));
+        leftSmallIntestineStatus->setFont(font2);
+        leftSmallIntestineStatus->setAlignment(Qt::AlignCenter);
+        leftSmallIntestineStatus->setWordWrap(true);
+
+        horizontalLayout_9->addWidget(leftSmallIntestineStatus);
+
+        rightLargeIntestineStatus = new QLabel(verticalLayoutWidget_11);
+        rightLargeIntestineStatus->setObjectName(QString::fromUtf8("rightLargeIntestineStatus"));
+        rightLargeIntestineStatus->setFont(font2);
+        rightLargeIntestineStatus->setAlignment(Qt::AlignCenter);
+        rightLargeIntestineStatus->setWordWrap(true);
+
+        horizontalLayout_9->addWidget(rightLargeIntestineStatus);
+
+        leftLargeIntestineStatus = new QLabel(verticalLayoutWidget_11);
+        leftLargeIntestineStatus->setObjectName(QString::fromUtf8("leftLargeIntestineStatus"));
+        leftLargeIntestineStatus->setFont(font2);
+        leftLargeIntestineStatus->setAlignment(Qt::AlignCenter);
+        leftLargeIntestineStatus->setWordWrap(true);
+
+        horizontalLayout_9->addWidget(leftLargeIntestineStatus);
+
+
+        verticalLayout_9->addLayout(horizontalLayout_9);
+
+        ChartsTabWidget->addTab(BodyChart, QString());
         ResultsTabWidget->addTab(Visulization, QString());
         Comments = new QWidget();
         Comments->setObjectName(QString::fromUtf8("Comments"));
@@ -785,7 +1183,8 @@ public:
 
         retranslateUi(MainWindow);
 
-        ResultsTabWidget->setCurrentIndex(0);
+        ResultsTabWidget->setCurrentIndex(3);
+        ChartsTabWidget->setCurrentIndex(0);
 
 
         QMetaObject::connectSlotsByName(MainWindow);
@@ -945,6 +1344,40 @@ public:
         UpperLowerTotalLabel->setText(QCoreApplication::translate("MainWindow", "Upper/Lower:", nullptr));
         UpperLowerTotalNumber->setText(QCoreApplication::translate("MainWindow", "TextLabel", nullptr));
         ResultsTabWidget->setTabText(ResultsTabWidget->indexOf(Indicators), QCoreApplication::translate("MainWindow", "Tab 1", nullptr));
+        ChartsTabWidget->setTabText(ChartsTabWidget->indexOf(BarChart), QCoreApplication::translate("MainWindow", "Bar Graph", nullptr));
+        ChartsTabWidget->setTabText(ChartsTabWidget->indexOf(CircleChart), QCoreApplication::translate("MainWindow", "Circle Graph", nullptr));
+        BodyLabel->setText(QString());
+        rightLungStatus->setText(QString());
+        leftLungStatus->setText(QString());
+        leftLungLabel->setText(QString());
+        rightLungLabel->setText(QString());
+        heartLabel->setText(QCoreApplication::translate("MainWindow", "TextLabel", nullptr));
+        rightHeartStatus->setText(QCoreApplication::translate("MainWindow", "TextLabel", nullptr));
+        leftHeartStatus->setText(QCoreApplication::translate("MainWindow", "TextLabel", nullptr));
+        veinsLabel->setText(QCoreApplication::translate("MainWindow", "TextLabel", nullptr));
+        rightVeinsStatus->setText(QCoreApplication::translate("MainWindow", "TextLabel", nullptr));
+        leftVeinsStatus->setText(QCoreApplication::translate("MainWindow", "TextLabel", nullptr));
+        liverLabel->setText(QCoreApplication::translate("MainWindow", "TextLabel", nullptr));
+        rightLiverStatus->setText(QCoreApplication::translate("MainWindow", "TextLabel", nullptr));
+        leftLiverStatus->setText(QCoreApplication::translate("MainWindow", "TextLabel", nullptr));
+        stomachLabel->setText(QCoreApplication::translate("MainWindow", "TextLabel", nullptr));
+        rightStomachStatus->setText(QCoreApplication::translate("MainWindow", "TextLabel", nullptr));
+        leftStomachStatus->setText(QCoreApplication::translate("MainWindow", "TextLabel", nullptr));
+        gallbladderLabel->setText(QCoreApplication::translate("MainWindow", "TextLabel", nullptr));
+        rightGallbladderStatus->setText(QCoreApplication::translate("MainWindow", "TextLabel", nullptr));
+        leftGallbladderStatus->setText(QCoreApplication::translate("MainWindow", "TextLabel", nullptr));
+        kidneyLabel->setText(QCoreApplication::translate("MainWindow", "TextLabel", nullptr));
+        leftKidneyStatus->setText(QCoreApplication::translate("MainWindow", "TextLabel", nullptr));
+        rightKidneyStatus->setText(QCoreApplication::translate("MainWindow", "TextLabel", nullptr));
+        bladderLabel->setText(QCoreApplication::translate("MainWindow", "TextLabel", nullptr));
+        rightBladderStatus->setText(QCoreApplication::translate("MainWindow", "TextLabel", nullptr));
+        leftBladderStatus->setText(QCoreApplication::translate("MainWindow", "TextLabel", nullptr));
+        intestineLabel->setText(QCoreApplication::translate("MainWindow", "TextLabel", nullptr));
+        rightSmallIntestineStatus->setText(QCoreApplication::translate("MainWindow", "TextLabel", nullptr));
+        leftSmallIntestineStatus->setText(QCoreApplication::translate("MainWindow", "TextLabel", nullptr));
+        rightLargeIntestineStatus->setText(QCoreApplication::translate("MainWindow", "TextLabel", nullptr));
+        leftLargeIntestineStatus->setText(QCoreApplication::translate("MainWindow", "TextLabel", nullptr));
+        ChartsTabWidget->setTabText(ChartsTabWidget->indexOf(BodyChart), QCoreApplication::translate("MainWindow", "Body Graph", nullptr));
         ResultsTabWidget->setTabText(ResultsTabWidget->indexOf(Visulization), QCoreApplication::translate("MainWindow", "Tab 2", nullptr));
         CommentsLabel->setText(QCoreApplication::translate("MainWindow", "TextLabel", nullptr));
         ResultsTabWidget->setTabText(ResultsTabWidget->indexOf(Comments), QCoreApplication::translate("MainWindow", "Page", nullptr));

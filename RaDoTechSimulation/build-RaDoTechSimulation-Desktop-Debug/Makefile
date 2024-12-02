@@ -57,17 +57,21 @@ SOURCES       = ../RaDoTechSimulation/Battery.cpp \
 		../RaDoTechSimulation/HealthData.cpp \
 		../RaDoTechSimulation/RaDoTechDevice.cpp \
 		../RaDoTechSimulation/User.cpp \
+		../RaDoTechSimulation/Visualization.cpp \
 		../RaDoTechSimulation/main.cpp \
 		../RaDoTechSimulation/mainwindow.cpp qrc_qmake_qmake_qm_files.cpp \
+		moc_Visualization.cpp \
 		moc_mainwindow.cpp
 OBJECTS       = Battery.o \
 		DataProcessor.o \
 		HealthData.o \
 		RaDoTechDevice.o \
 		User.o \
+		Visualization.o \
 		main.o \
 		mainwindow.o \
 		qrc_qmake_qmake_qm_files.o \
+		moc_Visualization.o \
 		moc_mainwindow.o
 DIST          = /usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/spec_pre.prf \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/common/unix.conf \
@@ -155,11 +159,13 @@ DIST          = /usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/spec_pre.prf \
 		../RaDoTechSimulation/Profile.h \
 		../RaDoTechSimulation/RaDoTechDevice.h \
 		../RaDoTechSimulation/User.h \
+		../RaDoTechSimulation/Visualization.h \
 		../RaDoTechSimulation/mainwindow.h ../RaDoTechSimulation/Battery.cpp \
 		../RaDoTechSimulation/DataProcessor.cpp \
 		../RaDoTechSimulation/HealthData.cpp \
 		../RaDoTechSimulation/RaDoTechDevice.cpp \
 		../RaDoTechSimulation/User.cpp \
+		../RaDoTechSimulation/Visualization.cpp \
 		../RaDoTechSimulation/main.cpp \
 		../RaDoTechSimulation/mainwindow.cpp
 QMAKE_TARGET  = RaDoTechSimulation
@@ -355,8 +361,8 @@ distdir: FORCE
 	$(COPY_FILE) --parents ../RaDoTechSimulation/RaDoTechSimulation_en_CA.ts $(DISTDIR)/
 	$(COPY_FILE) --parents qmake_qmake_qm_files.qrc $(DISTDIR)/
 	$(COPY_FILE) --parents /usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/data/dummy.cpp $(DISTDIR)/
-	$(COPY_FILE) --parents ../RaDoTechSimulation/Battery.h ../RaDoTechSimulation/DataProcessor.h ../RaDoTechSimulation/HealthData.h ../RaDoTechSimulation/Profile.h ../RaDoTechSimulation/RaDoTechDevice.h ../RaDoTechSimulation/User.h ../RaDoTechSimulation/mainwindow.h $(DISTDIR)/
-	$(COPY_FILE) --parents ../RaDoTechSimulation/Battery.cpp ../RaDoTechSimulation/DataProcessor.cpp ../RaDoTechSimulation/HealthData.cpp ../RaDoTechSimulation/RaDoTechDevice.cpp ../RaDoTechSimulation/User.cpp ../RaDoTechSimulation/main.cpp ../RaDoTechSimulation/mainwindow.cpp $(DISTDIR)/
+	$(COPY_FILE) --parents ../RaDoTechSimulation/Battery.h ../RaDoTechSimulation/DataProcessor.h ../RaDoTechSimulation/HealthData.h ../RaDoTechSimulation/Profile.h ../RaDoTechSimulation/RaDoTechDevice.h ../RaDoTechSimulation/User.h ../RaDoTechSimulation/Visualization.h ../RaDoTechSimulation/mainwindow.h $(DISTDIR)/
+	$(COPY_FILE) --parents ../RaDoTechSimulation/Battery.cpp ../RaDoTechSimulation/DataProcessor.cpp ../RaDoTechSimulation/HealthData.cpp ../RaDoTechSimulation/RaDoTechDevice.cpp ../RaDoTechSimulation/User.cpp ../RaDoTechSimulation/Visualization.cpp ../RaDoTechSimulation/main.cpp ../RaDoTechSimulation/mainwindow.cpp $(DISTDIR)/
 	$(COPY_FILE) --parents ../RaDoTechSimulation/mainwindow.ui $(DISTDIR)/
 	$(COPY_FILE) --parents ../RaDoTechSimulation/RaDoTechSimulation_en_CA.ts $(DISTDIR)/
 
@@ -402,9 +408,16 @@ compiler_moc_predefs_clean:
 moc_predefs.h: /usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/data/dummy.cpp
 	g++ -pipe -g -std=gnu++11 -Wall -Wextra -dM -E -o moc_predefs.h /usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/data/dummy.cpp
 
-compiler_moc_header_make_all: moc_mainwindow.cpp
+compiler_moc_header_make_all: moc_Visualization.cpp moc_mainwindow.cpp
 compiler_moc_header_clean:
-	-$(DEL_FILE) moc_mainwindow.cpp
+	-$(DEL_FILE) moc_Visualization.cpp moc_mainwindow.cpp
+moc_Visualization.cpp: ../RaDoTechSimulation/Visualization.h \
+		ui_mainwindow.h \
+		../RaDoTechSimulation/HealthData.h \
+		moc_predefs.h \
+		/usr/lib/qt5/bin/moc
+	/usr/lib/qt5/bin/moc $(DEFINES) --include /home/student/Desktop/Final/3004-Final-Project/RaDoTechSimulation/build-RaDoTechSimulation-Desktop-Debug/moc_predefs.h -I/usr/lib/x86_64-linux-gnu/qt5/mkspecs/linux-g++ -I/home/student/Desktop/Final/3004-Final-Project/RaDoTechSimulation/RaDoTechSimulation -I/usr/include/x86_64-linux-gnu/qt5 -I/usr/include/x86_64-linux-gnu/qt5/QtCharts -I/usr/include/x86_64-linux-gnu/qt5/QtWidgets -I/usr/include/x86_64-linux-gnu/qt5/QtGui -I/usr/include/x86_64-linux-gnu/qt5/QtCore -I. -I/usr/include/c++/11 -I/usr/include/x86_64-linux-gnu/c++/11 -I/usr/include/c++/11/backward -I/usr/lib/gcc/x86_64-linux-gnu/11/include -I/usr/local/include -I/usr/include/x86_64-linux-gnu -I/usr/include ../RaDoTechSimulation/Visualization.h -o moc_Visualization.cpp
+
 moc_mainwindow.cpp: ../RaDoTechSimulation/mainwindow.h \
 		../RaDoTechSimulation/User.h \
 		../RaDoTechSimulation/Profile.h \
@@ -412,6 +425,8 @@ moc_mainwindow.cpp: ../RaDoTechSimulation/mainwindow.h \
 		../RaDoTechSimulation/RaDoTechDevice.h \
 		../RaDoTechSimulation/Battery.h \
 		../RaDoTechSimulation/DataProcessor.h \
+		../RaDoTechSimulation/Visualization.h \
+		ui_mainwindow.h \
 		moc_predefs.h \
 		/usr/lib/qt5/bin/moc
 	/usr/lib/qt5/bin/moc $(DEFINES) --include /home/student/Desktop/Final/3004-Final-Project/RaDoTechSimulation/build-RaDoTechSimulation-Desktop-Debug/moc_predefs.h -I/usr/lib/x86_64-linux-gnu/qt5/mkspecs/linux-g++ -I/home/student/Desktop/Final/3004-Final-Project/RaDoTechSimulation/RaDoTechSimulation -I/usr/include/x86_64-linux-gnu/qt5 -I/usr/include/x86_64-linux-gnu/qt5/QtCharts -I/usr/include/x86_64-linux-gnu/qt5/QtWidgets -I/usr/include/x86_64-linux-gnu/qt5/QtGui -I/usr/include/x86_64-linux-gnu/qt5/QtCore -I. -I/usr/include/c++/11 -I/usr/include/x86_64-linux-gnu/c++/11 -I/usr/include/c++/11/backward -I/usr/lib/gcc/x86_64-linux-gnu/11/include -I/usr/local/include -I/usr/include/x86_64-linux-gnu -I/usr/include ../RaDoTechSimulation/mainwindow.h -o moc_mainwindow.cpp
@@ -455,13 +470,20 @@ User.o: ../RaDoTechSimulation/User.cpp ../RaDoTechSimulation/User.h \
 		../RaDoTechSimulation/HealthData.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o User.o ../RaDoTechSimulation/User.cpp
 
+Visualization.o: ../RaDoTechSimulation/Visualization.cpp ../RaDoTechSimulation/Visualization.h \
+		ui_mainwindow.h \
+		../RaDoTechSimulation/HealthData.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o Visualization.o ../RaDoTechSimulation/Visualization.cpp
+
 main.o: ../RaDoTechSimulation/main.cpp ../RaDoTechSimulation/mainwindow.h \
 		../RaDoTechSimulation/User.h \
 		../RaDoTechSimulation/Profile.h \
 		../RaDoTechSimulation/HealthData.h \
 		../RaDoTechSimulation/RaDoTechDevice.h \
 		../RaDoTechSimulation/Battery.h \
-		../RaDoTechSimulation/DataProcessor.h
+		../RaDoTechSimulation/DataProcessor.h \
+		../RaDoTechSimulation/Visualization.h \
+		ui_mainwindow.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o main.o ../RaDoTechSimulation/main.cpp
 
 mainwindow.o: ../RaDoTechSimulation/mainwindow.cpp ../RaDoTechSimulation/mainwindow.h \
@@ -471,11 +493,15 @@ mainwindow.o: ../RaDoTechSimulation/mainwindow.cpp ../RaDoTechSimulation/mainwin
 		../RaDoTechSimulation/RaDoTechDevice.h \
 		../RaDoTechSimulation/Battery.h \
 		../RaDoTechSimulation/DataProcessor.h \
+		../RaDoTechSimulation/Visualization.h \
 		ui_mainwindow.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o mainwindow.o ../RaDoTechSimulation/mainwindow.cpp
 
 qrc_qmake_qmake_qm_files.o: qrc_qmake_qmake_qm_files.cpp 
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o qrc_qmake_qmake_qm_files.o qrc_qmake_qmake_qm_files.cpp
+
+moc_Visualization.o: moc_Visualization.cpp 
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o moc_Visualization.o moc_Visualization.cpp
 
 moc_mainwindow.o: moc_mainwindow.cpp 
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o moc_mainwindow.o moc_mainwindow.cpp

@@ -607,6 +607,9 @@ void MainWindow::viewDetails() {
     // Display the results on the Detailed Results Page
 //    ui->DetailedResultsLabel->setText(detailsText);
     populateIndicators(selectedData);
+    visualizer->showBarGraph(selectedData, ui);
+    visualizer->showCircleGraph(selectedData, ui);
+    visualizer->showBodyGraph(selectedData, ui);
     ui->AppStackedWidget->setCurrentWidget(ui->DetailedResultsPage);
 
 
