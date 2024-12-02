@@ -254,10 +254,6 @@ public:
     QPushButton *MeasureNowButton;
     QPushButton *HistoryPageButton;
     QPushButton *ProfilePageButton;
-    QPushButton *VisulizationPageButton;
-    QPushButton *IndicatorButton;
-    QPushButton *CommentsButton;
-    QPushButton *RecommendationsButton;
     QWidget *AppStartPage;
     QLabel *TitleLabel;
     QPushButton *CreateProfileButton;
@@ -1146,18 +1142,6 @@ public:
         ProfilePageButton = new QPushButton(AppView);
         ProfilePageButton->setObjectName(QString::fromUtf8("ProfilePageButton"));
         ProfilePageButton->setGeometry(QRect(10, 150, 91, 25));
-        VisulizationPageButton = new QPushButton(AppView);
-        VisulizationPageButton->setObjectName(QString::fromUtf8("VisulizationPageButton"));
-        VisulizationPageButton->setGeometry(QRect(10, 190, 91, 25));
-        IndicatorButton = new QPushButton(AppView);
-        IndicatorButton->setObjectName(QString::fromUtf8("IndicatorButton"));
-        IndicatorButton->setGeometry(QRect(20, 220, 83, 25));
-        CommentsButton = new QPushButton(AppView);
-        CommentsButton->setObjectName(QString::fromUtf8("CommentsButton"));
-        CommentsButton->setGeometry(QRect(10, 250, 83, 25));
-        RecommendationsButton = new QPushButton(AppView);
-        RecommendationsButton->setObjectName(QString::fromUtf8("RecommendationsButton"));
-        RecommendationsButton->setGeometry(QRect(0, 290, 131, 25));
         ViewsStackedWidget->addWidget(AppView);
         AppStartPage = new QWidget();
         AppStartPage->setObjectName(QString::fromUtf8("AppStartPage"));
@@ -1183,7 +1167,7 @@ public:
 
         retranslateUi(MainWindow);
 
-        ResultsTabWidget->setCurrentIndex(3);
+        ResultsTabWidget->setCurrentIndex(0);
         ChartsTabWidget->setCurrentIndex(0);
 
 
@@ -1395,10 +1379,6 @@ public:
         MeasureNowButton->setText(QCoreApplication::translate("MainWindow", "Measure Now", nullptr));
         HistoryPageButton->setText(QCoreApplication::translate("MainWindow", "History", nullptr));
         ProfilePageButton->setText(QCoreApplication::translate("MainWindow", "Profiles", nullptr));
-        VisulizationPageButton->setText(QCoreApplication::translate("MainWindow", "Visulization", nullptr));
-        IndicatorButton->setText(QCoreApplication::translate("MainWindow", "Indicators", nullptr));
-        CommentsButton->setText(QCoreApplication::translate("MainWindow", "Comment", nullptr));
-        RecommendationsButton->setText(QCoreApplication::translate("MainWindow", "Recommendations", nullptr));
         TitleLabel->setText(QCoreApplication::translate("MainWindow", "RaDoTech", nullptr));
         CreateProfileButton->setText(QCoreApplication::translate("MainWindow", "Create Profile", nullptr));
         EnterButton->setText(QCoreApplication::translate("MainWindow", "Enter", nullptr));
