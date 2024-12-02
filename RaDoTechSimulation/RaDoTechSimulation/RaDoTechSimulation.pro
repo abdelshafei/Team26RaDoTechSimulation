@@ -14,6 +14,7 @@ SOURCES += \
     HealthData.cpp \
     RaDoTechDevice.cpp \
     User.cpp \
+    Visualization.cpp \
     main.cpp \
     mainwindow.cpp
 
@@ -24,6 +25,7 @@ HEADERS += \
     Profile.h \
     RaDoTechDevice.h \
     User.h \
+    Visualization.h \
     mainwindow.h
 
 FORMS += \
