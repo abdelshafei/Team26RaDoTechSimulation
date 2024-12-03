@@ -6,6 +6,7 @@
 #include "HealthData.h"
 #include "RaDoTechDevice.h"
 #include "DataProcessor.h"
+#include "Visualization.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -40,6 +41,9 @@ public:
     void saveProfile(); // Save a new profile for the user
     void showProfiles(); // Display all profiles for the user
     void updateProfilesList();
+    void viewProfile();
+    void editProfile();
+    void deleteProfile();
     void goToCreateProfilePage();
 
 
@@ -60,7 +64,7 @@ private:
     QList<User*> presetUsers; // List of preset users
     User* currentUser;
     void createPresetUsers(); // Initialize preset users
-
+    Visualization* visualizer;
 //    void setProcessedData(std::map<std::string, float>* processedDataResults);
 //    std::map<std::string, float> getProcessedData() { return processedData;}
 

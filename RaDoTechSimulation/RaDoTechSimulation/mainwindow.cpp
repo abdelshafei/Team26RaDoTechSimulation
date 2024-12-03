@@ -35,13 +35,13 @@ MainWindow::MainWindow(QWidget *parent)
     connect(ui->MeasureNowButton, &QPushButton::clicked, this, &MainWindow::showMeasureNowPage);
     connect(ui->HistoryPageButton, &QPushButton::clicked, this, &MainWindow::showHistoricalPage);
     connect(ui->ProfilePageButton, &QPushButton::clicked, this, &MainWindow::showProfilePage);
-    connect(ui->VisulizationPageButton, &QPushButton::clicked, this, &MainWindow::showVisualizationPage);
     connect(ui->CreateProfileButton, &QPushButton::clicked, this, &MainWindow::showCreateProfilePage);
     connect(ui->EnterButton, &QPushButton::clicked, this, &MainWindow::showLoginPage);
 
     //Images
     QPixmap loginImage("/home/student/Desktop/Final/3004-Final-Project/images/loginImage.png");
     ui->loginImage->setPixmap(loginImage.scaled(81,71,Qt::KeepAspectRatio));
+    ui->loginImageUpdate->setPixmap(loginImage.scaled(81,71,Qt::KeepAspectRatio));
 
     QPixmap Energy("/home/student/Desktop/Final/3004-Final-Project/images/EnergyLevel.png");
     ui->EnergyImage->setPixmap(Energy.scaled(71,41,Qt::KeepAspectRatio));
@@ -60,6 +60,8 @@ MainWindow::MainWindow(QWidget *parent)
 
     //Save Button on Create Button
     connect(ui->SavePushButton, &QPushButton::clicked, this, &MainWindow::saveProfile);
+    connect(ui->SavePushButtonUpdate, &QPushButton::clicked, this, &MainWindow::editProfile);
+    connect(ui->DeleteProfileButton, &QPushButton::clicked, this, &MainWindow::deleteProfile);
 //    currentUser = new User("example@example.com", "password123");
     connect(ui->AddNewProfileButton, &QPushButton::clicked, this, &MainWindow::goToCreateProfilePage);
 
@@ -70,6 +72,7 @@ MainWindow::MainWindow(QWidget *parent)
     connect(ui->EnterLoginButton, &QPushButton::clicked, this, &MainWindow::handleLogin);
 
     connect(ui->ViewDetailsButton, &QPushButton::clicked, this, &MainWindow::viewDetails);
+    connect(ui->ViewProfileDetailsButton, &QPushButton::clicked, this, &MainWindow::viewProfile);
 
     ui->ResultsTabWidget->setTabText(0, "Indicator");
     ui->ResultsTabWidget->setTabText(1, "Visulization");
@@ -89,6 +92,7 @@ MainWindow::MainWindow(QWidget *parent)
     // Power buttons
     connect(ui->OnButton, &QPushButton::clicked, this, &MainWindow::powerDevice);
     connect(ui->OffButton, &QPushButton::clicked, this, &MainWindow::shutDownDevice);
+    ui->BatteryPowerProgressBar->setValue(100);
 
     batteryTimer = new QTimer(this);
     batteryTimer->setInterval(15000);
@@ -249,9 +253,12 @@ void MainWindow::saveProfile() {
 
 void MainWindow::updateProfilesList() {
     if (!currentUser) {
-        ui->ProfileListLabel->setText("No profiles found.");
+        ui->ProfileListWidget->clear();
+        QMessageBox::information(this, "No Data", "No profiles");
         return;
     }
+
+    ui->ProfileListWidget->clear();
 
     // Retrieve profiles
     QList<Profile*> profiles = currentUser->getProfiles();
@@ -259,21 +266,137 @@ void MainWindow::updateProfilesList() {
     qDebug()<<profiles.size();
 
     // Build profile list as a string
-    QString profilesText;
-    for (int i = 0; i < profiles.size(); ++i) {
-        Profile* profile = profiles[i];
-        profilesText += QString("Current User: %1\n").arg(currentUser->getEmail());
 
-        profilesText += QString("Profile %1:\n").arg(i + 1);
-        profilesText += QString("Name: %1\n").arg(profile->getName());
-        profilesText += QString("Gender: %1\n").arg(profile->getGender());
-        profilesText += QString("Weight: %1 kg\n").arg(profile->getWeight());
-        profilesText += QString("Height: %1 cm\n").arg(profile->getHeight());
-        profilesText += QString("Date of Birth: %1\n\n").arg(profile->getDateOfBirth().toString("yyyy-MM-dd"));
+    for (Profile* profile : currentUser->getProfiles()) {
+        if (!profile) continue;
+        QString profilesText = QString(profile->getName());
+        ui->ProfileListWidget->addItem(profilesText);
     }
 
-    // Update the QLabel
-    ui->ProfileListLabel->setText(profilesText);
+}
+
+void MainWindow::viewProfile(){
+    if (!currentUser) {
+        QMessageBox::critical(this, "Error", "No profiles selected");
+        return;
+    }
+
+    QListWidgetItem* selectedItem = ui->ProfileListWidget->currentItem();
+
+    if (!selectedItem) {
+        QMessageBox::warning(this,"No Selection", "Please select a Profile");
+    }
+
+    // Populate Page
+    // Find the profile that matches the selected item's text
+    Profile* selectedProfile = nullptr;
+    QString selectedProfileName = selectedItem->text(); // Get the text from the selected item
+
+    for (Profile* profile : currentUser->getProfiles()) {
+        if (profile->getName() == selectedProfileName) {
+            selectedProfile = profile;
+            currProfile = profile;
+            break;
+        }
+    }
+
+    if (!selectedProfile) {
+        QMessageBox::critical(this, "Error", "Selected profile not found.");
+        return;
+    }
+
+    // Populate the profile details page
+    ui->ProfileNameTextEditUpdate->setText(selectedProfile->getName());
+    ui->GenderComboBoxUpdate->setCurrentText(selectedProfile->getGender());
+    ui->WeightTextEditUpdate->setText(QString::number(selectedProfile->getWeight()));
+    ui->HeightTextEditUpdate->setText(QString::number(selectedProfile->getHeight()));
+    ui->DOBEditUpdate->setDate(selectedProfile->getDateOfBirth());
+
+    // Navigate to the Profile Details Page
+    ui->AppStackedWidget->setCurrentWidget(ui->ProfileDetailsPage);
+
+
+}
+
+void MainWindow::editProfile() {
+
+    // Collect updated data
+    QString updatedName = ui->ProfileNameTextEditUpdate->toPlainText();
+    QString updatedGender = ui->GenderComboBoxUpdate->currentText();
+    double updatedWeight = ui->WeightTextEditUpdate->toPlainText().toDouble();
+    double updatedHeight = ui->HeightTextEditUpdate->toPlainText().toDouble();
+    QDate updatedDOB = ui->DOBEditUpdate->date();
+
+    // Apply the changes to the profile
+    currProfile->setName(updatedName);
+    currProfile->setGender(updatedGender);
+    currProfile->setWeight(updatedWeight);
+    currProfile->setHeight(updatedHeight);
+    currProfile->setDateOfBirth(updatedDOB);
+
+    // Reflect updates in the profile list
+    updateProfilesList();
+
+    // Show success message
+    QMessageBox::information(this, "Success", "Profile updated successfully!");
+
+    // Navigate back to the profiles page
+    ui->AppStackedWidget->setCurrentWidget(ui->ProfilePage);
+
+}
+
+void MainWindow::deleteProfile() {
+    if (!currentUser) {
+        QMessageBox::critical(this, "Error", "No user is logged in.");
+        return;
+    }
+
+    // Get the selected profile from the list
+    QListWidgetItem* selectedItem = ui->ProfileListWidget->currentItem();
+    if (!selectedItem) {
+        QMessageBox::warning(this, "No Selection", "Please select a profile to delete.");
+        return;
+    }
+
+    QString selectedProfileName = selectedItem->text();
+
+    // Confirm deletion
+    QMessageBox::StandardButton reply = QMessageBox::question(
+        this,
+        "Delete Profile",
+        QString("Are you sure you want to delete the profile '%1'?").arg(selectedProfileName),
+        QMessageBox::Yes | QMessageBox::No
+    );
+
+    if (reply != QMessageBox::Yes) {
+        return; // User canceled deletion
+    }
+
+    // Find and delete the selected profile
+    bool profileDeleted = false;
+    QList<Profile*> profiles = currentUser->getProfiles();
+    for (int i = 0; i < profiles.size(); ++i) {
+        if (profiles[i]->getName() == selectedProfileName) {
+            delete profiles[i]; // Free the memory for the profile
+            profiles.removeAt(i); // Remove it from the list
+            profileDeleted = true;
+            break;
+        }
+    }
+
+    if (!profileDeleted) {
+        QMessageBox::critical(this, "Error", "Profile not found.");
+        return;
+    }
+
+    // Update the current user's profile list
+    currentUser->setProfiles(profiles);
+
+    // Update the UI
+    updateProfilesList();
+
+    // Show success message
+    QMessageBox::information(this, "Success", "Profile deleted successfully.");
 }
 
 
@@ -360,8 +483,6 @@ void MainWindow::createPresetUsers() {
     HealthData* healthData = new HealthData(QDate(1990, 2, 2), results, comments);
     profile1->addHealthData(healthData);
 
-    QDate currentDate = QDate::currentDate();
-    QDate tomorrow = currentDate.addDays(1);
     QList<Comments> comments1 = {
             {90.1, "9.1", 75, 8,90.1,"2","5","blahblah"}
     };
@@ -485,6 +606,9 @@ void MainWindow::viewDetails() {
     // Display the results on the Detailed Results Page
 //    ui->DetailedResultsLabel->setText(detailsText);
     populateIndicators(selectedData);
+    visualizer->showBarGraph(selectedData, ui);
+    visualizer->showCircleGraph(selectedData, ui);
+    visualizer->showBodyGraph(selectedData, ui);
     ui->AppStackedWidget->setCurrentWidget(ui->DetailedResultsPage);
 
 
