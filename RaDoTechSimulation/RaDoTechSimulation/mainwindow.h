@@ -59,6 +59,10 @@ private slots:
     void startScan();
     void nextScanPoint();
     void performDeviceScan();
+    void processScanData();
+    void onScanTimerTimeout();
+    void handleScanOffSkin();
+    void handleScanOnSkin();
 
 private:
     Ui::MainWindow *ui;

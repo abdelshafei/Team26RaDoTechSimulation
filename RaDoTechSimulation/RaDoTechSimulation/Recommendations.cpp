@@ -1,16 +1,50 @@
 #include "Recommendations.h"
 
-Recommendations::Recommendations()
-{
-
-}
+Recommendations::Recommendations(){}
 
 void Recommendations::generateRecommendations(HealthData* healthData, Ui::MainWindow* ui){
     if (healthData){
         ui->HyperactiveLabel->setText(hyperactivePlaceholder());
+        ui->ActivityLabel->setText(activityPlaceholder());
+        ui->InsufficiencyLabel->setText(insufficiencyPlaceholder());
+        ui->DietLabel->setText(dietPlaceholder());
+        ui->FoodLabel->setText(foodPlaceholder());
+        ui->ExcludeLabel->setText(excludePlaceholder());
+        ui->GeneralLabel->setText(generalPlaceholder());
+        ui->SupplementLabel->setText(supplementsPlaceholder());
     }
 }
 QString Recommendations::hyperactivePlaceholder(){
-    QString text = "A steady sign of cardiac muscle activation during physical exertion (normally stimulants and tonics - caffeine, nicotine, ergot alkaloids, marijuana alkoloids, recently tonic and energy drinks. Often, the reaction to psycho-emotional arousal, acute stress reactions, the physiological state of sexual desire and the main condition for a long effective sexual intercourse for a man. For adolescents and actively growing children, the physiological state of growth of the heart muscle. As a state, successive failure is a good prognostic sign of the effectiveness of programs for the treatment and rehabilitation of cardiovascular diseases and heart failure. Long-term asymptomatic activation of the heart indicates the development of the hypertonic mechanism of the functioning of the cardiovascular system (the upper limit of arterial pressure is 140/90 mm. Hg). When observing activation only in the minor or only in the great circulation circle, it indicates the mechanisms of adaptation of the heart along the large or small circle of the blood circulation. This clearly indicates the presence of cardiac pathology with ECG, USDG, or other in-depth examination methods.";
-    return text;
+    QString placeholderText = "Hyper Active Recommendations \nPlaceholder";
+    return placeholderText;
 }
+
+QString Recommendations::insufficiencyPlaceholder(){
+    QString placeholderText = "Insufficiency Recommendations \nPlaceholder";
+    return placeholderText;
+}
+QString Recommendations::dietPlaceholder(){
+    QString placeholderText = "Diet Recommendations \nPlaceholder";
+    return placeholderText;
+}
+QString Recommendations::foodPlaceholder(){
+    QString placeholderText = "Food Recommendations \nPlaceholder";
+    return placeholderText;
+}
+QString Recommendations::excludePlaceholder(){
+    QString placeholderText = "Exclude Recommendations \nPlaceholder";
+    return placeholderText;
+}
+QString Recommendations::generalPlaceholder(){
+    QString placeholderText = "General Recommendations \nPlaceholder";
+    return placeholderText;
+}
+QString Recommendations::activityPlaceholder(){
+    QString placeholderText = "Activity Recommendations \nPlaceholder";
+    return placeholderText;
+}
+QString Recommendations::supplementsPlaceholder(){
+    QString placeholderText = "Supplements Recommendations \nPlaceholder";
+    return placeholderText;
+}
+

@@ -3,7 +3,6 @@
 #include <QPixmap>
 #include <QDebug>
 #include <QInputDialog>
-
 #include <QtCharts>
 #include <QChartView>
 #include <QBarSeries>
@@ -110,7 +109,6 @@ MainWindow::MainWindow(QWidget *parent)
     powerDevice();
 
     connect(ui->PairButton, &QPushButton::clicked, this, &MainWindow::PairUp);
-
 }
 
 MainWindow::~MainWindow()
@@ -968,7 +966,6 @@ void MainWindow::nextScanPoint()
 }
 
 
-
 void MainWindow::showPersonalInfoPage(){
 ui->AppStackedWidget->setCurrentWidget(ui->PersonalMetricsPage);
 }
@@ -1078,7 +1075,6 @@ void MainWindow::performDeviceScan()
         ui->DeviceStatusLabel->setText("Scan failed. Please try again.");
     }
 
-//    updateBatteryLevelLabel();
 }
 
 
