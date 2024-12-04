@@ -7,6 +7,7 @@
 #include "RaDoTechDevice.h"
 #include "DataProcessor.h"
 #include "Visualization.h"
+#include "Recommendations.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -35,8 +36,7 @@ public:
     void showVisualizationPage();
     void showCreateProfilePage();
     void showLoginPage();
-    void showBarGraph();
-    void showRadarChart();
+
 
     void saveProfile(); // Save a new profile for the user
     void showProfiles(); // Display all profiles for the user
@@ -58,6 +58,7 @@ private slots:
     void startScan();
     void nextScanPoint();
     void performDeviceScan();
+    void timeOutforScan();
 
 private:
     Ui::MainWindow *ui;
@@ -65,6 +66,7 @@ private:
     User* currentUser;
     void createPresetUsers(); // Initialize preset users
     Visualization* visualizer;
+    Recommendations* recommendations;
 //    void setProcessedData(std::map<std::string, float>* processedDataResults);
 //    std::map<std::string, float> getProcessedData() { return processedData;}
 
@@ -84,13 +86,15 @@ private:
 
     QTimer* batteryTimer;
     QTimer* chargedBatteryTimer;
-
+    QTimer* scanTimer;
     void updateBatteryLevelLabel();
     void powerDevice();
     void shutDownDevice();
     void UpdateChargedBatteryLevelLabel();
     void ChargeBattery();
     void PairUp();
+
+    bool scantimercomplete;
 
 
 };

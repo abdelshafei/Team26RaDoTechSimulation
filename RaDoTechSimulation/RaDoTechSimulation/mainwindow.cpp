@@ -3,7 +3,6 @@
 #include <QPixmap>
 #include <QDebug>
 #include <QInputDialog>
-
 #include <QtCharts>
 #include <QChartView>
 #include <QBarSeries>
@@ -23,7 +22,7 @@ MainWindow::MainWindow(QWidget *parent)
     , ui(new Ui::MainWindow), currentScanPoint(0), totalScanPoints(24),isDeviceScanned(false)
 {
     ui->setupUi(this);
-
+    currentUser = nullptr;
     // Connect Device View to App View button
     connect(ui->GoToAppViewButton, &QPushButton::clicked, this, &MainWindow::showAppView);
 
@@ -33,7 +32,9 @@ MainWindow::MainWindow(QWidget *parent)
     // Connect App View buttons to respective pages
     connect(ui->HomePageButton, &QPushButton::clicked, this, &MainWindow::showHomePage);
     connect(ui->MeasureNowButton, &QPushButton::clicked, this, &MainWindow::showMeasureNowPage);
+    connect(ui->MeasureNowHomePageButton, &QPushButton::clicked, this, &MainWindow::showMeasureNowPage);
     connect(ui->HistoryPageButton, &QPushButton::clicked, this, &MainWindow::showHistoricalPage);
+    connect(ui->HistoryHomePageButton, &QPushButton::clicked, this, &MainWindow::showHistoricalPage);
     connect(ui->ProfilePageButton, &QPushButton::clicked, this, &MainWindow::showProfilePage);
     connect(ui->CreateProfileButton, &QPushButton::clicked, this, &MainWindow::showCreateProfilePage);
     connect(ui->EnterButton, &QPushButton::clicked, this, &MainWindow::showLoginPage);
@@ -109,8 +110,11 @@ MainWindow::MainWindow(QWidget *parent)
 
     connect(ui->PairButton, &QPushButton::clicked, this, &MainWindow::PairUp);
 
+    scanTimer = new QTimer(this);
+    scanTimer->setInterval(5000);
+    connect(scanTimer, &QTimer::timeout, this, &MainWindow::timeOutforScan);
+    scanTimer->stop();
 }
-
 MainWindow::~MainWindow()
 {
     delete ui;
@@ -120,10 +124,13 @@ MainWindow::~MainWindow()
 // Switch to App View
 void MainWindow::showAppView()
 {
-    // TODO: When we implement login and create profile, here we do if statement of which view to first go to after device view
     if (!currentUser)
     {
         ui->ViewsStackedWidget->setCurrentWidget(ui->AppStartPage);
+        ui->HomePageButton->setDisabled(true);
+        ui->MeasureNowButton->setDisabled(true);
+        ui->HistoryPageButton->setDisabled(true);
+        ui->ProfilePageButton->setDisabled(true);
     } else {
         ui->ViewsStackedWidget->setCurrentWidget(ui->AppView);
         ui->AppStackedWidget->setCurrentWidget(ui->HomePage);
@@ -175,13 +182,6 @@ void MainWindow::showProfilePage()
     updateProfilesList();
 }
 
-// Show Visualization Page in App View
-void MainWindow::showVisualizationPage()
-{
-    ui->AppStackedWidget->setCurrentWidget(ui->VisulizationPage);
-    showBarGraph();
-//    showRadarChart();updateBatteryLevelLabel();
-}
 
 void MainWindow::goToCreateProfilePage() {
     // Clear all input fields
@@ -248,6 +248,10 @@ void MainWindow::saveProfile() {
     updateProfilesList();
 
     // Navigate to the Profiles Page
+    ui->HomePageButton->setDisabled(false);
+    ui->MeasureNowButton->setDisabled(false);
+    ui->HistoryPageButton->setDisabled(false);
+    ui->ProfilePageButton->setDisabled(false);
     ui->AppStackedWidget->setCurrentWidget(ui->ProfilePage);
 }
 
@@ -509,6 +513,10 @@ void MainWindow::handleLogin() {
 
         // Navigate to Home Page
         showProfiles();
+        ui->HomePageButton->setDisabled(false);
+        ui->MeasureNowButton->setDisabled(false);
+        ui->HistoryPageButton->setDisabled(false);
+        ui->ProfilePageButton->setDisabled(false);
         ui->AppStackedWidget->setCurrentWidget(ui->HomePage);
     } else {
         // Failed login
@@ -609,6 +617,8 @@ void MainWindow::viewDetails() {
     visualizer->showBarGraph(selectedData, ui);
     visualizer->showCircleGraph(selectedData, ui);
     visualizer->showBodyGraph(selectedData, ui);
+
+    recommendations->generateRecommendations(selectedData, ui);
     ui->AppStackedWidget->setCurrentWidget(ui->DetailedResultsPage);
 
 
@@ -627,6 +637,7 @@ void MainWindow::viewDetails() {
     }
     ui->CommentsLabel->setText(detailsComments);
 }
+
 
 // Function to populate health indicators in the DetailedResultsPage
 void MainWindow::populateIndicators(HealthData* selectedData) {
@@ -687,145 +698,16 @@ QString MainWindow::getClassification(double value, double min, double max) {
 
 
 
-
-// Just to show Bar Graph
-void MainWindow::showBarGraph()
-{
-    // Create a new bar set and populate it with data
-    QBarSet *set0 = new QBarSet("Organ 1");
-    QBarSet *set1 = new QBarSet("Organ 2");
-    QBarSet *set2 = new QBarSet("Organ 3");
-
-    // Sample data values
-    *set0 << 70 << 85 << 60;
-    *set1 << 55 << 90 << 40;
-    *set2 << 65 << 75 << 50;
-
-    // Create a bar series and add the sets
-    QBarSeries *series = new QBarSeries();
-    series->append(set0);
-    series->append(set1);
-    series->append(set2);
-
-    // Create a chart and add the series
-    QChart *chart = new QChart();
-    chart->addSeries(series);
-    chart->setTitle("Organ Health Metrics");
-    chart->setAnimationOptions(QChart::SeriesAnimations);
-
-    // Define categories (x-axis labels)
-    QStringList categories;
-    categories << "Scan 1" << "Scan 2" << "Scan 3";
-
-    // Create category axis (x-axis)
-    QBarCategoryAxis *axisX = new QBarCategoryAxis();
-    axisX->append(categories);
-    chart->addAxis(axisX, Qt::AlignBottom);
-    series->attachAxis(axisX);
-
-    // Create value axis (y-axis)
-    QValueAxis *axisY = new QValueAxis();
-    axisY->setRange(0, 100); // Set the range for y-axis
-    axisY->setTitleText("Health Metric (%)");
-    chart->addAxis(axisY, Qt::AlignLeft);
-    series->attachAxis(axisY);
-
-    // Remove legend for simplicity
-    chart->legend()->setVisible(true);
-    chart->legend()->setAlignment(Qt::AlignBottom);
-
-    // Create a QChartView and set it as the central widget
-    QChartView *chartView = new QChartView(chart);
-    chartView->setRenderHint(QPainter::Antialiasing);
-
-    // Add the chart to the placeholder widget (chartContainer)
-    QVBoxLayout *layout = new QVBoxLayout(ui->chartContainer);
-    layout->addWidget(chartView);
-    ui->chartContainer->setLayout(layout);
-}
-
-void MainWindow::showRadarChart()
-{
-    // Create a polar chart
-    QtCharts::QPolarChart *polarChart = new QtCharts::QPolarChart();
-    polarChart->setTitle("Organ Health Radar Chart");
-
-    // Sample Data for the Radar Chart
-    QVector<double> leftSideData = {85, 70, 90, 95, 80};
-    QVector<double> rightSideData = {75, 85, 70, 90, 88};
-    QVector<double> averageValues = {80, 78, 80, 92, 84};
-
-    // Labels for the axes
-    QStringList categories = {"Heart", "Liver", "Lungs", "Kidneys", "Stomach"};
-
-    // Create a Value Axis (for the circular range)
-    QtCharts::QValueAxis *valueAxis = new QtCharts::QValueAxis();
-    valueAxis->setRange(0, 100); // Scale from 0 to 100
-    valueAxis->setTickCount(6);  // Add tick marks
-    valueAxis->setLabelFormat("%.0f");
-    valueAxis->setTitleText("Health Metric (%)");
-    polarChart->addAxis(valueAxis, QtCharts::QPolarChart::PolarOrientationRadial);
-
-    // Create a Category Axis (for the angular labels)
-    QtCharts::QCategoryAxis *angularAxis = new QtCharts::QCategoryAxis();
-    angularAxis->setLabelsPosition(QtCharts::QCategoryAxis::AxisLabelsPositionOnValue);
-    for (int i = 0; i < categories.size(); ++i)
-    {
-        angularAxis->append(categories[i], i);
-    }
-    angularAxis->setRange(0, categories.size());
-    polarChart->addAxis(angularAxis, QtCharts::QPolarChart::PolarOrientationAngular);
-
-    // Create Line Series for each data set
-    QtCharts::QLineSeries *leftSeries = new QtCharts::QLineSeries();
-    leftSeries->setName("Left Side");
-    for (int i = 0; i < leftSideData.size(); ++i)
-    {
-        leftSeries->append(i, leftSideData[i]);
-    }
-    polarChart->addSeries(leftSeries);
-    leftSeries->attachAxis(valueAxis);
-    leftSeries->attachAxis(angularAxis);
-
-    QtCharts::QLineSeries *rightSeries = new QtCharts::QLineSeries();
-    rightSeries->setName("Right Side");
-    for (int i = 0; i < rightSideData.size(); ++i)
-    {
-        rightSeries->append(i, rightSideData[i]);
-    }
-    polarChart->addSeries(rightSeries);
-    rightSeries->attachAxis(valueAxis);
-    rightSeries->attachAxis(angularAxis);
-
-    QtCharts::QLineSeries *averageSeries = new QtCharts::QLineSeries();
-    averageSeries->setName("Average Values");
-    for (int i = 0; i < averageValues.size(); ++i)
-    {
-        averageSeries->append(i, averageValues[i]);
-    }
-    polarChart->addSeries(averageSeries);
-    averageSeries->attachAxis(valueAxis);
-    averageSeries->attachAxis(angularAxis);
-
-    // Create a Chart View for display
-    QtCharts::QChartView *chartView = new QtCharts::QChartView(polarChart);
-    chartView->setRenderHint(QPainter::Antialiasing);
-
-    // Add the chart to the placeholder widget (chartContainer)
-    QVBoxLayout *layout = new QVBoxLayout(ui->chartContainer);
-    layout->addWidget(chartView);
-    ui->chartContainer->setLayout(layout);
-}
-
-
-
-
-
 // Device Scan
 
 void MainWindow::showMeasureView(){
-    ui->ViewsStackedWidget->setCurrentWidget(ui->AppView);
-    showMeasureNowPage();
+    if (currentUser){
+        ui->ViewsStackedWidget->setCurrentWidget(ui->AppView);
+        showMeasureNowPage();
+    }
+    else{
+        QMessageBox::warning(this, "Not Logged In", "User must be logged in to go to this view");
+    }
 }
 
 void MainWindow::startScan()
@@ -951,9 +833,9 @@ void MainWindow::nextScanPoint()
     } else {
         ui->MeasureNowLabel->setText("All scan points completed!");
         showPersonalInfoPage();
+        currProfile = nullptr;
     }
 }
-
 
 
 void MainWindow::showPersonalInfoPage(){
@@ -1007,8 +889,6 @@ QList<MeridianResult> MainWindow::convertProcessedDataToMeridianResults(const st
 }
 
 
-
-
 void MainWindow::saveResults(){
     double bodyTemprature = ui->BodyTempBox->value();
     QString bloodPressure = ui->BloodPressureBox->text();
@@ -1032,6 +912,7 @@ void MainWindow::saveResults(){
 
 void MainWindow::performDeviceScan()
 {
+
     if(!device.getIsPaired()) {
         QMessageBox NoPairMsg;
         NoPairMsg.setText("Warning: The device is not paired up with the app");
@@ -1045,18 +926,55 @@ void MainWindow::performDeviceScan()
         return;
     }
 
-    // Collect data from the device
-    std::vector<float> rawData = device.collectData();
-    processor.setRawData(rawData);
-
-    if (processor.validateData()) {
-        isDeviceScanned = true;
-        ui->DeviceStatusLabel->setText(QString("Scan %1 complete. Return to App View and press Next.").arg(currentScanPoint));
-    } else {
-        ui->DeviceStatusLabel->setText("Scan failed. Please try again.");
+    if (!currProfile){
+        QMessageBox noProfile;
+        noProfile.setText("Warning: Please set up a profile for the device to scan in App view");
+        noProfile.setBaseSize(200, 200);
+        noProfile.setIcon(QMessageBox::Warning);
+        noProfile.exec();
+        return;
     }
 
-//    updateBatteryLevelLabel();
+
+    if (scantimercomplete && !scanTimer->isActive()){
+        // Collect data from the device
+        std::vector<float> rawData = device.collectData();
+        processor.setRawData(rawData);
+
+        if (processor.validateData()) {
+            isDeviceScanned = true;
+            ui->DeviceStatusLabel->setText(QString("Scan %1 complete. Return to App View and press Next.").arg(currentScanPoint));
+        } else {
+            ui->DeviceStatusLabel->setText("Scan failed. Please try again.");
+        }
+        scantimercomplete = false;
+        ui->DeviceScanButton->setText("Scan On Skin");
+
+        qDebug()<<"SCAN DONE";
+    }
+    else if (!scantimercomplete && !scanTimer->isActive()){
+        ui->DeviceScanButton->setText("Take Off Skin");
+        scanTimer->start();
+        qDebug()<<"Scan Started";
+    }
+    else if(!scantimercomplete && scanTimer->isActive()){
+        QMessageBox scanoffskin;
+        scanoffskin.setText(QString("Please redo scan since Scan %1 did not complete").arg(currentScanPoint));
+        scanoffskin.setBaseSize(200, 200);
+        scanoffskin.setIcon(QMessageBox::Warning);
+        scanoffskin.exec();
+        ui->DeviceScanButton->setText("Scan On Skin");
+        scanTimer->stop();
+        qDebug()<<"Scan skin";
+    }
+
+}
+
+void MainWindow::timeOutforScan(){
+    scantimercomplete = true;
+    scanTimer->stop();
+    qDebug()<<"Timer Done";
+
 }
 
 
