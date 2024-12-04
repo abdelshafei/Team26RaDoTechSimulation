@@ -48,9 +48,6 @@ public:
     QWidget *verticalLayoutWidget_2;
     QVBoxLayout *verticalLayout_2;
     QPushButton *DeviceScanButton;
-    QHBoxLayout *horizontalLayout_10;
-    QPushButton *ScanOnSkin;
-    QPushButton *ScanOffSkin;
     QLabel *DeviceStatusLabel;
     QPushButton *GoToMeasureViewButton;
     QWidget *verticalLayoutWidget_3;
@@ -325,21 +322,6 @@ public:
         DeviceScanButton->setObjectName(QString::fromUtf8("DeviceScanButton"));
 
         verticalLayout_2->addWidget(DeviceScanButton);
-
-        horizontalLayout_10 = new QHBoxLayout();
-        horizontalLayout_10->setObjectName(QString::fromUtf8("horizontalLayout_10"));
-        ScanOnSkin = new QPushButton(verticalLayoutWidget_2);
-        ScanOnSkin->setObjectName(QString::fromUtf8("ScanOnSkin"));
-
-        horizontalLayout_10->addWidget(ScanOnSkin);
-
-        ScanOffSkin = new QPushButton(verticalLayoutWidget_2);
-        ScanOffSkin->setObjectName(QString::fromUtf8("ScanOffSkin"));
-
-        horizontalLayout_10->addWidget(ScanOffSkin);
-
-
-        verticalLayout_2->addLayout(horizontalLayout_10);
 
         DeviceStatusLabel = new QLabel(verticalLayoutWidget_2);
         DeviceStatusLabel->setObjectName(QString::fromUtf8("DeviceStatusLabel"));
@@ -1327,8 +1309,6 @@ public:
         DeviceNameLabel->setText(QCoreApplication::translate("MainWindow", "RaDoTech Device View", nullptr));
         BatteryLabel->setText(QCoreApplication::translate("MainWindow", "Battery Power", nullptr));
         DeviceScanButton->setText(QCoreApplication::translate("MainWindow", "Scan", nullptr));
-        ScanOnSkin->setText(QCoreApplication::translate("MainWindow", "Scan On Skin", nullptr));
-        ScanOffSkin->setText(QCoreApplication::translate("MainWindow", "Take Scan off Skin", nullptr));
         DeviceStatusLabel->setText(QCoreApplication::translate("MainWindow", "TextLabel", nullptr));
         GoToMeasureViewButton->setText(QCoreApplication::translate("MainWindow", "Back to Measure App", nullptr));
         OnButton->setText(QCoreApplication::translate("MainWindow", "Turn On", nullptr));

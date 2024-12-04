@@ -36,8 +36,7 @@ public:
     void showVisualizationPage();
     void showCreateProfilePage();
     void showLoginPage();
-    void showBarGraph();
-    void showRadarChart();
+
 
     void saveProfile(); // Save a new profile for the user
     void showProfiles(); // Display all profiles for the user
@@ -59,10 +58,7 @@ private slots:
     void startScan();
     void nextScanPoint();
     void performDeviceScan();
-    void processScanData();
-    void onScanTimerTimeout();
-    void handleScanOffSkin();
-    void handleScanOnSkin();
+    void timeOutforScan();
 
 private:
     Ui::MainWindow *ui;
@@ -90,13 +86,15 @@ private:
 
     QTimer* batteryTimer;
     QTimer* chargedBatteryTimer;
-
+    QTimer* scanTimer;
     void updateBatteryLevelLabel();
     void powerDevice();
     void shutDownDevice();
     void UpdateChargedBatteryLevelLabel();
     void ChargeBattery();
     void PairUp();
+
+    bool scantimercomplete;
 
 
 };
