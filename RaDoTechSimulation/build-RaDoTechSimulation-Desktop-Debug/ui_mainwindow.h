@@ -82,6 +82,8 @@ public:
     QPushButton *EnterLoginButton;
     QWidget *HomePage;
     QLabel *HomeHeader;
+    QPushButton *HistoryHomePageButton;
+    QPushButton *MeasureNowHomePageButton;
     QWidget *MeasureNowPage;
     QLabel *MeasureHeader;
     QWidget *verticalLayoutWidget;
@@ -230,6 +232,9 @@ public:
     QWidget *Comments;
     QLabel *CommentsLabel;
     QWidget *Recommendation;
+    QFrame *HyperActiveFrame;
+    QLabel *HyperactiveTitle;
+    QLabel *HyperactiveLabel;
     QWidget *PersonalMetricsPage;
     QWidget *formLayoutWidget;
     QFormLayout *formLayout;
@@ -416,6 +421,12 @@ public:
         HomeHeader = new QLabel(HomePage);
         HomeHeader->setObjectName(QString::fromUtf8("HomeHeader"));
         HomeHeader->setGeometry(QRect(20, 10, 81, 17));
+        HistoryHomePageButton = new QPushButton(HomePage);
+        HistoryHomePageButton->setObjectName(QString::fromUtf8("HistoryHomePageButton"));
+        HistoryHomePageButton->setGeometry(QRect(210, 120, 83, 25));
+        MeasureNowHomePageButton = new QPushButton(HomePage);
+        MeasureNowHomePageButton->setObjectName(QString::fromUtf8("MeasureNowHomePageButton"));
+        MeasureNowHomePageButton->setGeometry(QRect(200, 150, 101, 31));
         AppStackedWidget->addWidget(HomePage);
         MeasureNowPage = new QWidget();
         MeasureNowPage->setObjectName(QString::fromUtf8("MeasureNowPage"));
@@ -1036,6 +1047,18 @@ public:
         ResultsTabWidget->addTab(Comments, QString());
         Recommendation = new QWidget();
         Recommendation->setObjectName(QString::fromUtf8("Recommendation"));
+        HyperActiveFrame = new QFrame(Recommendation);
+        HyperActiveFrame->setObjectName(QString::fromUtf8("HyperActiveFrame"));
+        HyperActiveFrame->setGeometry(QRect(10, 10, 481, 81));
+        HyperActiveFrame->setFrameShape(QFrame::StyledPanel);
+        HyperActiveFrame->setFrameShadow(QFrame::Raised);
+        HyperactiveTitle = new QLabel(HyperActiveFrame);
+        HyperactiveTitle->setObjectName(QString::fromUtf8("HyperactiveTitle"));
+        HyperactiveTitle->setGeometry(QRect(10, 10, 461, 17));
+        HyperactiveTitle->setStyleSheet(QString::fromUtf8("background-color: rgb(246, 97, 81);"));
+        HyperactiveLabel = new QLabel(HyperActiveFrame);
+        HyperactiveLabel->setObjectName(QString::fromUtf8("HyperactiveLabel"));
+        HyperactiveLabel->setGeometry(QRect(10, 30, 461, 41));
         ResultsTabWidget->addTab(Recommendation, QString());
         AppStackedWidget->addWidget(DetailedResultsPage);
         PersonalMetricsPage = new QWidget();
@@ -1167,7 +1190,7 @@ public:
 
         retranslateUi(MainWindow);
 
-        ResultsTabWidget->setCurrentIndex(0);
+        ResultsTabWidget->setCurrentIndex(3);
         ChartsTabWidget->setCurrentIndex(0);
 
 
@@ -1242,6 +1265,8 @@ public:
 "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">Password</p></body></html>", nullptr));
         EnterLoginButton->setText(QCoreApplication::translate("MainWindow", "Enter", nullptr));
         HomeHeader->setText(QCoreApplication::translate("MainWindow", "Home Page", nullptr));
+        HistoryHomePageButton->setText(QCoreApplication::translate("MainWindow", "Details", nullptr));
+        MeasureNowHomePageButton->setText(QCoreApplication::translate("MainWindow", "Measure Now", nullptr));
         MeasureHeader->setText(QCoreApplication::translate("MainWindow", "Measure Now Page", nullptr));
         StartScanButton->setText(QCoreApplication::translate("MainWindow", "Measure Now", nullptr));
         NextButton->setText(QCoreApplication::translate("MainWindow", "Next", nullptr));
@@ -1365,6 +1390,8 @@ public:
         ResultsTabWidget->setTabText(ResultsTabWidget->indexOf(Visulization), QCoreApplication::translate("MainWindow", "Tab 2", nullptr));
         CommentsLabel->setText(QCoreApplication::translate("MainWindow", "TextLabel", nullptr));
         ResultsTabWidget->setTabText(ResultsTabWidget->indexOf(Comments), QCoreApplication::translate("MainWindow", "Page", nullptr));
+        HyperactiveTitle->setText(QCoreApplication::translate("MainWindow", "  Hyperactive", nullptr));
+        HyperactiveLabel->setText(QCoreApplication::translate("MainWindow", "TextLabel", nullptr));
         ResultsTabWidget->setTabText(ResultsTabWidget->indexOf(Recommendation), QCoreApplication::translate("MainWindow", "Page", nullptr));
         BloodPressure->setText(QCoreApplication::translate("MainWindow", "Blood Pressure", nullptr));
         BodyTemp->setText(QCoreApplication::translate("MainWindow", "Body Tempreture", nullptr));

@@ -33,7 +33,9 @@ MainWindow::MainWindow(QWidget *parent)
     // Connect App View buttons to respective pages
     connect(ui->HomePageButton, &QPushButton::clicked, this, &MainWindow::showHomePage);
     connect(ui->MeasureNowButton, &QPushButton::clicked, this, &MainWindow::showMeasureNowPage);
+    connect(ui->MeasureNowHomePageButton, &QPushButton::clicked, this, &MainWindow::showMeasureNowPage);
     connect(ui->HistoryPageButton, &QPushButton::clicked, this, &MainWindow::showHistoricalPage);
+    connect(ui->HistoryHomePageButton, &QPushButton::clicked, this, &MainWindow::showHistoricalPage);
     connect(ui->ProfilePageButton, &QPushButton::clicked, this, &MainWindow::showProfilePage);
     connect(ui->CreateProfileButton, &QPushButton::clicked, this, &MainWindow::showCreateProfilePage);
     connect(ui->EnterButton, &QPushButton::clicked, this, &MainWindow::showLoginPage);
@@ -124,6 +126,10 @@ void MainWindow::showAppView()
     if (!currentUser)
     {
         ui->ViewsStackedWidget->setCurrentWidget(ui->AppStartPage);
+        ui->HomePageButton->setDisabled(true);
+        ui->MeasureNowButton->setDisabled(true);
+        ui->HistoryPageButton->setDisabled(true);
+        ui->ProfilePageButton->setDisabled(true);
     } else {
         ui->ViewsStackedWidget->setCurrentWidget(ui->AppView);
         ui->AppStackedWidget->setCurrentWidget(ui->HomePage);
@@ -175,13 +181,6 @@ void MainWindow::showProfilePage()
     updateProfilesList();
 }
 
-// Show Visualization Page in App View
-void MainWindow::showVisualizationPage()
-{
-    ui->AppStackedWidget->setCurrentWidget(ui->VisulizationPage);
-    showBarGraph();
-//    showRadarChart();updateBatteryLevelLabel();
-}
 
 void MainWindow::goToCreateProfilePage() {
     // Clear all input fields
@@ -248,6 +247,10 @@ void MainWindow::saveProfile() {
     updateProfilesList();
 
     // Navigate to the Profiles Page
+    ui->HomePageButton->setDisabled(false);
+    ui->MeasureNowButton->setDisabled(false);
+    ui->HistoryPageButton->setDisabled(false);
+    ui->ProfilePageButton->setDisabled(false);
     ui->AppStackedWidget->setCurrentWidget(ui->ProfilePage);
 }
 
@@ -509,6 +512,10 @@ void MainWindow::handleLogin() {
 
         // Navigate to Home Page
         showProfiles();
+        ui->HomePageButton->setDisabled(false);
+        ui->MeasureNowButton->setDisabled(false);
+        ui->HistoryPageButton->setDisabled(false);
+        ui->ProfilePageButton->setDisabled(false);
         ui->AppStackedWidget->setCurrentWidget(ui->HomePage);
     } else {
         // Failed login
@@ -609,6 +616,8 @@ void MainWindow::viewDetails() {
     visualizer->showBarGraph(selectedData, ui);
     visualizer->showCircleGraph(selectedData, ui);
     visualizer->showBodyGraph(selectedData, ui);
+
+    recommendations->generateRecommendations(selectedData, ui);
     ui->AppStackedWidget->setCurrentWidget(ui->DetailedResultsPage);
 
 
@@ -627,6 +636,7 @@ void MainWindow::viewDetails() {
     }
     ui->CommentsLabel->setText(detailsComments);
 }
+
 
 // Function to populate health indicators in the DetailedResultsPage
 void MainWindow::populateIndicators(HealthData* selectedData) {
@@ -818,14 +828,16 @@ void MainWindow::showRadarChart()
 }
 
 
-
-
-
 // Device Scan
 
 void MainWindow::showMeasureView(){
-    ui->ViewsStackedWidget->setCurrentWidget(ui->AppView);
-    showMeasureNowPage();
+    if (currentUser){
+        ui->ViewsStackedWidget->setCurrentWidget(ui->AppView);
+        showMeasureNowPage();
+    }
+    else{
+        QMessageBox::warning(this, "Not Logged In", "User must be logged in to go to this view");
+    }
 }
 
 void MainWindow::startScan()
@@ -951,6 +963,7 @@ void MainWindow::nextScanPoint()
     } else {
         ui->MeasureNowLabel->setText("All scan points completed!");
         showPersonalInfoPage();
+        currProfile = nullptr;
     }
 }
 
@@ -1042,6 +1055,15 @@ void MainWindow::performDeviceScan()
     }
     if (!device.startScan()) {
         ui->DeviceStatusLabel->setText("Low battery. Cannot perform scan.");
+        return;
+    }
+
+    if (!currProfile){
+        QMessageBox noProfile;
+        noProfile.setText("Warning: Please set up a profile for the device to scan in App view");
+        noProfile.setBaseSize(200, 200);
+        noProfile.setIcon(QMessageBox::Warning);
+        noProfile.exec();
         return;
     }
 

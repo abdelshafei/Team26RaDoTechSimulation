@@ -13,6 +13,7 @@ SOURCES += \
     DataProcessor.cpp \
     HealthData.cpp \
     RaDoTechDevice.cpp \
+    Recommendations.cpp \
     User.cpp \
     Visualization.cpp \
     main.cpp \
@@ -24,6 +25,7 @@ HEADERS += \
     HealthData.h \
     Profile.h \
     RaDoTechDevice.h \
+    Recommendations.h \
     User.h \
     Visualization.h \
     mainwindow.h

@@ -7,6 +7,7 @@
 #include "RaDoTechDevice.h"
 #include "DataProcessor.h"
 #include "Visualization.h"
+#include "Recommendations.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -65,6 +66,7 @@ private:
     User* currentUser;
     void createPresetUsers(); // Initialize preset users
     Visualization* visualizer;
+    Recommendations* recommendations;
 //    void setProcessedData(std::map<std::string, float>* processedDataResults);
 //    std::map<std::string, float> getProcessedData() { return processedData;}
 

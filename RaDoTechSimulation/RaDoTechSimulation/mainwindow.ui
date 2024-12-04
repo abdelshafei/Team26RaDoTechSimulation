@@ -484,6 +484,32 @@ p, li { white-space: pre-wrap; }
          <string>Home Page</string>
         </property>
        </widget>
+       <widget class="QPushButton" name="HistoryHomePageButton">
+        <property name="geometry">
+         <rect>
+          <x>210</x>
+          <y>120</y>
+          <width>83</width>
+          <height>25</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>Details</string>
+        </property>
+       </widget>
+       <widget class="QPushButton" name="MeasureNowHomePageButton">
+        <property name="geometry">
+         <rect>
+          <x>200</x>
+          <y>150</y>
+          <width>101</width>
+          <height>31</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>Measure Now</string>
+        </property>
+       </widget>
       </widget>
       <widget class="QWidget" name="MeasureNowPage">
        <widget class="QLabel" name="MeasureHeader">
@@ -906,7 +932,7 @@ p, li { white-space: pre-wrap; }
          </rect>
         </property>
         <property name="currentIndex">
-         <number>0</number>
+         <number>3</number>
         </property>
         <widget class="QWidget" name="Indicators">
          <attribute name="title">
@@ -2168,6 +2194,51 @@ p, li { white-space: pre-wrap; }
          <attribute name="title">
           <string>Page</string>
          </attribute>
+         <widget class="QFrame" name="HyperActiveFrame">
+          <property name="geometry">
+           <rect>
+            <x>10</x>
+            <y>10</y>
+            <width>481</width>
+            <height>81</height>
+           </rect>
+          </property>
+          <property name="frameShape">
+           <enum>QFrame::StyledPanel</enum>
+          </property>
+          <property name="frameShadow">
+           <enum>QFrame::Raised</enum>
+          </property>
+          <widget class="QLabel" name="HyperactiveTitle">
+           <property name="geometry">
+            <rect>
+             <x>10</x>
+             <y>10</y>
+             <width>461</width>
+             <height>17</height>
+            </rect>
+           </property>
+           <property name="styleSheet">
+            <string notr="true">background-color: rgb(246, 97, 81);</string>
+           </property>
+           <property name="text">
+            <string>  Hyperactive</string>
+           </property>
+          </widget>
+          <widget class="QLabel" name="HyperactiveLabel">
+           <property name="geometry">
+            <rect>
+             <x>10</x>
+             <y>30</y>
+             <width>461</width>
+             <height>41</height>
+            </rect>
+           </property>
+           <property name="text">
+            <string>TextLabel</string>
+           </property>
+          </widget>
+         </widget>
         </widget>
        </widget>
       </widget>
