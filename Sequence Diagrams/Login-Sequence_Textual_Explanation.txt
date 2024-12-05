@@ -1,0 +1,66 @@
+Login and View Profiles
+
+---
+
+Purpose
+
+The sequence diagram depicts the process of logging an existing user into the system and viewing user profiles in the application.
+
+---
+
+Actors and Objects
+
+MainWindow: Represents the main interface of the application where user actions are handled.
+
+User: Represents the application's users, storing their credentials and associated profiles.
+
+Profile: Represents individual user profiles, which include personal details such as name, gender, and historical health data.
+
+---
+
+Flow Step-by-Step
+
+Login Page Display
+-MainWindow initiates the login process by calling showLoginPage(), presenting the login interface to the user.
+
+Login Handling
+-When the user submits their credentials, handleLogin() is invoked. It fetches the entered email and password.
+
+Credential Validation:
+-MainWindow calls validateCredentials(email, password, presetUsers) on the User class, passing the entered details and a list of preset users.
+-The validateCredentials function matches the credentials against stored users. If valid, the corresponding User object is returned.
+
+Conditional Check:
+-An alt (alternative) fragment is used:
+    -Condition: If a valid User is returned ([user exists]), the flow proceeds to show the profiles.
+    -Otherwise, an error message is shown, and the login process halts.
+
+Profile Viewing:
+-If login is successful, showProfiles() is called, triggering the retrieval and display of user profiles.
+
+Retrieving Profiles:
+-getProfiles() is called on the User object to fetch the list of profiles associated with the logged-in user.
+
+Loop through Profiles:
+-A loop fragment iterates over each profile.
+-For every profile:
+    -getName() retrieves the profile's name.
+    -getGender() retrieves the profile's gender.
+
+---
+
+Key Interactions
+
+Validation: The validateCredentials function in User.cpp ensures secure and accurate authentication of the user credentials.
+
+Profile Retrieval: getProfiles() in User.h returns a list of Profile objects, enabling display and interaction.
+
+Iteration: Each profile's details, such as name and gender, are accessed within the loop fragment for display purposes.
+
+---
+
+Outcome
+
+-Existing user successfully logs in
+-The profiles associated with the logged-in user are displayed.
+-This concludes the flow, allowing users to view and select profiles for further actions.

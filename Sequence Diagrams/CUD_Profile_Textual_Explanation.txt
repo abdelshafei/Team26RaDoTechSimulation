@@ -1,0 +1,67 @@
+Create, Update, Delete Profile (Existing User)
+
+---
+
+Purpose
+
+This sequence diagram illustrates the creation, update, and deletion of a profile for an existing user.
+
+---
+
+Actors and Objects
+
+MainWindow: 
+-Provides the user interface for managing profiles.
+-Facilitates navigation to profile management pages and triggers operations for creating, updating, and deleting profiles.
+
+User: Represents an application user and holds their credentials and associated profiles.
+
+Profile: Stores individual profile data such as name, gender, weight, height, and date of birth.
+
+---
+
+Flow Step-by-Step
+
+Displaying Profile Management Page:
+-The showProfilePage() method in MainWindow displays the profile management page.
+
+Navigating to Profile Creation Page:
+-If the user opts to create a new profile, goToCreateProfilePage() is called, directing the user to the profile creation form.
+
+Creating a New Profile:
+-The user provides input, and saveProfile() is invoked.
+-A new Profile object is created using the provided details (name, gender, weight, height, and dob).
+-addProfile(newProfile) associates the new profile with the User.
+-The updated profile list is displayed via updateProfilesList().
+
+Updating a Profile:
+-The viewProfile() method displays details of the selected profile, and allows the user to make changes.
+-When submit button is clicked, editProfile() is called.
+-Profile attributes (name, gender, weight, height, and dob) are updated using respective setter methods (setName, setGender, etc.).
+-The updated profile list is displayed via updateProfilesList().
+
+Deleting a Profile:
+-The user selects a profile to delete, and deleteProfile() is invoked.
+-A loop iterates through profiles to find the matching one based on getName().
+-The profile is removed using removeAt(i), and setProfiles(updatedProfiles) updates the list of profiles for the user.
+-The updated profile list is displayed via updateProfilesList().
+
+---
+
+Key Interactions
+
+Profile Viewing: getProfiles() retrieves all profiles for the logged-in user, and getName() identifies specific profiles.
+
+Profile Creation: A Profile object is instantiated, and addProfile() associates it with the current user​.
+
+Profile Editing: Attributes of the Profile object are updated using setter methods (setName, setGender, etc.), ensuring data consistency.
+
+Profile Deletion: Profiles are identified using getName() and removed with removeAt(i).
+
+---
+
+Outcome
+
+-Users can create, update, and delete profiles seamlessly.
+-The system dynamically reflects changes in the UI via updateProfilesList().
+-Profiles remain consistent with the user data and are accessible for further actions.
