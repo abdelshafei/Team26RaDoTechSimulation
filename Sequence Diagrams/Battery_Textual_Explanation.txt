@@ -1,0 +1,55 @@
+Battery Management
+
+---
+
+Purpose
+
+This sequence diagram explains the battery management functionality of the application, which involves monitoring, depleting, and charging the RaDoTechDevice battery.
+
+---
+
+Actors and Objects
+
+MainWindow: Acts as the user interface and initiates actions like updating the battery level, charging, and depleting.
+RaDoTechDevice: Represents the scanning device, which manages battery operations using the Battery class.
+Battery: Encapsulates battery properties such as its current level and status.
+
+---
+
+Flow Step-by-Step
+
+Monitoring Battery Level:
+-The updateBatteryLevelLabel() function in MainWindow retrieves the current battery level using device.getBatteryLevel().
+-An alt block checks if the battery level is above 0:
+    -[If device.getBatteryLevel() > 0]:
+        -The depleteBattery() method is called on the RaDoTechDevice, which triggers the deplete() method in Battery to reduce the battery level by 5%.
+        -The system actively checks if the battery is low using isBatteryLow() on RaDoTechDevice, which internally invokes isLow() on Battery.
+        -The battery level is updated and reflected on the user interface via updateBatteryLevelLabel().
+    -[Else (device.getBatteryLevel() == 0)]:
+        -The below battery charging process begins.
+
+Charging the Battery:
+-When charging is initiated, the ChargeBattery() function in MainWindow calls the chargeBattery() method on the RaDoTechDevice, which invokes charge() in Battery to increase the level by 5%​.
+-The updated battery level is fetched using getBatteryLevel() and displayed via UpdateChargedBatteryLevelLabel().
+
+UI Feedback:
+-The battery level is visually updated on the progress bar in the UI.
+-If the battery level is low (≤20%), the UI changes the progress bar color to red, and a warning message is displayed to the user.
+
+---
+
+Key Interactions
+
+Battery Monitoring: The MainWindow interacts with RaDoTechDevice and Battery to continually check and update the battery level.
+
+Battery Depletion: App/Device Usage reduces the battery level by invoking deplete() in Battery.
+
+Battery Charging: Charging operations increase the battery level via charge() in Battery, ensuring the battery level does not exceed 100%​.
+
+UI Integration: Battery levels and statuses are dynamically updated on the UI, providing immediate feedback to the user​.
+
+---
+
+Outcome
+
+The system effectively manages the device battery by depleting it during operations and enabling charging when necessary. The UI provides users with clear feedback on the battery status, ensuring proper device usage.

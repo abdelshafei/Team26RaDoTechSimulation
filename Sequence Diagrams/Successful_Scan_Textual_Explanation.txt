@@ -1,0 +1,68 @@
+Successful Scan
+
+---
+
+Purpose
+
+The sequence diagram demonstrates the process of performing a successful scan using the RaDoTechDevice. The process includes pairing the device, initiating a scan, processing collected data, and transitioning through the scan points until the scan completes.
+
+---
+
+Actors and Objects
+
+MainWindow: The main interface for interacting with the user and orchestrating the scanning process.
+User: Represents the current logged-in user with associated profiles.
+Profile: Stores individual user profiles, enabling scans to be linked to a specific profile.
+RaDoTechDevice: Represents the scanning device used to collect health data.
+Battery: Manages the device's battery, ensuring sufficient charge for the scan.
+DataProcessor: Processes the raw data collected during the scan, producing results for analysis.
+
+---
+
+Flow Step-by-Step
+
+Starting the Scan:
+-The user navigates to the scan page via showMeasureNowPage().
+
+Selecting a Profile:
+-startScan() retrieves profiles using getProfiles() and displays them.
+-The user selects a profile using getName().
+
+Device Setup:
+-The user navigates to the device view using showDeviceView().
+-The device is paired via PairUp().
+
+Performing the Scan:
+-For each scan point, the following user’s actions loop until all scan points have been completed (currentScanPoint == totalScanPoints)
+    -performDeviceScan() checks if the device is paired using getIsPaired() and initiates the scan via startScan().
+    -The battery level is verified using getBatteryLevel().
+    -Raw data is collected using collectData(), and the device depletes its battery via depleteBattery().
+
+Processing Data:
+-If the scan on the skin has completed successfully after being held for 5 seconds (scantimercomplete && !scanTimer->isActive())
+    -Collected data is set in the DataProcessor using setRawData().
+    -Data is validated via validateData() and processed using processData().
+    -The processed data is displayed using showMeasureView().
+
+Completing the Scan:
+-After completing all scan points, the process transitions to the personal information page via showPersonalInfoPage().
+
+---
+
+Key Interactions
+
+Device Pairing: The device must be paired before scanning begins using PairUp()​(RaDoTechDevice).
+
+Battery Management: Battery operations are monitored using getBatteryLevel() and isLow() methods from the Battery class​.
+
+Data Collection: RaDoTechDevice collects raw data during each scan point using collectData() and tracks battery depletion​.
+
+Data Processing: DataProcessor validates and processes raw data into meaningful results, using setRawData() and processData().
+
+UI Updates: MainWindow transitions between pages, updates the progress, and displays results dynamically.
+
+---
+
+Outcome
+
+The process concludes with the successful completion of all scan points, presenting processed health data and transitioning to a summary page for further review.

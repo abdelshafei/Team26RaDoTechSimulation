@@ -1,0 +1,69 @@
+Register New User and Add Profile
+
+---
+
+Purpose
+
+The sequence diagram illustrates the process of registering a new user and creating a profile in the application.
+
+---
+
+Actors and Objects
+
+MainWindow: Acts as the main interface for user interaction, responsible for triggering the user and profile creation process.
+
+User: Represents a user in the system, holding email, password, and associated profiles.
+
+Profile: Represents an individual user profile with attributes such as name, gender, weight, height, and date of birth.
+
+---
+
+Flow Step-by-Step
+
+Page Display for Profile Creation:
+-MainWindow invokes showCreateProfilePage(), directing the user to the profile creation interface.
+
+Saving a New Profile:
+-When the user provides the necessary details and submits the form, saveProfile() is called in MainWindow.
+
+User Creation:
+-An alt fragment checks if a currentUser exists:
+    -If currentUser is null, a new User object is created with the provided email and password.
+    -The newly created User is stored in currentUser.
+
+Profile Creation:
+-A Profile object is instantiated using the provided name, gender, weight, height, and date of birth.
+
+Associating Profile with User:
+-The addProfile(newProfile) method in User is called to associate the newly created profile with the current user.
+
+Updating Profile List:
+-The updateProfilesList() method in MainWindow refreshes the list of profiles displayed to the user.
+
+Retrieving Profiles:
+-getProfiles() is invoked to fetch the list of profiles associated with the current user.
+
+Displaying Profile Details:
+-A loop fragment iterates over each profile, invoking methods like:
+    -getEmail() to retrieve the user's email.
+    -getName() to fetch the profile name.
+    -getGender() to display the profile's gender.
+    -getWeight(), getHeight(), and getDateOfBirth() to retrieve additional profile attributes.
+
+---
+
+Key Interactions
+
+User Creation: A new User object is instantiated only if the user does not already exist. The email and password are validated before proceeding​.
+
+Profile Creation: A new Profile object is created and added to the user using addProfile()​.
+
+UI Updates: updateProfilesList() in MainWindow ensures that the UI reflects the latest changes to the profile list.
+
+---
+
+Outcome
+
+-A new user is created (if not already existing).
+-A new profile is associated with the user.
+-The updated list of profiles is displayed, allowing further interaction.

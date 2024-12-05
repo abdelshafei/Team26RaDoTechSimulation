@@ -1,0 +1,84 @@
+View Historical Data (Indicators, Comments, Visualization, Recommendations)
+
+---
+
+Purpose
+
+The sequence diagram outlines the process of displaying historical health data, including indicators, comments, visualizations, and recommendations. 
+
+---
+
+Actors and Objects
+
+MainWindow:
+-The main interface for navigating and triggering historical data views.
+-Handles user interaction for selecting and displaying health data.
+
+User: Represents the application user, holding profiles and their associated health data.
+
+Profile: Represents individual profiles under a user, which store historical health data.
+
+HealthData:
+-Contains detailed health measurements, including meridian results and comments.
+-Provides methods for calculating health indicators and practitioner metrics.
+
+Visualization: Generates visual representations (e.g. body diagrams) based on health data.
+
+Recommendations: Generates personalized recommendations based on the analyzed health data.
+
+---
+
+Flow Step-by-Step
+
+Displaying Historical Data Page:
+-showHistoricalPage() is invoked in MainWindow to display the historical data view.
+
+Populating History List:
+-populateHistoryList() retrieves user profiles via getProfiles() and iterates over each profile to fetch historical health data using getHistory().
+-For each health record, details such as getName() and getDate() are displayed in a list.
+
+Viewing Detailed Data:
+-When a specific historical record is selected, viewDetails() fetches the relevant health data and triggers further actions.
+
+Populating Indicators:
+-populateIndicators() calculates functional health indicators and practitioner metrics by invoking:
+    -calculateEnergyLevel()
+    -calculateImmuneSystem()
+    -calculateMetabolism()
+    -calculatePsychoEmotionalState()
+    -calculateMusculoskeletalSystem()
+-Metrics are normalized and classified using thresholds, such as getClassification(energyLevel, 25, 55).
+
+Generating Visualizations:
+-The Visualization object generates various charts based on health data:
+-showBarGraph(selectedData, ui) creates bar graphs for conductance levels of different meridians.
+-showCircleGraph(selectedData, ui) generates radar charts showing organ health metrics.
+-showBodyGraph(selectedData, ui) overlays health statuses on a body diagram.
+
+Generating Recommendations:
+-The Recommendations class generates personalized suggestions based on the selected health data by calling:
+    -generateRecommendations(selectedData, ui)
+-Recommendations cover areas such as hyperactivity, insufficiencies, diet, food choices, general health, and supplements
+
+Fetching Comments:
+-Comments for the selected health data are retrieved via getComments() and displayed.
+
+---
+
+Key Interactions
+
+Data Aggregation: Historical data is aggregated and displayed through interactions between MainWindow, User, and Profile.
+
+Health Metrics Calculation: The HealthData class provides detailed algorithms for calculating health indicators and metrics. These include energy levels, immune system strength, and body balance​.
+
+Dynamic Visualization: The Visualization class dynamically creates bar graphs, radar charts, and body diagrams to represent the user's health data visually.
+
+Personalized Recommendations: Recommendations leverages health data to provide placeholder suggestions
+
+UI Integration: MainWindow integrates data from HealthData and renders it into the UI using Visualization.
+
+---
+
+Outcome
+
+Users can view detailed historical health data, including calculated indicators, comments, visualizations, and recommendations
