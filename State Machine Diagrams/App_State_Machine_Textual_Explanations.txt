@@ -1,0 +1,63 @@
+Closed State:
+    - This is the initial state when the RaDoTech app is not running. We included this state to capture the app's
+      lifecycle and user interaction.
+
+    - The transitions to "Login" or "Register" are based on whether the user has an account, ensuring a clear 
+      pathway for user interaction.
+
+Login State:
+    - This state handles user authentication. We included it because this is the initial state to enter the app if
+      the user has an account. 
+
+    - Transition to "Error" handles failed login attempts, while successful login transitions to "Home Page," 
+      reflecting the natural flow of user actions.
+
+Register State:
+    - This state allows new users to create an account. We included it to ensure the app can accommodate new users.
+
+    - Similar to "Login," transitions handle success or error conditions, ensuring users can retry if their input is invalid.
+
+Home Page State:
+    - This is the central hub where users access all app features. We chose to include this state to provide a clear and 
+      organized structure for user interaction.
+
+    - Transitions to "Scan Preparation," "Scan History," and "Profiles" allow users to navigate to different functionalities. 
+
+Scan Preparation State:
+    - This state prepares the user for a scan by ensuring the device is paired and providing instructions. We included this 
+      state to reflect the practical steps required before initiating a scan.
+
+    - Transition to "Scanning" occurs when the user starts the scan, moving to the active phase of the process.
+
+Scanning State:
+    - This state mirrors the device's "Scanning" state, representing the app's role in monitoring and processing data during 
+      the scan.
+
+    - Transition to "Results" occurs upon successful scan completion, while error handling ensures issues are addressed.
+
+Results State:
+    - This state displays the results of a completed scan.
+
+    - Transition to "Visualization" allows users to dive deeper into specific metrics, while returning to "Home Page" allows
+      the user to naviagte to other areas of the app.
+
+Visualization State:
+    - This state provides detailed visualizations of the scan data, such as charts and body maps.
+
+    - Transition back to "Results" maintains the logical flow of information.
+
+Scan History State:
+    - This state allows users to view and analyze past scan data. We included it to emphasize the app's ability to store and
+      organize historical data.
+
+    - Transition to "Results" lets users revisit the details of specific scans.
+
+Profiles State:
+    - This state manages user profiles, allowing users to create, edit, or view existing profiles. We included it to support 
+      multi-user functionality and personalized experiences.
+
+    - Transitions to "Edit" and "Create" handle the respective actions, ensuring flexibility in managing profiles.
+
+Error State:
+    - This state handles errors during login, registration, or scanning. We included it to reflect robust error handling and 
+      provide a clear path for recovery.

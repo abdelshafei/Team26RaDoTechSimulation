@@ -1,0 +1,58 @@
+Off State:
+    - This state represents when the RaDoTech device is completely powered off. We included this state to reflect 
+      the initial and inactive condition of the device.
+
+    - The transition from "Off" to "Idle" occurs when the power on button is pressed, as this mirrors how a real
+      world device operates. We added a guard condition [Battery > 0%] to ensure that the device cannot be turned
+      on if the battery is completely drained.
+
+    - The transition from "Shutdown" to "Off" allows for both manual and automatic shutdowns. Automatic shutdown
+      happens when the battery is completely depleted, while manual shutdown provides the user with control over
+      powering off the device.
+
+Idle State:
+    - This is the default "ready" state of the device after it powers on. In this state, the device waits for the
+      user to initiate an action, such as starting a new scan.
+
+    - We chose to include transitions to "Scanning," "Low Battery," and "Shutdown" from this state because these 
+      represent the primary actions a device in standby mode would handle.
+
+    - Transition to "Scanning" occurs when the user starts a scan, provided the device is paired and operational.
+
+    - Transition to "Low Battery" ensures the user is warned if the battery level drops below 25%.
+
+    - Transition to "Shutdown" handles scenarios where the device is manually powered off or the battery is drained.
+
+Scanning State:
+    - This state represents the active process of the device performing a health scan. We included it to highlight the
+      main functionality of the RaDoTech device.
+
+    - Transition to "Data Transmission" when the scan is completed successfully, reflecting the flow of data to the paired app.
+
+    - Transition to "Error" when the scan fails or produces invalid data, ensuring the user is notified of any issues and can retry.
+
+Data Transmission State:
+    - In this state, the device transmits the collected health data to the RaDoTech app for processing. We added this state
+      to account for the device's need to interact with the app and reflect the sequence of operations.
+
+    - Transitions to "Idle" when the transmission completes successfully, resetting the device for the next scan.
+
+    - Transitions to "Error" when the transmission fails, prompting the user to address the issue.
+
+Low Battery State:
+    - This state represents the device operating with limited functionality due to low power. We included it to emphasize power
+      management.
+
+    - Transition to "Shutdown" when the battery is completely depleted, ensuring the device powers off safely to avoid data loss.
+
+    - Transition to "Idle" when the battery is recharged, allowing the device to resume normal functionality.
+
+Error State:
+    - This state handles any issues that occur during scanning or data transmission. We included this state to reflect robust error
+      handling.
+
+    - The transition back to "Idle" ensures that the device can recover and resume normal operations once the error is resolved.
+
+Shutdown State:
+    - This final state represents the device being safely powered down, either manually or automatically. Including this state 
+      highlights the device's ability to manage its power gracefully.
