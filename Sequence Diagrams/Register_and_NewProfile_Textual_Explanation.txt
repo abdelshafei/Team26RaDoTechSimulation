@@ -44,11 +44,7 @@ Retrieving Profiles:
 -getProfiles() is invoked to fetch the list of profiles associated with the current user.
 
 Displaying Profile Details:
--A loop fragment iterates over each profile, invoking methods like:
-    -getEmail() to retrieve the user's email.
-    -getName() to fetch the profile name.
-    -getGender() to display the profile's gender.
-    -getWeight(), getHeight(), and getDateOfBirth() to retrieve additional profile attributes.
+-A loop fragment iterates over each profile, invoking the getName() function to display each profile's name.
 
 ---
 

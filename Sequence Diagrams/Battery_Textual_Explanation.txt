@@ -26,7 +26,7 @@ Monitoring Battery Level:
         -The system actively checks if the battery is low using isBatteryLow() on RaDoTechDevice, which internally invokes isLow() on Battery.
         -The battery level is updated and reflected on the user interface via updateBatteryLevelLabel().
     -[Else (device.getBatteryLevel() == 0)]:
-        -The below battery charging process begins.
+        -The user can click the charge button whic begins the below battery charging process.
 
 Charging the Battery:
 -When charging is initiated, the ChargeBattery() function in MainWindow calls the chargeBattery() method on the RaDoTechDevice, which invokes charge() in Battery to increase the level by 5%​.
