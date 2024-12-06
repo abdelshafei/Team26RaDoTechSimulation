@@ -12,7 +12,7 @@ This project simulates the functionality of the RaDoTech health monitoring devic
 | **William Marcus**    | Developer        | Developed code for the scan process in the `RaDoTechDevice` and `DataProcessor` class along with the data visualizations within the `Visualization` class. Created state machine diagrams for the app and device.      |
 | **Param Desai**   | Developer               |     |
 | **JC Sevigny**   | Developer        |            |
-| **Abdelrahman ElShafay**   | Developer          | |
+| **Abdelrahman ElShafay**   | Developer          | Designed and implemented functionality for the `Battery` object class within the `RaDoTechDevice`, including depletion and charging mechanisms, as well as the logic for device pairing initialization. Developed a comprehensive Traceability Matrix to ensure requirements alignment. Created detailed UML Class and Use Case Diagrams, refining existing use cases for accuracy and completeness in the use cases form. |
 
 ---
 
