@@ -16,6 +16,7 @@ Profile: Stores individual user profiles, enabling scans to be linked to a speci
 RaDoTechDevice: Represents the scanning device used to collect health data.
 Battery: Manages the device's battery, ensuring sufficient charge for the scan.
 DataProcessor: Processes the raw data collected during the scan, producing results for analysis.
+HealthData: Stores profiles' various health data.
 
 ---
 
@@ -46,6 +47,10 @@ Processing Data:
 
 Completing the Scan:
 -After completing all scan points, the process transitions to the personal information page via showPersonalInfoPage().
+-The user then enters various pieces of information (eg blood pressure, heart rate) via textfields and clicks the Submit button.
+-The submit button calls saveResults(), which in turn converts the data to meridian results through convertProcessedDataToMeridianResults(processedData)
+-A new HealthData object is created with the converted data.
+-HealthData is added to the desired profile.
 
 ---
 
@@ -59,10 +64,12 @@ Data Collection: RaDoTechDevice collects raw data during each scan point using c
 
 Data Processing: DataProcessor validates and processes raw data into meaningful results, using setRawData() and processData().
 
+Data Association to Profile: Once scan is complete, health data is saved to the profile who performed the scan for viewing.
+
 UI Updates: MainWindow transitions between pages, updates the progress, and displays results dynamically.
 
 ---
 
 Outcome
 
-The process concludes with the successful completion of all scan points, presenting processed health data and transitioning to a summary page for further review.
+The process concludes with the successful completion of all scan points, and appending converted health data to its desired profile.
