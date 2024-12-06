@@ -2,7 +2,7 @@
 #define RECOMMENDATIONS_H
 
 #include "HealthData.h"
-#include "ui_mainwindow.h" // Include the generated UI file
+#include "ui_mainwindow.h"
 
 class Recommendations
 {

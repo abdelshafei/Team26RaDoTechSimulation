@@ -12,7 +12,7 @@ private:
     double weight;
     double height;
     QDate dateOfBirth;
-    QList<HealthData*> history;  // Historical health data
+    QList<HealthData*> history;
     Profile* selectedProfile;
 
 public:
@@ -24,14 +24,12 @@ public:
     double getWeight() const { return weight; }
     double getHeight() const { return height; }
     QDate getDateOfBirth() const { return dateOfBirth; }
-
     QList<HealthData*> getHistory() const { return history; }
+    Profile* getSelectedProfile() {return selectedProfile;}
+
 
     void addHealthData(HealthData* data) { history.append(data); }
     void setSelectedProfile(Profile* profile) {selectedProfile = profile; }
-
-    Profile* getSelectedProfile() {return selectedProfile;}
-
     void setName(const QString& name) { this->name = name; }
     void setGender(const QString& gender) { this->gender = gender; }
     void setWeight(double weight) { this->weight = weight; }

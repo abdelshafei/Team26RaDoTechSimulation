@@ -27,32 +27,30 @@ public:
 
     // Switching App Pages UI Functions
     void showHomePage();
-
     void showMeasureNowPage();
     void showMeasureView();
-
     void showHistoricalPage();
     void showProfilePage();
     void showVisualizationPage();
     void showCreateProfilePage();
     void showLoginPage();
 
-
-    void saveProfile(); // Save a new profile for the user
-    void showProfiles(); // Display all profiles for the user
+    // Profile Functions
+    void saveProfile();
+    void showProfiles();
     void updateProfilesList();
     void viewProfile();
     void editProfile();
     void deleteProfile();
     void goToCreateProfilePage();
 
-
+    // History Data Functions
     void showPersonalInfoPage();
     void saveResults();
 
 private slots:
-    void handleLogin(); // Slot for login button
-    void populateHistoryList();  // Populate history on Historical Page
+    void handleLogin();
+    void populateHistoryList();
     void viewDetails();
     void populateIndicators(HealthData* selectedData);
     void startScan();
@@ -62,31 +60,26 @@ private slots:
 
 private:
     Ui::MainWindow *ui;
-    QList<User*> presetUsers; // List of preset users
+    QList<User*> presetUsers;
     User* currentUser;
-    void createPresetUsers(); // Initialize preset users
+    void createPresetUsers();
     Visualization* visualizer;
     Recommendations* recommendations;
-//    void setProcessedData(std::map<std::string, float>* processedDataResults);
-//    std::map<std::string, float> getProcessedData() { return processedData;}
-
-    // Device and Measure
     int currentScanPoint;
     int totalScanPoints;
     bool isDeviceScanned;
     Profile* currProfile;
-
     RaDoTechDevice device;
     DataProcessor processor;
     std::map<std::string, float> processedData;
-    QString getClassification(double value, double min, double max);
-
-    void updateProcessedDataUI(const std::map<std::string, float>& processedData);
-    QList<MeridianResult> convertProcessedDataToMeridianResults(const std::map<std::string, float>& processedData);
-
     QTimer* batteryTimer;
     QTimer* chargedBatteryTimer;
     QTimer* scanTimer;
+    bool scantimercomplete;
+
+    QString getClassification(double value, double min, double max);
+    void updateProcessedDataUI(const std::map<std::string, float>& processedData);
+    QList<MeridianResult> convertProcessedDataToMeridianResults(const std::map<std::string, float>& processedData);
     void updateBatteryLevelLabel();
     void powerDevice();
     void shutDownDevice();
@@ -94,7 +87,6 @@ private:
     void ChargeBattery();
     void PairUp();
 
-    bool scantimercomplete;
 
 
 };

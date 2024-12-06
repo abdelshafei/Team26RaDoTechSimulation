@@ -25,10 +25,8 @@ MainWindow::MainWindow(QWidget *parent)
     currentUser = nullptr;
     // Connect Device View to App View button
     connect(ui->GoToAppViewButton, &QPushButton::clicked, this, &MainWindow::showAppView);
-
     // Connect App View to Device View button
     connect(ui->GoToDeviceViewButton, &QPushButton::clicked, this, &MainWindow::showDeviceView);
-
     // Connect App View buttons to respective pages
     connect(ui->HomePageButton, &QPushButton::clicked, this, &MainWindow::showHomePage);
     connect(ui->MeasureNowButton, &QPushButton::clicked, this, &MainWindow::showMeasureNowPage);
@@ -59,22 +57,20 @@ MainWindow::MainWindow(QWidget *parent)
     QPixmap Muscle("/home/student/Desktop/Final/3004-Final-Project/images/Muscler.png");
     ui->MuscleImage->setPixmap(Muscle.scaled(71,41,Qt::KeepAspectRatio));
 
-    //Save Button on Create Button
+    //User and Profile Buttons
     connect(ui->SavePushButton, &QPushButton::clicked, this, &MainWindow::saveProfile);
     connect(ui->SavePushButtonUpdate, &QPushButton::clicked, this, &MainWindow::editProfile);
     connect(ui->DeleteProfileButton, &QPushButton::clicked, this, &MainWindow::deleteProfile);
-//    currentUser = new User("example@example.com", "password123");
     connect(ui->AddNewProfileButton, &QPushButton::clicked, this, &MainWindow::goToCreateProfilePage);
 
     // Initialize preset users
     createPresetUsers();
 
-    // Connect login button
     connect(ui->EnterLoginButton, &QPushButton::clicked, this, &MainWindow::handleLogin);
-
     connect(ui->ViewDetailsButton, &QPushButton::clicked, this, &MainWindow::viewDetails);
     connect(ui->ViewProfileDetailsButton, &QPushButton::clicked, this, &MainWindow::viewProfile);
 
+    // History Tabs
     ui->ResultsTabWidget->setTabText(0, "Indicator");
     ui->ResultsTabWidget->setTabText(1, "Visulization");
     ui->ResultsTabWidget->setTabText(2, "Comments");
@@ -85,12 +81,14 @@ MainWindow::MainWindow(QWidget *parent)
     connect(ui->NextButton, &QPushButton::clicked, this, &MainWindow::nextScanPoint);
     connect(ui->DeviceScanButton, &QPushButton::clicked, this, &MainWindow::performDeviceScan);
     connect(ui->GoToMeasureViewButton, &QPushButton::clicked, this, &MainWindow::showMeasureView);
-
     connect(ui->SaveButtonNotes, &QPushButton::clicked, this, &MainWindow::saveResults);
     showMeasureNowPage();
+    scanTimer = new QTimer(this);
+    scanTimer->setInterval(5000);
+    connect(scanTimer, &QTimer::timeout, this, &MainWindow::timeOutforScan);
+    scanTimer->stop();
 
-
-    // Power buttons
+    // Battery, Device and Power Buttons Functionality
     connect(ui->OnButton, &QPushButton::clicked, this, &MainWindow::powerDevice);
     connect(ui->OffButton, &QPushButton::clicked, this, &MainWindow::shutDownDevice);
     ui->BatteryPowerProgressBar->setValue(100);
@@ -104,16 +102,11 @@ MainWindow::MainWindow(QWidget *parent)
     connect(chargedBatteryTimer, &QTimer::timeout, this, &MainWindow::UpdateChargedBatteryLevelLabel);
 
     connect(ui->ChargeButton, &QPushButton::clicked, this, &MainWindow::ChargeBattery);
-
     ui->ChargeButton->setText("Charging OFF");
     powerDevice();
-
     connect(ui->PairButton, &QPushButton::clicked, this, &MainWindow::PairUp);
 
-    scanTimer = new QTimer(this);
-    scanTimer->setInterval(5000);
-    connect(scanTimer, &QTimer::timeout, this, &MainWindow::timeOutforScan);
-    scanTimer->stop();
+
 }
 MainWindow::~MainWindow()
 {
@@ -149,6 +142,7 @@ void MainWindow::showHomePage()
     ui->AppStackedWidget->setCurrentWidget(ui->HomePage);
 }
 
+// Show Create Profile Page in App View
 void MainWindow::showCreateProfilePage()
 {
     ui->ViewsStackedWidget->setCurrentWidget(ui->AppView);
@@ -156,6 +150,7 @@ void MainWindow::showCreateProfilePage()
 
 }
 
+// Show Login Page in App View
 void MainWindow::showLoginPage()
 {
     ui->ViewsStackedWidget->setCurrentWidget(ui->AppView);
@@ -182,14 +177,14 @@ void MainWindow::showProfilePage()
     updateProfilesList();
 }
 
-
+// Go to the Create Profile Page from Profile List
 void MainWindow::goToCreateProfilePage() {
-    // Clear all input fields
+    // Reset textboxes
     ui->ProfileNameTextEdit->clear();
-    ui->GenderComboBox->setCurrentIndex(0); // Reset dropdown to the first option
+    ui->GenderComboBox->setCurrentIndex(0);
     ui->WeightTextEdit->clear();
     ui->HeightTextEdit->clear();
-    ui->DOBEdit->setDate(QDate::currentDate()); // Reset to current date
+    ui->DOBEdit->setDate(QDate::currentDate());
     ui->LoginTextEdit->setText(currentUser ? currentUser->getEmail() : "");
     ui->PasswordTextEditCreate->setText(currentUser ? currentUser->getPassword() : "");
 
@@ -200,25 +195,21 @@ void MainWindow::goToCreateProfilePage() {
 
 void MainWindow::saveProfile() {
     // Collect data for User
-
     QString email = ui->LoginTextEdit->toPlainText();
     QString password = ui->PasswordTextEditCreate->toPlainText();
 
     // Validate User data
-
     if (email.isEmpty() || password.isEmpty()) {
         QMessageBox::warning(this, "Input Error", "Email and password cannot be empty.");
         return;
     }
 
     // Create or update the User
-
     if (!currentUser) {
         currentUser = new User(email, password);
     }
 
     // Collect data for Profile
-
     QString name = ui->ProfileNameTextEdit->toPlainText();
     QString gender = ui->GenderComboBox->currentText();
     double weight = ui->WeightTextEdit->toPlainText().toDouble();
@@ -226,19 +217,16 @@ void MainWindow::saveProfile() {
     QDate dob = ui->DOBEdit->date();
 
     // Validate Profile data
-
     if (name.isEmpty() || gender.isEmpty() || weight <= 0 || height <= 0) {
         QMessageBox::warning(this, "Input Error", "All profile fields must be filled correctly.");
         return;
     }
 
     // Create and associate the Profile with the User
-
     Profile* newProfile = new Profile(name, gender, weight, height, dob);
     currentUser->addProfile(newProfile);
 
     // Show success message
-
     QMessageBox::information(this, "Profile Created", "Profile and user created successfully!");
 
     // Navigate to the Home Page
@@ -255,6 +243,7 @@ void MainWindow::saveProfile() {
     ui->AppStackedWidget->setCurrentWidget(ui->ProfilePage);
 }
 
+// Update Profiles List on the Profile Page
 void MainWindow::updateProfilesList() {
     if (!currentUser) {
         ui->ProfileListWidget->clear();
@@ -263,14 +252,8 @@ void MainWindow::updateProfilesList() {
     }
 
     ui->ProfileListWidget->clear();
-
-    // Retrieve profiles
     QList<Profile*> profiles = currentUser->getProfiles();
-
     qDebug()<<profiles.size();
-
-    // Build profile list as a string
-
     for (Profile* profile : currentUser->getProfiles()) {
         if (!profile) continue;
         QString profilesText = QString(profile->getName());
@@ -279,6 +262,7 @@ void MainWindow::updateProfilesList() {
 
 }
 
+// View Profile Details
 void MainWindow::viewProfile(){
     if (!currentUser) {
         QMessageBox::critical(this, "Error", "No profiles selected");
@@ -291,10 +275,9 @@ void MainWindow::viewProfile(){
         QMessageBox::warning(this,"No Selection", "Please select a Profile");
     }
 
-    // Populate Page
     // Find the profile that matches the selected item's text
     Profile* selectedProfile = nullptr;
-    QString selectedProfileName = selectedItem->text(); // Get the text from the selected item
+    QString selectedProfileName = selectedItem->text();
 
     for (Profile* profile : currentUser->getProfiles()) {
         if (profile->getName() == selectedProfileName) {
@@ -309,19 +292,18 @@ void MainWindow::viewProfile(){
         return;
     }
 
-    // Populate the profile details page
+    // Populate the profile details page and Navigate to the Profile Details Page
     ui->ProfileNameTextEditUpdate->setText(selectedProfile->getName());
     ui->GenderComboBoxUpdate->setCurrentText(selectedProfile->getGender());
     ui->WeightTextEditUpdate->setText(QString::number(selectedProfile->getWeight()));
     ui->HeightTextEditUpdate->setText(QString::number(selectedProfile->getHeight()));
     ui->DOBEditUpdate->setDate(selectedProfile->getDateOfBirth());
-
-    // Navigate to the Profile Details Page
     ui->AppStackedWidget->setCurrentWidget(ui->ProfileDetailsPage);
 
 
 }
 
+// Edit Profile
 void MainWindow::editProfile() {
 
     // Collect updated data
@@ -338,10 +320,8 @@ void MainWindow::editProfile() {
     currProfile->setHeight(updatedHeight);
     currProfile->setDateOfBirth(updatedDOB);
 
-    // Reflect updates in the profile list
     updateProfilesList();
 
-    // Show success message
     QMessageBox::information(this, "Success", "Profile updated successfully!");
 
     // Navigate back to the profiles page
@@ -349,6 +329,7 @@ void MainWindow::editProfile() {
 
 }
 
+// Delete Profile
 void MainWindow::deleteProfile() {
     if (!currentUser) {
         QMessageBox::critical(this, "Error", "No user is logged in.");
@@ -373,7 +354,7 @@ void MainWindow::deleteProfile() {
     );
 
     if (reply != QMessageBox::Yes) {
-        return; // User canceled deletion
+        return;
     }
 
     // Find and delete the selected profile
@@ -393,17 +374,14 @@ void MainWindow::deleteProfile() {
         return;
     }
 
-    // Update the current user's profile list
     currentUser->setProfiles(profiles);
 
-    // Update the UI
     updateProfilesList();
 
-    // Show success message
     QMessageBox::information(this, "Success", "Profile deleted successfully.");
 }
 
-
+// Show te Profiles Page
 void MainWindow::showProfiles() {
     if (!currentUser) return;
 
@@ -498,6 +476,7 @@ void MainWindow::createPresetUsers() {
 //    presetUsers.append(user2);
 }
 
+// Handle the Login of User
 void MainWindow::handleLogin() {
     // Get input from login fields
     QString email = ui->LoginEmailTextEdit->toPlainText();
@@ -507,11 +486,8 @@ void MainWindow::handleLogin() {
     User* user = User::validateCredentials(email, password, presetUsers);
 
     if (user) {
-        // Successful login
         currentUser = user;
         QMessageBox::information(this, "Login Successful", "Welcome to the app!");
-
-        // Navigate to Home Page
         showProfiles();
         ui->HomePageButton->setDisabled(false);
         ui->MeasureNowButton->setDisabled(false);
@@ -519,11 +495,11 @@ void MainWindow::handleLogin() {
         ui->ProfilePageButton->setDisabled(false);
         ui->AppStackedWidget->setCurrentWidget(ui->HomePage);
     } else {
-        // Failed login
         QMessageBox::critical(this, "Login Failed", "Incorrect email or password. Please try again.");
     }
 }
 
+// Populate the History List
 void MainWindow::populateHistoryList() {
     if (!currentUser || currentUser->getProfiles().isEmpty()) {
         ui->HistoryListWidget->clear();
@@ -531,7 +507,6 @@ void MainWindow::populateHistoryList() {
         return;
     }
 
-    // Clear the QListWidget before populating
     ui->HistoryListWidget->clear();
 
     // Iterate through all profiles of the current user
@@ -542,7 +517,6 @@ void MainWindow::populateHistoryList() {
         for (HealthData* data : profile->getHistory()) {
             if (!data) continue;
 
-            // Combine profile name and date for display
             QString itemText = QString("%1 - %2")
                                    .arg(profile->getName())
                                    .arg(data->getDate().toString("yyyy-MM-dd"));
@@ -553,6 +527,7 @@ void MainWindow::populateHistoryList() {
     }
 }
 
+// View the Details of a HealthData record
 void MainWindow::viewDetails() {
     if (!currentUser || currentUser->getProfiles().isEmpty()) {
         QMessageBox::critical(this, "Error", "No profiles or health data available.");
@@ -566,7 +541,6 @@ void MainWindow::viewDetails() {
         return;
     }
 
-    // Extract the profile name and date from the selected item's text
     QStringList parts = selectedItem->text().split(" - ");
     if (parts.size() != 2) {
         QMessageBox::critical(this, "Error", "Invalid selection format.");
@@ -599,30 +573,19 @@ void MainWindow::viewDetails() {
         QMessageBox::critical(this, "Error", "Data not found.");
         return;
     }
-
-    // Build the detailed results text
-//    QString detailsText;
-//    for (const MeridianResult& result : selectedData->getData()) {
-//        detailsText += QString("%1 (%2): %3 µA, %4\n")
-//                           .arg(result.meridian)
-//                           .arg(result.side)
-//                           .arg(result.conductance)
-//                           .arg(result.status);
-//    }
-
-
-    // Display the results on the Detailed Results Page
-//    ui->DetailedResultsLabel->setText(detailsText);
+    // Populate the Indicators
     populateIndicators(selectedData);
+
+    // Populate the Visualization
     visualizer->showBarGraph(selectedData, ui);
     visualizer->showCircleGraph(selectedData, ui);
     visualizer->showBodyGraph(selectedData, ui);
 
+    // Populate the Recommendations
     recommendations->generateRecommendations(selectedData, ui);
     ui->AppStackedWidget->setCurrentWidget(ui->DetailedResultsPage);
 
-
-    // COMMENTS
+    // Populate the Comments
     QString detailsComments;
     for (const Comments& comment: selectedData->getComments()){
         detailsComments += QString("Blood Pressure: %1, \n Body Temperture: %2, \n Heart Rate: %3, \n Sleeping Time: %4, \n Current Weight %5, \n Emotional State %6, \n Over Feeling %7, \n Notes: %8")
@@ -696,10 +659,7 @@ QString MainWindow::getClassification(double value, double min, double max) {
     return "Normal";
 }
 
-
-
-// Device Scan
-
+// Show the Measure Now Page
 void MainWindow::showMeasureView(){
     if (currentUser){
         ui->ViewsStackedWidget->setCurrentWidget(ui->AppView);
@@ -710,6 +670,7 @@ void MainWindow::showMeasureView(){
     }
 }
 
+// Start the Scan
 void MainWindow::startScan()
 {
     // Ensure the current user is set
@@ -726,18 +687,17 @@ void MainWindow::startScan()
     // Create a list of profile names for display
     QStringList profileNames;
     for (Profile* profile : profiles) {
-        // Assuming Profile has a method getName() to get the profile name
         profileNames.append(profile->getName());
     }
-    // Show a dialog to select a profile
+
     bool ok;
     QString selectedProfileName = QInputDialog::getItem(
         this,
         "Select Profile",
         "Choose a profile for the scan:",
         profileNames,
-        0,  // Default index
-        false, // Editable: false (user can't edit the list)
+        0,  
+        false,
         &ok
     );
     if (!ok) {
@@ -757,6 +717,7 @@ void MainWindow::startScan()
         ui->MeasureNowLabel->setText("Selected profile not found.");
         return;
     }
+
     // Proceed with scan for the selected profile
     currentScanPoint = 1;
     isDeviceScanned = false;
@@ -810,8 +771,7 @@ void MainWindow::nextScanPoint()
         isDeviceScanned = false;
 
         // Get the organ being measured for the current scan point
-        QString organ = QString::fromStdString(organs[currentScanPoint - 1]); // -1 to match zero-based indexing
-
+        QString organ = QString::fromStdString(organs[currentScanPoint - 1]);
         ui->MeasureNowLabel->setText(
             QString("Scan Point %1: %2\nNavigate to Device View and press Scan.")
                 .arg(currentScanPoint)
@@ -826,7 +786,7 @@ void MainWindow::nextScanPoint()
         if (!pointImage.isNull()) {
             ui->MeasureNowImage->setPixmap(pointImage.scaled(501, 311, Qt::KeepAspectRatio));
         } else {
-            ui->MeasureNowImage->clear(); // Clear the image if loading fails
+            ui->MeasureNowImage->clear(); 
             ui->MeasureNowLabel->setText(QString("Scan Point %1: %2\nImage not found.").arg(currentScanPoint).arg(organ));
         }
 
@@ -837,16 +797,15 @@ void MainWindow::nextScanPoint()
     }
 }
 
-
+// Show the Personal Metrics Page
 void MainWindow::showPersonalInfoPage(){
 ui->AppStackedWidget->setCurrentWidget(ui->PersonalMetricsPage);
 }
 
+// Convert the processed data to MeridianResults
 QList<MeridianResult> MainWindow::convertProcessedDataToMeridianResults(const std::map<std::string, float>& processedData) {
     QList<MeridianResult> meridianResults;
 
-    // For demonstration purposes, assume we have a logic for assigning sides and statuses.
-    // You'll want to adapt this based on your logic for determining the "side" (Left/Right) and the "status".
     QString side;
     QString status;
     int conductance;
@@ -854,22 +813,20 @@ QList<MeridianResult> MainWindow::convertProcessedDataToMeridianResults(const st
     for (const auto& entry : processedData) {
         MeridianResult result;
 
-        // Set meridian name
-        result.meridian = QString::fromStdString(entry.first);  // Convert from std::string to QString
-        conductance = static_cast<int>(entry.second);  // Convert the float to an integer (µA)
+        result.meridian = QString::fromStdString(entry.first);
+        conductance = static_cast<int>(entry.second);
 
-        // For now, we alternate between Left and Right. You can modify this as needed.
         if (result.meridian.contains("Left")) {
             side = "Left";
         } else if (result.meridian.contains("Right")) {
             side = "Right";
         } else {
-            side = "Unknown";  // If no specific side, assign as "Unknown"
+            side = "Unknown";
         }
 
         result.side = side;
 
-        // Set the status based on the conductance (use ranges or other criteria to define status)
+        // Set the status based on the conductance value
         if (conductance < 80) {
             status = "Low (Deficient)";
         } else if (conductance <= 120) {
@@ -879,7 +836,7 @@ QList<MeridianResult> MainWindow::convertProcessedDataToMeridianResults(const st
         }
 
         result.status = status;
-        result.conductance = conductance;  // Set the conductance value in µA
+        result.conductance = conductance; 
 
         // Add to the results list
         meridianResults.append(result);
@@ -888,7 +845,7 @@ QList<MeridianResult> MainWindow::convertProcessedDataToMeridianResults(const st
     return meridianResults;
 }
 
-
+// Save the results to the current profile
 void MainWindow::saveResults(){
     double bodyTemprature = ui->BodyTempBox->value();
     QString bloodPressure = ui->BloodPressureBox->text();
@@ -909,10 +866,10 @@ void MainWindow::saveResults(){
     ui->AppStackedWidget->setCurrentWidget(ui->HomePage);
 }
 
-
+// Perform the scan from the device
 void MainWindow::performDeviceScan()
 {
-
+    // Check if the device is paired
     if(!device.getIsPaired()) {
         QMessageBox NoPairMsg;
         NoPairMsg.setText("Warning: The device is not paired up with the app");
@@ -921,11 +878,12 @@ void MainWindow::performDeviceScan()
         NoPairMsg.exec();
         return;
     }
+    // Check if the device is powered on
     if (!device.startScan()) {
         ui->DeviceStatusLabel->setText("Low battery. Cannot perform scan.");
         return;
     }
-
+    // Check if a profile is selected
     if (!currProfile){
         QMessageBox noProfile;
         noProfile.setText("Warning: Please set up a profile for the device to scan in App view");
@@ -934,8 +892,7 @@ void MainWindow::performDeviceScan()
         noProfile.exec();
         return;
     }
-
-
+    // Check if the device is already scanning
     if (scantimercomplete && !scanTimer->isActive()){
         // Collect data from the device
         std::vector<float> rawData = device.collectData();
@@ -952,11 +909,13 @@ void MainWindow::performDeviceScan()
 
         qDebug()<<"SCAN DONE";
     }
+    // Start the scan
     else if (!scantimercomplete && !scanTimer->isActive()){
         ui->DeviceScanButton->setText("Take Off Skin");
         scanTimer->start();
         qDebug()<<"Scan Started";
     }
+    // If the scan is not complete and the timer is active for skin contact
     else if(!scantimercomplete && scanTimer->isActive()){
         QMessageBox scanoffskin;
         scanoffskin.setText(QString("Please redo scan since Scan %1 did not complete").arg(currentScanPoint));
@@ -970,6 +929,7 @@ void MainWindow::performDeviceScan()
 
 }
 
+// Timer for the scan
 void MainWindow::timeOutforScan(){
     scantimercomplete = true;
     scanTimer->stop();
@@ -977,7 +937,7 @@ void MainWindow::timeOutforScan(){
 
 }
 
-
+// Update the processed data on the UI
 void MainWindow::updateProcessedDataUI(const std::map<std::string, float>& processedData)
 {
     QString dataText;
@@ -986,27 +946,29 @@ void MainWindow::updateProcessedDataUI(const std::map<std::string, float>& proce
     }
     qDebug()<<"Data: "<<dataText;
 
-//    ui->ProcessedDataLabel->setText(dataText);
 }
 
+// Pair the Device with the App
 void MainWindow::PairUp() {
     device.PairUp();
 
     ui->PairButton->setDisabled(true);
 }
 
+// Charge the Battery
 void MainWindow::ChargeBattery() {
-    if(chargedBatteryTimer->isActive()) { //if was Charging
+    if(chargedBatteryTimer->isActive()) {
         chargedBatteryTimer->stop();
         batteryTimer->start();
         ui->ChargeButton->setText("Charging OFF");
-    } else { //if was not Charging
+    } else {
         chargedBatteryTimer->start();
         batteryTimer->stop();
         ui->ChargeButton->setText("Charging ON");
     }
 }
 
+// Update the Battery Level
 void MainWindow::UpdateChargedBatteryLevelLabel() {
 
     if(device.getBatteryLevel() == 0){
@@ -1031,7 +993,7 @@ void MainWindow::UpdateChargedBatteryLevelLabel() {
 
 }
 
-// depeletes battery label on ui
+// Depeletes battery label on ui
 void MainWindow::updateBatteryLevelLabel()
 {
     this->device.depleteBattery();
@@ -1068,6 +1030,7 @@ void MainWindow::updateBatteryLevelLabel()
     }
 }
 
+// Power the Device
 void MainWindow::powerDevice()
 {
     this->batteryTimer->start();
@@ -1076,10 +1039,10 @@ void MainWindow::powerDevice()
     ui->OffButton->setDisabled(false);
 }
 
+// Shut Down the Device
 void MainWindow::shutDownDevice()
 {
     this->batteryTimer->stop();
-    //ui->DeviceScanButton->setDisabled(true);
     ui->OffButton->setDisabled(true);
     ui->OnButton->setDisabled(false);
 }

@@ -14,7 +14,7 @@
 #include <QChartView>
 #include <QVBoxLayout>
 #include <QWidget>
-#include "ui_mainwindow.h" // Include the generated UI file
+#include "ui_mainwindow.h"
 #include "HealthData.h"
 
 class Visualization : public QWidget {
@@ -27,7 +27,6 @@ public:
     void showBodyGraph(HealthData* healthdata, Ui::MainWindow* ui);
 
 private:
-    // Import UI components from the MainWindow UI
     Ui::MainWindow* ui;
 };
 

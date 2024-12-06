@@ -8,7 +8,7 @@
 struct MeridianResult {
     QString meridian;
     QString side;
-    int conductance;  // µA
+    int conductance;// µA
     QString status;
 };
 
@@ -27,8 +27,8 @@ struct Comments
 
 class HealthData {
 private:
-    QDate date;                  // Date of the measurement
-    QList<MeridianResult> data;  // List of results for the measurement
+    QDate date;
+    QList<MeridianResult> data;
     QList<Comments> comments;
 
 public:
