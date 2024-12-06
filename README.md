@@ -187,3 +187,5 @@ $$
 3. Clean the project
 4. Build the project
 5. Run the project
+6. To see images on the Project please put the project directory in the following path `/home/student/Desktop/Final/3004-Final-Project`
+
