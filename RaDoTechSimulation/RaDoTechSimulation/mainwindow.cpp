@@ -393,16 +393,19 @@ void MainWindow::showProfiles() {
     QMessageBox::information(this, "User Profiles", profileList);
 }
 
-//TODO: THIS PRESET MAKE BETTER WITH DATA I HAVE, JUST FOR DEMO RIGHT NOW
+// Creating Preset Users with there own Historical Data
 void MainWindow::createPresetUsers() {
-    // Create users with a test profile
     User* user1 = new User("test1@example.com", "password1");
-//    User* user2 = new User("test2@example.com", "password2");
+    User* user2 = new User("test2@example.com", "password2");
 
     Profile* profile1 = new Profile("Profile1ForTest", "Male", 70.0, 175.0, QDate(1990, 1, 1));
     user1->addProfile(profile1);
     Profile* profile2 = new Profile("Profile2ForTest", "Female", 89.0, 180.0, QDate(2004,1,1));
     user1->addProfile(profile2);
+    Profile* profile3 = new Profile("Profile3ForTest", "Male", 80.0, 170.0, QDate(1995,1,1));
+    user2->addProfile(profile3);
+    Profile* profile4 = new Profile("Profile4ForTest", "Female", 70.0, 160.0, QDate(1990,1,1));
+    user2->addProfile(profile4);
 
     QList<MeridianResult> results = {
         {"H1 (Lung)", "Left", 115, "Normal"},
@@ -430,7 +433,6 @@ void MainWindow::createPresetUsers() {
         {"F6 (Stomach)", "Left", 78, "Low (Deficient)"},
         {"F6 (Stomach)", "Right", 135, "High (Excess)"}
     };
-
 
     QList<MeridianResult> results1 = {
         {"H1 (Lung)", "Left", 44, "Normal"},
@@ -460,20 +462,31 @@ void MainWindow::createPresetUsers() {
     };
 
     QList<Comments> comments = {
-            {90.1, "9.1", 75, 8,90.1,"2","5","blahblah"}
+            {90.1, "9.1", 75, 8,90.1,"2","2","Not Feeling Great Today"}
     };
     HealthData* healthData = new HealthData(QDate(1990, 2, 2), results, comments);
     profile1->addHealthData(healthData);
 
     QList<Comments> comments1 = {
-            {90.1, "9.1", 75, 8,90.1,"2","5","blahblah"}
+            {90.1, "9.1", 75, 8,90.1,"5","5","FEELING GREAT!"}
     };
     HealthData* healthData1 = new HealthData(QDate(1990, 4, 4),results1,comments1);
     profile2->addHealthData(healthData1);
-//    user2->addProfile(profile1); // Both users share the same test profile
+
+    QList<Comments> comments2 = {
+            {90.1, "9.1", 75, 8,90.1,"2","2","Not Feeling Great Today"}
+    };
+    HealthData* healthData2 = new HealthData(QDate(1990, 2, 2), results, comments2);
+    profile3->addHealthData(healthData2);
+
+    QList<Comments> comments3 = {
+            {90.1, "9.1", 75, 8,90.1,"5","5","FEELING GREAT!"}
+    };
+    HealthData* healthData3 = new HealthData(QDate(1990, 4, 4),results1,comments3);
+    profile4->addHealthData(healthData3);
 
     presetUsers.append(user1);
-//    presetUsers.append(user2);
+    presetUsers.append(user2);
 }
 
 // Handle the Login of User
