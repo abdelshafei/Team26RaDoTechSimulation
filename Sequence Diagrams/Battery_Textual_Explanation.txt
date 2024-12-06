@@ -20,12 +20,12 @@ Flow Step-by-Step
 
 Monitoring Battery Level:
 -The updateBatteryLevelLabel() function in MainWindow retrieves the current battery level using device.getBatteryLevel().
--An alt block checks if the battery level is above 0:
-    -[If device.getBatteryLevel() > 0]:
+-An alt block checks if the battery level is above 0, and that the device is not currently being charged:
+    -[If device.getBatteryLevel() > 0 && !chargedBatteryTimer->isActive()]:
         -The depleteBattery() method is called on the RaDoTechDevice, which triggers the deplete() method in Battery to reduce the battery level by 5%.
         -The system actively checks if the battery is low using isBatteryLow() on RaDoTechDevice, which internally invokes isLow() on Battery.
         -The battery level is updated and reflected on the user interface via updateBatteryLevelLabel().
-    -[Else (device.getBatteryLevel() == 0)]:
+    -[Else]:
         -The user can click the charge button whic begins the below battery charging process.
 
 Charging the Battery:
