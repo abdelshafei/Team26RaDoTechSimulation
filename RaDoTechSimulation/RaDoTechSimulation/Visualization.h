@@ -17,6 +17,18 @@
 #include "ui_mainwindow.h"
 #include "HealthData.h"
 
+/* Class Purpose:
+ * The Visualization class is used to create and display various types of health data visualizations.
+ *
+ * Class Attributes:
+ * ui - Pointer to the main window UI.
+ *
+ * Class Functions:
+ * showBarGraph() - Displays a bar graph based on the provided health data.
+ * showCircleGraph() - Displays a circle graph based on the provided health data.
+ * showBodyGraph() - Displays a body graph based on the provided health data.
+ */
+
 class Visualization : public QWidget {
     Q_OBJECT
 

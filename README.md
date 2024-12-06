@@ -1,7 +1,7 @@
 # **RaDoTech Simulation**
 
 ## **Project Overview**
-This project simulates the functionality of the RaDoTech health monitoring device, including scanning, data processing, and visualization of health metrics. The system allows users to initiate scans, view results in charts, and monitor device states like battery level.
+This project simulates the functionality of the RaDoTech health monitoring device, including scanning, data processing, and visualization of health metrics for different user profiles. The system allows users to initiate scans, view results in charts, and monitor device states like battery level.
 
 ---
 
@@ -10,8 +10,8 @@ This project simulates the functionality of the RaDoTech health monitoring devic
 | **Name**          | **Role**                         | **Contributions**                                                                                                                                                  |
 |--------------------|----------------------------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | **William Marcus**    | Developer        | Developed code for the scan process in the `RaDoTechDevice` and `DataProcessor` class along with the data visualizations within the `Visualization` class. Created state machine diagrams for the app and device.      |
-| **Param Desai**   | Developer               |     |
-| **JC Sevigny**   | Developer        |            |
+| **Param Desai**   | Developer               | Developed the CUD Profile implementation, Login and Register logic, viewing History Data (health indicators, recommendations and comments) from the Health Data points, and implemented MainWindow classes.      | 
+| **JC Sevigny**   | Developer        | Designed and structured the program infrastructure, ensuring a robust foundation for development. Contributed to the UML Class Diagram, aligning design elements with functional requirements. Created Sequence Diagrams to clarify the app's flow, ensuring consistency and a smooth user experience. Researched and implemented HealthData algorithms for key indicators, using insights from RadoTech videos and AI.           |
 | **Abdelrahman ElShafay**   | Developer          | Designed and implemented functionality for the `Battery` object class within the `RaDoTechDevice`, including depletion and charging mechanisms, as well as the logic for device pairing initialization. Developed a comprehensive Traceability Matrix to ensure requirements alignment. Created detailed UML Class and Use Case Diagrams, refining existing use cases for accuracy and completeness in the use cases form. |
 
 ---
@@ -39,35 +39,35 @@ This project simulates the functionality of the RaDoTech health monitoring devic
 #### **Functional Health Indicators**
 
 1. **Energy Level**
-$$
-\text{Energy Level} = \frac{\text{Left Total} + \text{Right Total}}{\text{Total Meridians} \times \text{Energy Scaling Factor}}
-$$
+
+Energy Level = (Left Total + Right Total) / (Total Meridians × Energy Scaling Factor)
+
 - **Scaling Factor**: 2.78
 - **Normal Range**: 25-55
 
 ---
 
 2. **Immune System**
-$$
-\text{Immune System} = \frac{\text{Upper Body Left Total} + \text{Upper Body Right Total}}{6 \times \text{Immune Scaling Factor}}
-$$
+
+Immune System = (Upper Body Left Total + Upper Body Right Total) / (6 × Immune Scaling Factor)
+
 - Includes all upper body meridians starting with "H".
 - **Scaling Factor**: 52.1
 - **Normal Range**: 47-57
 ---
 
 3. **Metabolism**
-$$
-\text{Metabolism} = \frac{\text{Left Total}}{\text{Right Total}}
-$$
+
+Metabolism = Left Total / Right Total
+
 - Ratio of left to right side conductance.
 - **Normal Range**: 1.1-1.2
 ---
 
 4. **Psycho-Emotional State**
-$$
-\text{Psycho-Emotional State} = \frac{\text{Sum of Emotional Meridians Conductance}}{\text{Number of Emotional Meridians} \times \text{Emotional Scaling Factor}}
-$$
+
+Psycho-Emotional State = Sum of Emotional Meridians Conductance / (Number of Emotional Meridians × Emotional Scaling Factor)
+
 - Emotional meridians include H1 (Lung) and H2 (Pericardium).
 - **Scaling Factor**: 80.71
 - **Normal Range**: 0.8-1.2
@@ -75,9 +75,9 @@ $$
 ---
 
 5. **Musculoskeletal System**
-$$
-\text{Musculoskeletal System} = \frac{\text{Lower Body Left Total} + \text{Lower Body Right Total}}{6 \times \text{Musculoskeletal Scaling Factor}}
-$$
+
+Musculoskeletal System = (Lower Body Left Total + Lower Body Right Total) / (6 × Musculoskeletal Scaling Factor)
+
 - Includes all lower body meridians starting with "F".
 - **Scaling Factor**: 86.0
 - **Normal Range**: 0.9-1.2
@@ -87,53 +87,50 @@ $$
 #### **Professional Practitioner Data Points**
 
 1. **Average Value**
-$$
-\text{Average Value} = \frac{\text{Left Total} + \text{Right Total}}{\text{Total Meridians} \times \text{Energy Scaling Factor}}
-$$
+
+Average Value = (Left Total + Right Total) / (Total Meridians × Energy Scaling Factor)
 
 ---
 
 2. **Left Total**
-$$
-\text{Left Total} = \sum \text{Conductance of All Left-Side Meridians}
-$$
+
+Left Total = Sum of Conductance of All Left-Side Meridians
 
 ---
 
 3. **Right Total**
-$$
-\text{Right Total} = \sum \text{Conductance of All Right-Side Meridians}
-$$
+
+Right Total = Sum of Conductance of All Right-Side Meridians
+
 
 ---
 
 4. **Left-Right Ratio**
-$$
-\text{Left-Right Ratio} = \frac{\text{Left Total}}{\text{Right Total}}
-$$
+
+Left-Right Ratio = Left Total / Right Total
+
 
 ---
 
 5. **Upper Total**
-$$
-\text{Upper Total} = \text{Upper Body Left Total} + \text{Upper Body Right Total}
-$$
+
+Upper Total = Upper Body Left Total + Upper Body Right Total
+
 - Includes all upper body meridians starting with "H".
 
 ---
 
 6. **Lower Total**
-$$
-\text{Lower Total} = \text{Lower Body Left Total} + \text{Lower Body Right Total}
-$$
+
+Lower Total = Lower Body Left Total + Lower Body Right Total
+
 - Includes all lower body meridians starting with "F".
 
 ---
 
 7. **Upper-Lower Ratio**
-$$
-\text{Upper-Lower Ratio} = \frac{\text{Upper Total}}{\text{Lower Total}}
-$$
+
+Upper-Lower Ratio = Upper Total / Lower Total
 
 ---
 
@@ -179,7 +176,7 @@ $$
 #### *Prerequisites*
 - QT Creator
 - QT Charts
-    - run this command in the terminal `sudo apt install libqt5charts5-dev`
+    - run this command in the terminal `sudo apt install libqt5charts5-dev` to download QtCharts
 
 #### *Steps To Run*
 1. Unzip the file `Team26RaDoTechSimulation.zip`
