@@ -170,7 +170,7 @@ $$
 ### *Videos for Running Simulation Through Specified Scenarios*
 - Videos
     - `Videos/LoginAndCUDProfile.mp4`: Video demonstrating login and create, update, delete profile
-    - `Videos/RegisteringProfileSequenceDiagramDemo.mp4`: Video demonstrating user registration and profile creation
+    - `Videos/RegisteringUserSequenceDiagramDemo.mp4`: Video demonstrating user registration and profile creation
     - `Videos/BatterySequenceDiagramDemo.mp4`: Video demonstrating battery charging and depletion
     - `Videos/Successful_Scan.mp4`: Video demonstrating process of pairing device performing successful scan
     - `Videos/ViewHistorySequenceVideo.mp4`: Video demonstrating viewing of historical data
