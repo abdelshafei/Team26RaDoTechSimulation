@@ -9,7 +9,7 @@ class User {
 private:
     QString email;
     QString password;
-    QList<Profile*> profiles; // Allow multiple profiles
+    QList<Profile*> profiles;
 
 public:
     User(const QString& email, const QString& password)
@@ -17,12 +17,11 @@ public:
 
     QString getEmail() const { return email; }
     QString getPassword() const { return password; }
+    QList<Profile*> getProfiles() const { return profiles; }
+    void setProfiles(const QList<Profile*>& updatedProfiles);
 
     void addProfile(Profile* profile) { profiles.append(profile); }
-    QList<Profile*> getProfiles() const { return profiles; }
-
     static User* validateCredentials(const QString& email, const QString& password, const QList<User*>& users);
-    void setProfiles(const QList<Profile*>& updatedProfiles);
 
 };
 

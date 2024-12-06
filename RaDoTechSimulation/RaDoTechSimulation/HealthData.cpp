@@ -1,6 +1,6 @@
 #include "HealthData.h"
 #include <QDebug>
-// Helper function to filter meridian results by name prefix
+
 static QList<MeridianResult> filterByPrefix(const QList<MeridianResult>& data, const QString& prefix) {
     QList<MeridianResult> filtered;
     for (const MeridianResult& result : data) {
@@ -11,7 +11,6 @@ static QList<MeridianResult> filterByPrefix(const QList<MeridianResult>& data, c
     return filtered;
 }
 
-// Helper function to calculate sum for a specific side
 static double calculateSideSum(const QList<MeridianResult>& data, const QString& side) {
     double sum = 0.0;
     for (const MeridianResult& result : data) {
@@ -35,7 +34,7 @@ double HealthData::calculateEnergyLevel() const {
     qDebug()<<"Left Total: "<< leftTotal<<" Right Total: "<<rightTotal;
     double total = leftTotal + rightTotal;
     qDebug()<<"Total: " <<total / (data.size() * ENERGY_LEVEL_SCALING_FACTOR);
-    return total / (data.size() * ENERGY_LEVEL_SCALING_FACTOR); // Normalized Energy Level
+    return total / (data.size() * ENERGY_LEVEL_SCALING_FACTOR);
 }
 
 double HealthData::calculateImmuneSystem() const {
@@ -43,13 +42,13 @@ double HealthData::calculateImmuneSystem() const {
     double leftTotal = calculateSideSum(upperBody, "Left");
     double rightTotal = calculateSideSum(upperBody, "Right");
     double upperTotal = leftTotal + rightTotal;
-    return upperTotal / (6 * IMMUNE_SYSTEM_SCALING_FACTOR); // Normalize by upper meridians and scaling factor
+    return upperTotal / (6 * IMMUNE_SYSTEM_SCALING_FACTOR);
 }
 
 double HealthData::calculateMetabolism() const {
     double leftTotal = calculateSideSum(data, "Left");
     double rightTotal = calculateSideSum(data, "Right");
-    return leftTotal / rightTotal; // Ratio of left to right energy
+    return leftTotal / rightTotal;
 }
 
 double HealthData::calculatePsychoEmotionalState() const {
@@ -59,7 +58,7 @@ double HealthData::calculatePsychoEmotionalState() const {
     for (const MeridianResult& result : emotionalMeridians) {
         sum += result.conductance;
     }
-    return sum / (emotionalMeridians.size() * PSYCHO_EMOTIONAL_SCALING_FACTOR); // Normalize by scaling factor
+    return sum / (emotionalMeridians.size() * PSYCHO_EMOTIONAL_SCALING_FACTOR);
 }
 
 double HealthData::calculateMusculoskeletalSystem() const {
@@ -67,46 +66,46 @@ double HealthData::calculateMusculoskeletalSystem() const {
     double leftTotal = calculateSideSum(lowerBody, "Left");
     double rightTotal = calculateSideSum(lowerBody, "Right");
     double lowerTotal = leftTotal + rightTotal;
-    return lowerTotal / (6 * MUSCULOSKELETAL_SCALING_FACTOR); // Normalize by lower meridians and scaling factor
+    return lowerTotal / (6 * MUSCULOSKELETAL_SCALING_FACTOR);
 }
 
 // Professional Practitioner Data
 double HealthData::calculateAverageValue() const {
     double leftTotal = calculateSideSum(data, "Left");
     double rightTotal = calculateSideSum(data, "Right");
-    return (leftTotal + rightTotal) / (data.size() * ENERGY_LEVEL_SCALING_FACTOR); // Average of all conductance values
+    return (leftTotal + rightTotal) / (data.size() * ENERGY_LEVEL_SCALING_FACTOR);
 }
 
 double HealthData::calculateLeftTotal() const {
-    return calculateSideSum(data, "Left"); // Sum of left-side meridians
+    return calculateSideSum(data, "Left");
 }
 
 double HealthData::calculateRightTotal() const {
-    return calculateSideSum(data, "Right"); // Sum of right-side meridians
+    return calculateSideSum(data, "Right");
 }
 
 double HealthData::calculateLeftRightRatio() const {
     double leftTotal = calculateLeftTotal();
     double rightTotal = calculateRightTotal();
-    return leftTotal / rightTotal; // Ratio of left to right totals
+    return leftTotal / rightTotal;
 }
 
 double HealthData::calculateUpperTotal() const {
     QList<MeridianResult> upperBody = filterByPrefix(data, "H");
     double leftTotal = calculateSideSum(upperBody, "Left");
     double rightTotal = calculateSideSum(upperBody, "Right");
-    return leftTotal + rightTotal; // Total energy for upper body meridians
+    return leftTotal + rightTotal;
 }
 
 double HealthData::calculateLowerTotal() const {
     QList<MeridianResult> lowerBody = filterByPrefix(data, "F");
     double leftTotal = calculateSideSum(lowerBody, "Left");
     double rightTotal = calculateSideSum(lowerBody, "Right");
-    return leftTotal + rightTotal; // Total energy for lower body meridians
+    return leftTotal + rightTotal;
 }
 
 double HealthData::calculateUpperLowerRatio() const {
     double upperTotal = calculateUpperTotal();
     double lowerTotal = calculateLowerTotal();
-    return upperTotal / lowerTotal; // Ratio of upper to lower body totals
+    return upperTotal / lowerTotal;
 }

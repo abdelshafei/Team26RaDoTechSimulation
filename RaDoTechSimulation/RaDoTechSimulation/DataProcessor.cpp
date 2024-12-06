@@ -1,5 +1,5 @@
 #include "DataProcessor.h"
-#include <numeric> // For validation (sum function)
+#include <numeric>
 
 DataProcessor::DataProcessor() : rawData({}) {}
 
@@ -48,6 +48,5 @@ std::map<std::string, float> DataProcessor::processData()
 
 bool DataProcessor::validateData() const
 {
-    // Example: Validation checks if data is non-zero and has expected size
     return !rawData.empty() && std::accumulate(rawData.begin(), rawData.end(), 0.0f) > 0;
 }

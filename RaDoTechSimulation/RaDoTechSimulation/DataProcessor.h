@@ -12,8 +12,6 @@ private:
 
 public:
     DataProcessor();
-
-    // Functions
     void setRawData(const std::vector<float>& data);
     std::map<std::string, float> processData();
     bool validateData() const;

@@ -46,11 +46,11 @@ void Visualization::showBarGraph(HealthData* healthdata, Ui::MainWindow* ui) {
     // Create category axis (x-axis)
     QBarCategoryAxis* axisX = new QBarCategoryAxis();
     axisX->append(categories);
-    axisX->setLabelsAngle(90); // Rotate labels for readability
+    axisX->setLabelsAngle(90);
 
     // Create value axis (y-axis)
     QValueAxis* axisY = new QValueAxis();
-    axisY->setRange(0, 200); // Adjust based on your data range
+    axisY->setRange(0, 200);
     axisY->setTitleText("Conductance (µA)");
 
     // Create a chart
@@ -105,10 +105,10 @@ void Visualization::showCircleGraph(HealthData* healthdata, Ui::MainWindow* ui) 
     QVector<double> averageValues;
 
     // Process the data for left and right sides
-    for (int i = 0; i < results.size(); i += 2) { // Step by 2: 0=Left, 1=Right
-        double leftValue = results[i].conductance;     // Left value
-        double rightValue = results[i + 1].conductance; // Right value
-        double averageValue = (leftValue + rightValue) / 2.0; // Average
+    for (int i = 0; i < results.size(); i += 2) {
+        double leftValue = results[i].conductance;
+        double rightValue = results[i + 1].conductance;
+        double averageValue = (leftValue + rightValue) / 2.0;
 
         leftSideData.append(leftValue);
         rightSideData.append(rightValue);
@@ -123,8 +123,8 @@ void Visualization::showCircleGraph(HealthData* healthdata, Ui::MainWindow* ui) 
 
     // Create a Value Axis (for the circular range)
     QtCharts::QValueAxis *valueAxis = new QtCharts::QValueAxis();
-    valueAxis->setRange(0, 200); // Adjust range based on conductance values
-    valueAxis->setTickCount(6);  // Add tick marks
+    valueAxis->setRange(0, 200);
+    valueAxis->setTickCount(6);
     valueAxis->setLabelFormat("%.0f");
     valueAxis->setTitleText("Conductance");
     polarChart->addAxis(valueAxis, QtCharts::QPolarChart::PolarOrientationRadial);
@@ -136,7 +136,7 @@ void Visualization::showCircleGraph(HealthData* healthdata, Ui::MainWindow* ui) 
     {
         angularAxis->append(categories[i], i);
     }
-    angularAxis->setRange(0, categories.size() - 1); // Adjust for zero-based indexing
+    angularAxis->setRange(0, categories.size() - 1);
     polarChart->addAxis(angularAxis, QtCharts::QPolarChart::PolarOrientationAngular);
 
     // Create Line Series for each data set
@@ -181,10 +181,10 @@ void Visualization::showCircleGraph(HealthData* healthdata, Ui::MainWindow* ui) 
         QLayoutItem *item;
         while ((item = existingLayout->takeAt(0)) != nullptr)
         {
-            delete item->widget(); // Remove widgets
-            delete item;           // Remove layout items
+            delete item->widget();
+            delete item;
         }
-        delete existingLayout; // Delete the existing layout
+        delete existingLayout;
     }
 
     // Add the chart to the placeholder widget (CircleChartWidget)
@@ -199,18 +199,16 @@ void Visualization::showBodyGraph(HealthData* healthdata, Ui::MainWindow* ui) {
     if (existingLayout) {
         QLayoutItem* item;
         while ((item = existingLayout->takeAt(0)) != nullptr) {
-            delete item->widget(); // Remove child widgets
-            delete item;           // Remove layout items
+            delete item->widget();
+            delete item;
         }
-        delete existingLayout; // Remove the layout itself
+        delete existingLayout;
     }
 
     for(int i=0;i<healthdata->getData().size(); ++i){
         qDebug() << healthdata->getData()[i].meridian;
     }
 
-    // Add LeftLung.png with its label
-    //QLabel* leftLungLabel = new QLabel(ui->BodyChartWidget);
     QPixmap leftLungPixmap("/home/student/Desktop/Final/3004-Final-Project/images/BodyDiagramImages/LeftLung.png");
 
     if (leftLungPixmap.isNull()) {
